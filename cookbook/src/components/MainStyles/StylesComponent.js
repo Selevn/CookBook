@@ -11,6 +11,11 @@ const ButtonWrapper = ({ className, children }) => (
         {children}
     </button>
 );
+const InputWrapper = ({ className, children, type }) => (
+    <input className={className} type={type}>
+        {children}
+    </input>
+);
 
 
 export const StyledLink = styled(LinkWrapper)`
@@ -38,5 +43,11 @@ export const StyledButton = styled(ButtonWrapper)`
   color: #000000;
 `;
 
-
+export const StyledInput = styled(InputWrapper)`
+  border: 1px solid #7B7B80;
+  box-sizing: border-box;
+  border-radius: 8px;
+  font-size: 30px;
+  padding: 5px;
+`;
 

@@ -1,22 +1,30 @@
 import React from "react";
 
 import {ImageLogo} from './style/LoginComponentStyle.js'
-import {StyledButton, StyledLink} from '../MainStyles/StylesComponent'
+import {StyledButton, StyledInput, StyledLink} from '../MainStyles/StylesComponent'
+import {ForgotPasswordLink, FormDivStyled, FormStyled, H1, LabelStyled, PasswortDiv} from "./style/FormComponentStyle";
+
 export const FormComponent = () =>{
     return (<>
-        <ImageLogo/>
-        <div>
-            <h3>Welcome Back!</h3>
 
-            New here? <StyledLink>Create an account</StyledLink>
-            <form>
-                <label>Email</label>
-                <input/>
-                <label>Password</label><input/>
-            </form>
+        <FormDivStyled>
+            <ImageLogo/>
+            <h1>Welcome Back!</h1>
+
+            <div>New here?<StyledLink> Create an account</StyledLink></div>
+
+            <FormStyled>
+                <LabelStyled>Email</LabelStyled>
+                <StyledInput/>
+                <PasswortDiv>
+                    <LabelStyled>Password</LabelStyled>
+                    <ForgotPasswordLink> Forgot password?</ForgotPasswordLink>
+                </PasswortDiv>
+                <StyledInput/>
+            </FormStyled>
             <StyledButton>
                 Sign In
             </StyledButton>
-        </div>
+        </FormDivStyled>
     </>)
 }

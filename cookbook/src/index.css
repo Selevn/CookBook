@@ -1,0 +1,19 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+body{
+  min-height: 100vh;
+}
+#root{
+  min-height: 100vh;
+  height:100%;
+}
+
+
+@font-face {
+  font-family: "Nunito";
+  src: local("Nunito"),
+  url("./components/MainStyles/fonts/Nunito-SemiBold.ttf") format("truetype");
+  font-weight: normal;
+}

@@ -27,6 +27,7 @@ export const LinkStyled = styled(LinkWrapper)`
   color: #F7B602;
   font-family: Nunito, sans-serif;
   font-weight: bold;
+  text-decoration: none;
 `;
 
 export const LabelStyled = styled(LabelWrapper)`

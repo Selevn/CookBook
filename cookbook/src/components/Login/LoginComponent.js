@@ -1,8 +1,8 @@
 import React, {useState, Suspense} from "react";
-import {FormDiv, ImageVegetable, ImageVegetablesContainer, MainDiv} from './style/LoginComponentStyle.js'
+import {ImageVegetable, ImageVegetablesContainer, MainDiv} from './style/LoginComponentStyle.js'
 import {Container} from "../common/StylesComponent";
 
-const FormComponent = React.lazy(()=>import('./FormComponent.js'))
+const FormComponent = React.lazy(()=>import('../MultyUsed/FormComponent.js'))
 
 
 const LoginComponent = () =>{

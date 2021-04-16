@@ -3,14 +3,16 @@ import React from "react";
 import logo from '../../common/images/FeedMe.jpg';
 import {Container} from "../../common/StylesComponent";
 
-import vegetables from '../../common/images/LoginBack.jpg'
+import vegetables from '../../common/images/RegisterBack.jpg'
 
 export const MainDiv = styled(Container)`
   height: 100%;
   min-height: 100vh;
   justify-content: space-around;
   grid-template-columns: 40% 60%;
-  background: #EEEAEB;  
+  
+  background-image: url(${vegetables}), linear-gradient(#dfeaee, #cbd8de);
+  background-repeat: no-repeat;  
 `;
 
 export const FormDiv = styled(Container)`

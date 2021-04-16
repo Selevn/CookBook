@@ -1,16 +1,16 @@
-import {FormDiv} from "./style/LoginComponentStyle";
-import {Logo} from "./style/FormComponentStyle";
+import {FormDiv} from "../Login/style/LoginComponentStyle.js";
+import {Logo} from "./FormComponentStyle.js";
 import {ButtonStyled, Container, InputStyled, LabelStyled, LinkStyled} from "../common/StylesComponent";
 
-const FormComponent = ({email, password, setEmail, setPassword})=>(
+const FormComponent = ({email, password, setEmail, setPassword, register, passwordRepeat, setPasswordRepeat})=>(
     <FormDiv vertical>
         <Logo flex='10'/>
         <Container vertical>
             <br/>
-            <h1>Welcome back</h1>
-            <p>New here? <LinkStyled>Create an account</LinkStyled></p>
+            <h1>{register?"Join our community":"Welcome back"}</h1>
+            <p>{register?"Already have an account?":"New here?"}<LinkStyled>{register?" Sign In":" Create an account"}</LinkStyled></p>
         </Container>
-        <Container minHeight={'50%'} vertical justifyContent={"center"}>
+        <Container minHeight={register?"60%":"40%"} vertical justifyContent={"center"}>
             <Container vertical minHeight={'80%'} justifyContent={"space-around"}>
                 <Container vertical>
                     <LabelStyled>Email</LabelStyled>
@@ -22,7 +22,7 @@ const FormComponent = ({email, password, setEmail, setPassword})=>(
                 <Container vertical>
                     <Container justifyContent={"space-between"}>
                         <LabelStyled>Password</LabelStyled>
-                        <LinkStyled>Forgot password?</LinkStyled>
+                        {register? "": <LinkStyled>Forgot password?</LinkStyled>}
                     </Container>
                     <InputStyled
                         value={password}
@@ -30,10 +30,17 @@ const FormComponent = ({email, password, setEmail, setPassword})=>(
                         type={"password"}
                     />
                 </Container>
+                {register?<Container vertical>
+                    <LabelStyled>Repeat password</LabelStyled>
+                    <InputStyled
+                        value={passwordRepeat}
+                        onChange={(e)=>setPasswordRepeat(e.target.value)}
+                    />
+                </Container>:""}
             </Container>
         </Container>
         <Container vertical justifyContent={"center"} minHeight={"20%"}>
-            <ButtonStyled>Sign in</ButtonStyled>
+            <ButtonStyled>{register?"Sign Up":"Sign In"}</ButtonStyled>
         </Container>
     </FormDiv>
 )

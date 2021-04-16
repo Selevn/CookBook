@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import logo from '../../common/images/FeedMe.jpg'
+import logo from '../common/images/FeedMe.jpg';
 
 const LogoImage = ()=>(<div><img src={logo} alt={"Logo"}/></div>)
 

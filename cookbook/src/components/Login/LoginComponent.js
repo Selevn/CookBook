@@ -1,14 +1,19 @@
 import React from "react";
 
-import {FormDiv, ImageVegetables, MainDiv} from './style/LoginComponentStyle.js'
+import {
+    FormDiv,
+    ImageVegetable,
+    ImageVegetablesContainer,
+    MainDiv
+} from './style/LoginComponentStyle.js'
 import {ButtonStyled, Container, InputStyled, LabelStyled, LinkStyled} from "../common/StylesComponent";
 import {Logo} from "./style/FormComponentStyle";
 
 const LoginComponent = () =>{
     return (<>
         <MainDiv>
-            <Container flex='1'/>
-            <FormDiv flex='2' vertical>
+            <Container flex='2'>
+                <FormDiv vertical>
                 <Logo flex='10'/>
                 <Container vertical>
                     <br/>
@@ -24,7 +29,7 @@ const LoginComponent = () =>{
                         <Container vertical>
                             <Container justifyContent={"space-between"}>
                                 <LabelStyled>Password</LabelStyled>
-                                <LinkStyled>Fogrot password?</LinkStyled>
+                                <LinkStyled>Forgot password?</LinkStyled>
                             </Container>
                             <InputStyled/>
                         </Container>
@@ -34,10 +39,10 @@ const LoginComponent = () =>{
                     <ButtonStyled>Sign in</ButtonStyled>
                 </Container>
             </FormDiv>
-                <Container flex='2'>
-                    <ImageVegetables/>
-                </Container>
-            <Container flex='1'/>
+            </Container>
+            <ImageVegetablesContainer flex={'2'}>
+                <ImageVegetable/>
+            </ImageVegetablesContainer>
         </MainDiv>
     </>)
 }

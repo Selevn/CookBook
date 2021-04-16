@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import '../../index.css'
 
 const LinkWrapper = ({ className, children }) => (
-    <a className={className}>
+    <a className={className} href={"*"}>
         {children}
     </a>
 );
@@ -30,7 +30,7 @@ export const LinkStyled = styled(LinkWrapper)`
 `;
 
 export const LabelStyled = styled(LabelWrapper)`
-  font-family: Nunito;
+  font-family: Nunito, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
@@ -40,7 +40,7 @@ export const LabelStyled = styled(LabelWrapper)`
 
 
 export const ButtonStyled = styled(ButtonWrapper)`
-  width: 415px;
+  width: 100%;
   height: 48px;
 
   background: #F7B602;
@@ -76,7 +76,6 @@ export const Container = styled.div`
   ${p=>p.padding?`padding: ${p.padding}`:''};
   ${p=>p.justifyContent?`justify-content: ${p.justifyContent}`:''};
   ${p=>p.minHeight?`min-height: ${p.minHeight}`:''};
-
 `;
 
 

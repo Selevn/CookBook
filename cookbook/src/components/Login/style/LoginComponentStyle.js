@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import React from "react";
-import vegetable from '../../common/images/juice.jpg';
 import Logo from '../../common/images/FeedMe.jpg';
 import {Container} from "../../common/StylesComponent";
 
@@ -9,7 +8,6 @@ import vegetables from '../../common/images/juice.jpg'
 export const MainDiv = styled(Container)`
   height: 100%;
   min-height: 100vh;
-
   justify-content: space-around;
   grid-template-columns: 40% 60%;
   background: #EEEAEB;  
@@ -18,19 +16,31 @@ export const MainDiv = styled(Container)`
 export const FormDiv = styled(Container)`
   width: ${p=>p.width?p.width:'100%'};
   margin: auto;
-  padding: 75px;
   height: 503px;
+  max-width: 400px;
   background: #FFFFFF;
   border-radius: 16px;
+  @media (max-width: 425px) {
+    padding: 10px;
+  }
+  @media (min-width: 425px) {
+    padding: 75px;
+  }
 
-  max-width: 400px;
+
 `;
 
-export const ImageVegetable = () =>(<img src={vegetables} alt={"as"}/>)
+export const ImageVegetable = () =>(
+        <img src={vegetables} alt={"as"}/>
+    )
 
-export const ImageVegetables = styled(ImageVegetable)`
-  
+export const ImageVegetablesContainer = styled(Container)`
+  @media (max-width: 1300px) {
+    display: none;
+  }
 `;
+
+
 
 export const ImageLogo = styled.div`
   grid-column: 0;

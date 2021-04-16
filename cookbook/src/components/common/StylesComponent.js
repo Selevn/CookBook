@@ -11,8 +11,8 @@ const ButtonWrapper = ({ className, children }) => (
         {children}
     </button>
 );
-const InputWrapper = ({ className, children, type }) => (
-    <input className={className} type={type}>
+const InputWrapper = ({ className, children, type, onChange, value }) => (
+    <input className={className} type={type} onChange={onChange} value={value}>
         {children}
     </input>
 );

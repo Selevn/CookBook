@@ -1,9 +1,11 @@
-import {LoginComponent} from "./components/Login/LoginComponent";
+import {Login} from "./components/Login";
+import {GlobalStyle} from "./globalStyles";
 
 function App() {
   return (
       <>
-          <LoginComponent/>
+          <GlobalStyle/>
+          <Login/>
       </>
   );
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { FormDiv } from '../Login/style/LoginComponentStyle';
 import { Logo } from './FormComponentStyle';
 import {
@@ -63,4 +64,17 @@ const FormComponent = ({
     </Container>
   </FormDiv>
 );
+
+FormComponent.propTypes = {
+  register: PropTypes.bool,
+
+  email: PropTypes.string,
+  password: PropTypes.string,
+  passwordRepeat: PropTypes.string,
+
+  setEmail: PropTypes.func,
+  setPassword: PropTypes.func,
+  setPasswordRepeat: PropTypes.func,
+};
+
 export default FormComponent;

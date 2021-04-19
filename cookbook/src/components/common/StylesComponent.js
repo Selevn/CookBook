@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import '../../index.css';
+import PropTypes from 'prop-types';
 import React from 'react';
 
 const LinkWrapper = ({ className, children }) => (
@@ -7,13 +8,32 @@ const LinkWrapper = ({ className, children }) => (
     {children}
   </a>
 );
+LinkWrapper.propTypes = {
+  className: PropTypes.string,
+  children: PropTypes.node,
+};
+
 const ButtonWrapper = ({ className, children }) => (
   <button className={className}>{children}</button>
 );
+ButtonWrapper.propTypes = {
+  className: PropTypes.string,
+  children: PropTypes.node,
+};
 const InputWrapper = ({ className, type, onChange, value }) => (
   <input className={className} type={type} onChange={onChange} value={value} />
 );
+InputWrapper.propTypes = {
+  className: PropTypes.string,
+  type: PropTypes.string,
+  value: PropTypes.string,
+  onChange: PropTypes.func,
+};
 const LabelWrapper = ({ className, children }) => <label className={className}>{children}</label>;
+LabelWrapper.propTypes = {
+  className: PropTypes.string,
+  children: PropTypes.node,
+};
 
 export const LinkStyled = styled(LinkWrapper)`
   color: var(--primary-color);

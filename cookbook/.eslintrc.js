@@ -14,7 +14,8 @@ module.exports = {
 
     rules: {
         "import/prefer-default-export": "off",
-        "react/prop-types":"off",
+        "import/no-extraneous-dependencies": "off",
+        "react/prop-types":"warn",
         "react/button-has-type":"off",
         "jsx-a11y/label-has-associated-control":"off",
 

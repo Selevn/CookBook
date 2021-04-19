@@ -3,6 +3,23 @@ import '../../index.css';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import logo from '../common/images/FeedMe.jpg';
+
+const LogoImage = () => <img src={logo} alt="Logo" />;
+
+const LogoWrapper = styled.div`
+  align-self: ${(p) => (p.alignSelf ? p.alignSelf : 'start')};
+  justify-content: center;
+  width: 175px;
+  height: 37px;
+`;
+
+export const Logo = (p) => (
+  <LogoWrapper {...p}>
+    <LogoImage />
+  </LogoWrapper>
+);
+
 const LinkWrapper = ({ className, children }) => (
   <a className={className} href="*">
     {children}
@@ -85,4 +102,20 @@ export const Container = styled.div`
   ${(p) => (p.padding ? `padding: ${p.padding}` : '')};
   ${(p) => (p.justifyContent ? `justify-content: ${p.justifyContent}` : '')};
   ${(p) => (p.minHeight ? `min-height: ${p.minHeight}` : '')};
+  ${(p) => (p.height ? `height: ${p.height}` : '')};
+  ${(p) => (p.color ? `background: ${p.color}` : '')};
+`;
+
+export const TestContainer = styled.div`
+  display: flex;
+  flex-direction: ${(p) => (p.vertical ? 'column' : 'row')};
+  ${(p) => (p.flex ? `flex: ${p.flex}` : '')};
+  ${(p) => (p.margin ? `margin: ${p.margin}` : '')};
+  ${(p) => (p.padding ? `padding: ${p.padding}` : '')};
+  ${(p) => (p.justifyContent ? `justify-content: ${p.justifyContent}` : '')};
+  ${(p) => (p.minHeight ? `min-height: ${p.minHeight}` : '')};
+  ${(p) => (p.height ? `height: ${p.height}` : '')};
+  ${(p) => (p.color ? `background: ${p.color}` : '')};
+  width: 100%;
+  height: 100%;
 `;

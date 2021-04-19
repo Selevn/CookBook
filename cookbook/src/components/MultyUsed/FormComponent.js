@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormDiv } from '../Login/style/LoginComponentStyle';
-import { Logo } from './FormComponentStyle';
+import { Logo } from '../common/StylesComponent';
 import {
   ButtonStyled,
   Container,

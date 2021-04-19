@@ -10,6 +10,7 @@ module.exports = {
         'jsx-a11y',
         'react',
         'prettier',
+        "only-warn"
     ],
 
     rules: {
@@ -54,6 +55,6 @@ module.exports = {
             }
         }], will be useful in future*/
 
-        'prettier/prettier': ['error'],
+        'prettier/prettier': ['off'],
     },
 };

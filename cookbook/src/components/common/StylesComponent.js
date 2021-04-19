@@ -3,7 +3,7 @@ import '../../index.css';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import logo from '../common/images/FeedMe.jpg';
+import logo from './images/FeedMe.jpg';
 
 const LogoImage = () => <img src={logo} alt="Logo" />;
 
@@ -14,8 +14,8 @@ const LogoWrapper = styled.div`
   height: 37px;
 `;
 
-export const Logo = (p) => (
-  <LogoWrapper {...p}>
+export const Logo = () => (
+  <LogoWrapper alignSelf="center">
     <LogoImage />
   </LogoWrapper>
 );
@@ -101,9 +101,9 @@ export const Container = styled.div`
   ${(p) => (p.margin ? `margin: ${p.margin}` : '')};
   ${(p) => (p.padding ? `padding: ${p.padding}` : '')};
   ${(p) => (p.justifyContent ? `justify-content: ${p.justifyContent}` : '')};
+  ${(p) => (p.alignItems ? `align-items: ${p.alignItems}` : '')};
   ${(p) => (p.minHeight ? `min-height: ${p.minHeight}` : '')};
   ${(p) => (p.height ? `height: ${p.height}` : '')};
-  ${(p) => (p.color ? `background: ${p.color}` : '')};
 `;
 
 export const TestContainer = styled.div`

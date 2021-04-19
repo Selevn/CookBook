@@ -18,7 +18,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "prettier": "prettier --write src/**/*.js",
+    "beauty": "prettier --write src/**/*.js",
     "lint": "eslint src/",
     "lint:write": "eslint src/ --fix"
   },

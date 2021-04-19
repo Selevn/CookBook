@@ -1,1 +1,1 @@
-export {default as Register} from './RegisterComponent.js'
+export { default as Register } from './RegisterComponent';

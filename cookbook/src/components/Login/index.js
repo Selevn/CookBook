@@ -1,1 +1,1 @@
-export {default as Login} from './LoginComponent.js'
+export { default as Login } from './LoginComponent';

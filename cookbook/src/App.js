@@ -6,9 +6,10 @@ import { Register } from './components/Register';
 function App() {
   return (
     <>
-            <GlobalStyle />
-                                <Login />
-      <Register /></>
+      <GlobalStyle />
+      <Login />
+      <Register />
+    </>
   );
 }
 

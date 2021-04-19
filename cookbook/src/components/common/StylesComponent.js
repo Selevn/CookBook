@@ -16,29 +16,26 @@ const InputWrapper = ({ className, type, onChange, value }) => (
 const LabelWrapper = ({ className, children }) => <label className={className}>{children}</label>;
 
 export const LinkStyled = styled(LinkWrapper)`
-  color: #f7b602;
-  font-family: Nunito, sans-serif;
+  color: var(--primary-color);
+  font-family: var(--nunito-font);
   font-weight: bold;
   text-decoration: none;
 `;
 
 export const LabelStyled = styled(LabelWrapper)`
-  font-family: Nunito, sans-serif;
-  font-style: normal;
-  font-weight: 600;
   font-size: 16px;
   line-height: 22px;
-  color: #7b7b80;
+  color: var(--styled-gray);
 `;
 
 export const ButtonStyled = styled(ButtonWrapper)`
   width: 100%;
   height: 48px;
 
-  background: #f7b602;
+  background: var(--primary-color);
   border-radius: 8px;
 
-  font-family: Nunito, sans-serif;
+  font-family: var(--nunito-font);
   font-style: normal;
   font-weight: 600;
   font-size: 18px;
@@ -49,11 +46,11 @@ export const ButtonStyled = styled(ButtonWrapper)`
 
   border: none;
 
-  color: #000000;
+  color: var(--pure-black);
 `;
 
 export const InputStyled = styled(InputWrapper)`
-  border: 1px solid #7b7b80;
+  border: 1px solid var(--styled-gray);
   box-sizing: border-box;
   border-radius: 8px;
   font-size: 30px;

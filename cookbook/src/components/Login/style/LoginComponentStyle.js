@@ -10,7 +10,7 @@ export const MainDiv = styled(Container)`
   min-height: 100vh;
   justify-content: space-around;
   grid-template-columns: 40% 60%;
-  background: #eeeaeb;
+  background: var(--login-background);
 `;
 
 export const FormDiv = styled(Container)`
@@ -18,7 +18,7 @@ export const FormDiv = styled(Container)`
   margin: auto;
   height: 503px;
   max-width: 400px;
-  background: #ffffff;
+  background: var(--pure-white);
   border-radius: 16px;
   @media (max-width: 425px) {
     padding: 10px;

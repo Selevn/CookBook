@@ -1,8 +1,14 @@
 import React from 'react';
-import { ButtonStyled, Container, ImageStyled, ParagraphStyled } from '../common/StylesComponent';
+import {
+  ButtonStyled,
+  Container,
+  H1Styled,
+  ImageStyled,
+  ParagraphStyled,
+} from '../common/StylesComponent';
 
 import FoodImg from '../common/images/mainFood.jpg';
-import { WelcomeDiv, WelcomeFoodDiv } from './style/MainPageComponentStyle';
+import { PopularBooksContainer, WelcomeDiv, WelcomeFoodDiv } from './style/MainPageComponentStyle';
 
 export const MainComponent = () => {
   return (
@@ -24,6 +30,9 @@ export const MainComponent = () => {
           <ImageStyled src={FoodImg} alt="Food image" />
         </WelcomeFoodDiv>
       </Container>
+      <PopularBooksContainer>
+        <H1Styled>Most Popular Cookbooks</H1Styled>
+      </PopularBooksContainer>
     </>
   );
 };

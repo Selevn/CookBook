@@ -2,9 +2,16 @@ import styled from 'styled-components';
 import { FaBars } from 'react-icons/all';
 import { Container, InputStyled, LinkStyled, Logo } from '../../common/StylesComponent';
 
-export const NavbarLogo = Logo;
+export const NavbarLogo = styled(Logo)`
+  @media (max-width: 1024px) {
+    margin-bottom: 15px;
+  }
+`;
 
 export const NavbarStyle = styled(Container)`
+  width: 100%;
+  max-width: 1400px;
+
   min-height: 65px;
   position: sticky;
 
@@ -59,4 +66,13 @@ export const Menu = styled(FaBars)`
     align-self: flex-end;
     margin: auto 0;
   }
+`;
+
+export const NavbarMain = styled(Container)`
+  position: fixed;
+  width: 100%;
+  background-color: white;
+  padding: 0;
+  display: flex;
+  justify-content: center;
 `;

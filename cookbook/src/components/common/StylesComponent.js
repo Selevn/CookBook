@@ -109,6 +109,7 @@ export const Container = styled.div`
   ${(p) => (p.minHeight ? `min-height: ${p.minHeight}` : '')};
   ${(p) => (p.height ? `height: ${p.height}` : '')};
   ${(p) => (p.color ? `background: ${p.color}` : '')};
+  ${(p) => (p.width ? `width: ${p.width}` : '')};
 `;
 
 export const TestContainer = styled.div`
@@ -136,6 +137,13 @@ Image.propTypes = {
 export const ImageStyled = styled(Image)``;
 
 export const ParagraphStyled = styled.p`
+  ${(p) => (p.color ? `color:${p.color};` : '')}
+  ${(p) => (p.size ? `font-size:${p.size};` : '')}
+  ${(p) => (p.transform ? `text-transform:${p.transform};` : '')}
+`;
+
+export const H1Styled = styled.h1`
+  font-weight: bold;
   ${(p) => (p.color ? `color:${p.color};` : '')}
   ${(p) => (p.size ? `font-size:${p.size};` : '')}
   ${(p) => (p.transform ? `text-transform:${p.transform};` : '')}

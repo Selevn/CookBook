@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ButtonStyled, Container, ParagraphStyled } from '../../common/StylesComponent';
+import { ButtonStyled, Container, H1Styled, ParagraphStyled } from '../../common/StylesComponent';
 
 export const WelcomeDiv = styled(Container)`
   flex-direction: column;
@@ -35,5 +35,19 @@ export const WelcomeFoodDiv = styled(Container)`
 
   @media (max-width: 1023px) {
     display: none;
+  }
+`;
+
+export const PopularBooksContainer = styled(Container)`
+  height: 530px;
+  padding-top: 90px;
+  justify-content: center;
+  align-items: center;
+  justify-self: center;
+
+  margin: auto;
+
+  ${H1Styled} {
+    font-size: 36px;
   }
 `;

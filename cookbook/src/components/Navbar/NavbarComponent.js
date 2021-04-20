@@ -5,8 +5,7 @@ import { Container } from '../common/StylesComponent';
 
 const NavbarComponent = () => (
   <NavbarStyle minHeight="65px">
-    <Container flex={1} />
-        <NavbarLogo alignSelf={"center"}/>
+    <NavbarLogo alignSelf="center" />
     <Container flex={4}>
       <Container padding="15px" justifyContent="flex-end" alignItems="center" flex={1}>
         <NavbarLink>Cookbooks</NavbarLink>

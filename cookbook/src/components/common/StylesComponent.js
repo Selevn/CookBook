@@ -5,15 +5,6 @@ import React from 'react';
 
 import logo from './images/FeedMe.jpg';
 
-
-export const ImageContainer = (p)=>{
-  return (
-      <Container {...p.container}>
-        <ImageStyled src={p.image.src} alt={p.image.alt}/>
-      </Container>
-  )
-}
-
 const LogoImage = () => <img src={logo} alt="Logo" />;
 
 const LogoWrapper = styled.div`
@@ -23,14 +14,17 @@ const LogoWrapper = styled.div`
   height: 37px;
 `;
 
-export const Logo = (props) => (
-      <LogoWrapper alignSelf={props.alignSelf}>
-        <LogoImage />
-      </LogoWrapper>
+export const Logo = ({ alignSelf }) => (
+  <LogoWrapper alignSelf={alignSelf}>
+    <LogoImage />
+  </LogoWrapper>
 );
+Logo.propTypes = {
+  alignSelf: PropTypes.bool,
+};
 
 const LinkWrapper = ({ className, children }) => (
-  <a className={className} href="#">
+  <a className={className} href="#/">
     {children}
   </a>
 );
@@ -130,19 +124,18 @@ export const TestContainer = styled.div`
   height: 100%;
 `;
 
-export const Image = (p)=>{
-  return(
-      <img src = {p.src} alt={p.alt}/>
-  )
-}
+export const Image = ({ src, alt }) => {
+  return <img src={src} alt={alt} />;
+};
+Image.propTypes = {
+  src: PropTypes.string,
+  alt: PropTypes.string,
+};
 
-
-export const ImageStyled = styled(Image)`
-  
-`
+export const ImageStyled = styled(Image)``;
 
 export const ParagraphStyled = styled.p`
-  ${(p=>p.color?`color:${p.color};`:'')}
-  ${(p=>p.size?`font-size:${p.size};`:'')}
-  ${(p=>p.transform?`text-transform:${p.transform};`:'')}
-`
+  ${(p) => (p.color ? `color:${p.color};` : '')}
+  ${(p) => (p.size ? `font-size:${p.size};` : '')}
+  ${(p) => (p.transform ? `text-transform:${p.transform};` : '')}
+`;

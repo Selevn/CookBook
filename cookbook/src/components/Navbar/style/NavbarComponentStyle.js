@@ -1,11 +1,18 @@
 import styled from 'styled-components';
 import { Container, InputStyled, LinkStyled, Logo } from '../../common/StylesComponent';
 
+export const NavbarLogo = styled(Logo)`
+  align-self: center;
+  justify-content: center;
+`;
+
 export const NavbarStyle = styled(Container)`
   position: sticky;
-  
+
   flex-wrap: wrap;
-  min-width: 425px;
+
+  padding: 10px 10px 10px 100px;
+
   @media (max-width: 1024px) {
     flex-direction: column;
     padding: 10px;
@@ -13,12 +20,13 @@ export const NavbarStyle = styled(Container)`
   @media (min-width: 1024px) {
     flex-direction: row;
   }
+
   background: var(--pure-white);
 `;
 export const SearchStyled = styled(InputStyled)`
   height: 35px;
-  width: 381px;
-
+  max-width: 481px;
+  min-width: 284px;
   background: var(--search-gray);
   border-radius: 37px;
   border: none;
@@ -30,9 +38,4 @@ export const SearchStyled = styled(InputStyled)`
 
 export const NavbarLink = styled(LinkStyled)`
   color: var(--light-black);
-`;
-
-export const NavbarLogo = styled(Logo)`
-  align-self: center;
-  justify-content: center;
 `;

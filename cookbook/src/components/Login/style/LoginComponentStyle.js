@@ -1,47 +1,44 @@
 import styled from 'styled-components';
-import vegetable from './images/juice.jpg';
-import Logo from './images/FeedMe.jpg';
+import React from 'react';
+import logo from '../../common/images/FeedMe.jpg';
+import { Container } from '../../common/StylesComponent';
 
+import vegetables from '../../common/images/LoginBack.jpg';
 
-export const MainDiv = styled.div`
-  position: relative;
-  display: grid;
+export const MainDiv = styled(Container)`
   height: 100%;
   min-height: 100vh;
+  justify-content: space-around;
   grid-template-columns: 40% 60%;
-  background: #EEEAEB;  
+  background: var(--login-background);
 `;
 
-export const FormDiv = styled.div`
-  grid-row: 0;
-  grid-column: 1;
-  display: grid;
+export const FormDiv = styled(Container)`
+  width: ${(p) => (p.width ? p.width : '100%')};
   margin: auto;
-  
-  padding: 75px;
-  
-  width: 405px;
   height: 503px;
-  
-  background: #FFFFFF;
+  max-width: 400px;
+  background: var(--pure-white);
   border-radius: 16px;
-  
+  @media (max-width: 425px) {
+    padding: 10px;
+  }
+  @media (min-width: 425px) {
+    padding: 75px;
+  }
 `;
 
-export const ImageVegetables = styled.div`
-  grid-row: 0;
-  grid-column: 2;
-  
-  width: 768px;
-  height: 902px;
-  margin: auto;
-  background: url(${vegetable});
+export const ImageVegetable = () => <img src={vegetables} alt="as" />;
+
+export const ImageVegetablesContainer = styled(Container)`
+  @media (max-width: 1300px) {
+    display: none;
+  }
 `;
 
 export const ImageLogo = styled.div`
   grid-column: 0;
   width: 180px;
   height: 68px;
-  background: url(${Logo}) no-repeat;
+  background: url(${logo}) no-repeat;
 `;
-

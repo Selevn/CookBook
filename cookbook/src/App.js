@@ -1,10 +1,18 @@
-import {LoginComponent} from "./components/Login/LoginComponent";
+import React from 'react';
+import { GlobalStyle } from './globalStyles';
+
+import { Login } from './components/Login';
+import { Register } from './components/Register';
+import { Navbar } from './components/Navbar';
 
 function App() {
   return (
-      <>
-          <LoginComponent/>
-      </>
+    <>
+      <Login />
+      <Register />
+      <GlobalStyle />
+      <Navbar />
+    </>
   );
 }
 

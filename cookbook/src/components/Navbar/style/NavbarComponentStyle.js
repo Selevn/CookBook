@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import { Container, InputStyled, LinkStyled, Logo } from '../../common/StylesComponent';
 
 export const NavbarStyle = styled(Container)`
+  position: sticky;
+  
   flex-wrap: wrap;
   min-width: 425px;
   @media (max-width: 1024px) {

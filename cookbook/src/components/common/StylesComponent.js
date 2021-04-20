@@ -5,6 +5,15 @@ import React from 'react';
 
 import logo from './images/FeedMe.jpg';
 
+
+export const ImageContainer = (p)=>{
+  return (
+      <Container {...p.container}>
+        <ImageStyled src={p.image.src} alt={p.image.alt}/>
+      </Container>
+  )
+}
+
 const LogoImage = () => <img src={logo} alt="Logo" />;
 
 const LogoWrapper = styled.div`
@@ -14,14 +23,14 @@ const LogoWrapper = styled.div`
   height: 37px;
 `;
 
-export const Logo = () => (
-  <LogoWrapper alignSelf="center">
-    <LogoImage />
-  </LogoWrapper>
+export const Logo = (props) => (
+      <LogoWrapper alignSelf={props.alignSelf}>
+        <LogoImage />
+      </LogoWrapper>
 );
 
 const LinkWrapper = ({ className, children }) => (
-  <a className={className} href="*">
+  <a className={className} href="#">
     {children}
   </a>
 );
@@ -104,6 +113,7 @@ export const Container = styled.div`
   ${(p) => (p.alignItems ? `align-items: ${p.alignItems}` : '')};
   ${(p) => (p.minHeight ? `min-height: ${p.minHeight}` : '')};
   ${(p) => (p.height ? `height: ${p.height}` : '')};
+  ${(p) => (p.color ? `background: ${p.color}` : '')};
 `;
 
 export const TestContainer = styled.div`
@@ -119,3 +129,20 @@ export const TestContainer = styled.div`
   width: 100%;
   height: 100%;
 `;
+
+export const Image = (p)=>{
+  return(
+      <img src = {p.src} alt={p.alt}/>
+  )
+}
+
+
+export const ImageStyled = styled(Image)`
+  
+`
+
+export const ParagraphStyled = styled.p`
+  ${(p=>p.color?`color:${p.color};`:'')}
+  ${(p=>p.size?`font-size:${p.size};`:'')}
+  ${(p=>p.transform?`text-transform:${p.transform};`:'')}
+`

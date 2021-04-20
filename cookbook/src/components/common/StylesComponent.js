@@ -14,13 +14,14 @@ const LogoWrapper = styled.div`
   height: 37px;
 `;
 
-export const Logo = ({ alignSelf }) => (
-  <LogoWrapper alignSelf={alignSelf}>
+export const Logo = ({ alignSelf, className }) => (
+  <LogoWrapper className={className} alignSelf={alignSelf}>
     <LogoImage />
   </LogoWrapper>
 );
 Logo.propTypes = {
   alignSelf: PropTypes.bool,
+  className: PropTypes.string,
 };
 
 const LinkWrapper = ({ className, children }) => (

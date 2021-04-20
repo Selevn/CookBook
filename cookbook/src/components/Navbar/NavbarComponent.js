@@ -1,32 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { NavbarLink, NavbarLogo, NavbarStyle, SearchStyled } from './style/NavbarComponentStyle';
+import {
+  Menu,
+  NavbarLink,
+  NavbarLogo,
+  NavbarStyle,
+  SearchStyled,
+} from './style/NavbarComponentStyle';
 import { Container } from '../common/StylesComponent';
 
-const NavbarComponent = () => (
-  <NavbarStyle minHeight="65px">
-    <NavbarLogo alignSelf="center" />
-    <Container flex={4}>
-      <Container padding="15px" justifyContent="flex-end" alignItems="center" flex={1}>
-        <NavbarLink>Cookbooks</NavbarLink>
+const NavbarComponent = () => {
+  const [menuOpen, setMenuOpen] = useState(true);
+  const menuClick = () => setMenuOpen((s) => !s);
+
+  return (
+    <NavbarStyle hide={menuOpen}>
+      <Menu onClick={menuClick} />
+      <NavbarLogo alignSelf="center" className="mustBeHidden" />
+      <Container flex={4} className="mustBeHidden">
+        <Container padding="15px" justifyContent="flex-end" alignItems="center" flex={1}>
+          <NavbarLink>Cookbooks</NavbarLink>
+        </Container>
+        <Container padding="15px" justifyContent="flex-start" alignItems="center" flex={1}>
+          <NavbarLink>Recepies</NavbarLink>
+        </Container>
       </Container>
-      <Container padding="15px" justifyContent="flex-start" alignItems="center" flex={1}>
-        <NavbarLink>Recepies</NavbarLink>
+      <Container flex={5} justifyContent="center" alignItems="center" className="mustBeHidden">
+        <SearchStyled />
       </Container>
-    </Container>
-    <Container flex={5} justifyContent="center" alignItems="center">
-      <SearchStyled />
-    </Container>
-    <Container flex={4}>
-      <Container padding="15px" justifyContent="flex-end" alignItems="center" flex={1}>
-        <NavbarLink>Sign Up</NavbarLink>
+      <Container flex={4} className="mustBeHidden">
+        <Container padding="15px" justifyContent="flex-end" alignItems="center" flex={1}>
+          <NavbarLink>Sign Up</NavbarLink>
+        </Container>
+        <Container padding="15px" justifyContent="flex-start" alignItems="center" flex={1}>
+          <NavbarLink>Sign In</NavbarLink>
+        </Container>
       </Container>
-      <Container padding="15px" justifyContent="flex-start" alignItems="center" flex={1}>
-        <NavbarLink>Sign In</NavbarLink>
-      </Container>
-    </Container>
-  </NavbarStyle>
-);
+    </NavbarStyle>
+  );
+};
 
 NavbarComponent.propTypes = {
   register: PropTypes.bool,

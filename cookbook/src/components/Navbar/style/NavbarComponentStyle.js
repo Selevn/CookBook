@@ -17,7 +17,7 @@ export const NavbarStyle = styled(Container)`
 
   flex-wrap: wrap;
 
-  padding: 10px 10px 10px 100px;
+  padding: 10px 10px 10px 10px;
 
   @media (max-width: 1024px) {
     flex-direction: column;

@@ -39,15 +39,27 @@ export const WelcomeFoodDiv = styled(Container)`
 `;
 
 export const PopularBooksContainer = styled(Container)`
-  height: 530px;
+  min-height: 530px;
   padding-top: 90px;
-  justify-content: center;
-  align-items: center;
-  justify-self: center;
-
+  max-width: 1400px;
   margin: auto;
+
+  justify-content: center;
 
   ${H1Styled} {
     font-size: 36px;
+    margin: 0 auto 42px auto;
+    text-align: center;
+  }
+`;
+
+export const CookBooksList = styled(Container)`
+  flex-wrap: wrap;
+  gap: 30px;
+  padding: 0 10px;
+  /*justify-content: center;*/
+  justify-content: space-between;
+  @media (max-width: 1023px) {
+    justify-content: center;
   }
 `;

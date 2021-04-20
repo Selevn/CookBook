@@ -8,11 +8,18 @@ import {
 } from '../common/StylesComponent';
 
 import FoodImg from '../common/images/mainFood.jpg';
-import { PopularBooksContainer, WelcomeDiv, WelcomeFoodDiv } from './style/MainPageComponentStyle';
+import {
+  CookBooksList,
+  PopularBooksContainer,
+  WelcomeDiv,
+  WelcomeFoodDiv,
+} from './style/MainPageComponentStyle';
+import CookCardComponent from '../MultyUsed/CookCard/CookCardComponent';
 
 export const MainComponent = () => {
   return (
     <>
+      <Container height="65px" />
       <Container height="680px">
         <Container
           height="100%"
@@ -30,8 +37,14 @@ export const MainComponent = () => {
           <ImageStyled src={FoodImg} alt="Food image" />
         </WelcomeFoodDiv>
       </Container>
-      <PopularBooksContainer>
+      <PopularBooksContainer vertical>
         <H1Styled>Most Popular Cookbooks</H1Styled>
+        <CookBooksList>
+          <CookCardComponent isLiked />
+          <CookCardComponent />
+          <CookCardComponent isCommented />
+          <CookCardComponent />
+        </CookBooksList>
       </PopularBooksContainer>
     </>
   );

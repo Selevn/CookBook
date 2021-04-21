@@ -8,7 +8,7 @@ export const GlobalStyle = createGlobalStyle`
   }
   body {
     min-height: 100vh;
-    background: var(--login-background);
+    background: var(--main-background);
   }
   #root {
     min-height: 100vh;

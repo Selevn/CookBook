@@ -19,8 +19,7 @@ import { MenuCard, CookCard } from '../MultyUsed/CookCard';
 export const MainComponent = () => {
   return (
     <>
-      <Container height="65px" />
-      <Container height="680px" padding="0 0 90px 0">
+      <Container minHeight="680px" containerHeight="680px" maxHeight="780px">
         <Container
           padding="0 0 0 20px"
           height="100%"
@@ -51,9 +50,9 @@ export const MainComponent = () => {
         <H1Styled>Picked By Us</H1Styled>
         <CookBooksList puzzle>
           <MenuCard type="large" />
-          <Container vertical>
+          <Container vertical className="centier">
             <MenuCard type="long" />
-            <Container>
+            <Container className="centier">
               <MenuCard type="small" />
               <MenuCard type="small" />
             </Container>
@@ -64,10 +63,9 @@ export const MainComponent = () => {
         <PopularBooksContainer vertical>
           <H1Styled>Trending Reciepts</H1Styled>
           <CookBooksList>
-            <CookCard />
-            <CookCard isLiked />
-            <CookCard isCommented />
-            <CookCard />
+            <CookCard type="bigImage" />
+            <CookCard type="bigImage" isLiked />
+            <CookCard type="bigImage" isCommented />
           </CookBooksList>
         </PopularBooksContainer>
       </Container>

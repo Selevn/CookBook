@@ -2,13 +2,15 @@ import styled, { css } from 'styled-components';
 import { Container, ParagraphStyled } from '../../../common/StylesComponent';
 
 export const CookCardContainer = styled(Container)`
-  max-width: 255px;
-  max-height: 360px;
+  ${(p) => {
+    return css`
+      width: ${p.width};
+      height: ${p.height};
+    `;
+  }}
   border-radius: 10px;
-
-  padding: 20px;
+  padding: var(--padding-card);
   gap: 5px;
-
   box-shadow: 4px 4px 8px 0 var(--search-gray);
   background-color: var(--pure-white);
 `;
@@ -17,26 +19,32 @@ export const Name = styled(ParagraphStyled)`
 `;
 export const Author = styled(ParagraphStyled)`
   gap: 0;
-  font-size: 17px;
+  font-size: 15px;
   color: var(--light-black);
 `;
 
 export const MinimizedCard = styled(Container)`
-  height: ${(p) => p.height || '255px'};
-  width: ${(p) => p.width || '255px'};
   background: url(${(p) => p.image}) no-repeat center;
   background-size: cover;
 
-  ${(p) =>
-    p.type === 'large'
-      ? css`
+  ${(p) => (p.type === 'large'
+    ? css`
           border-radius: 25px;
         `
-      : css`
+    : css`
           border-radius: 15px;
-        `}
+        `)}
 
   position: relative;
+
+  @media (min-width: 475px) {
+    height: ${(p) => p.containerHeight || '255px'};
+    width: ${(p) => p.containerWidth || '255px'};
+  }
+  @media (max-width: 475px) {
+    height: 255px;
+    width: 255px;
+  }
 `;
 export const MinimizedCardText = styled(Container)`
   background: var(--pure-white);
@@ -47,4 +55,8 @@ export const MinimizedCardText = styled(Container)`
   position: absolute;
   bottom: 25px;
   left: 25px;
+`;
+
+export const CookCardImage = styled.img`
+  margin: auto;
 `;

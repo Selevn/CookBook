@@ -4,11 +4,12 @@ import CoolBook from '../../common/images/cookbook1.jpg';
 import {
   Author,
   CookCardContainer,
+  CookCardImage,
   MinimizedCard,
   MinimizedCardText,
   Name,
 } from './style/CookCardComponentStyle';
-import { Container, Image } from '../../common/StylesComponent';
+import { Container } from '../../common/StylesComponent';
 import { Views } from '../Views';
 import { Commented } from '../Commented';
 import { Liked } from '../Liked';
@@ -21,19 +22,63 @@ export const CookCardComponent = ({
   isCommented,
   author,
   name,
+  type,
 }) => {
+  let width;
+  let height;
+  let imgHeight;
+  let imgWidth;
+  let showFooter = true;
+  switch (type) {
+    case 'small': {
+      width = '225px-(var(--padding-card)*2)';
+      height = '360px-(var(--padding-card)*2)';
+      imgHeight = '215px';
+      imgWidth = '215px';
+      break;
+    }
+    case 'normal': {
+      width = '310px';
+      height = '395px';
+      break;
+    }
+    case 'bigImage': {
+      width = 'calc(340px-(var(--padding-card)*2))';
+      height = 'calc(361px-(var(--padding-card)*2))';
+      imgHeight = '236px';
+      imgWidth = '310px';
+      showFooter = false;
+      break;
+    }
+    case 'long': {
+      width = '215px';
+      height = '215px';
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+
   return (
-    <CookCardContainer vertical>
+    <CookCardContainer vertical width={width} height={height}>
       <Views count={views} />
-      <Image src={CoolBook} width="215" height="215" alt="CookBook front image" />
+      <CookCardImage
+        src={CoolBook}
+        width={imgWidth}
+        height={imgHeight}
+        alt="CookBook front image"
+      />
       <Container vertical>
         <Name>{name}</Name>
         <Author>{author}</Author>
       </Container>
-      <Container margin="8px 0 0 0" justifyContent="space-between">
-        <Liked count={likes} liked={isLiked} />
-        <Commented count={comments} commented={isCommented} />
-      </Container>
+      {showFooter && (
+        <Container margin="8px 0 0 0" justifyContent="space-between">
+          <Liked count={likes} liked={isLiked} />
+          <Commented count={comments} commented={isCommented} />
+        </Container>
+      )}
     </CookCardContainer>
   );
 };
@@ -46,6 +91,7 @@ CookCardComponent.propTypes = {
   isCommented: PropTypes.bool,
   author: PropTypes.string,
   name: PropTypes.string,
+  type: PropTypes.string,
 };
 CookCardComponent.defaultProps = {
   views: 999,
@@ -55,6 +101,7 @@ CookCardComponent.defaultProps = {
   isCommented: false,
   author: 'John Doe',
   name: 'Fresh meat',
+  type: 'small',
 };
 
 export const CookCardMenuComponent = ({ name, type }) => {
@@ -83,7 +130,7 @@ export const CookCardMenuComponent = ({ name, type }) => {
     }
   }
   return (
-    <MinimizedCard image={CoolBook} height={height} width={width} type={type}>
+    <MinimizedCard image={CoolBook} containerHeight={height} containerWidth={width} type={type}>
       <MinimizedCardText type={type}>{name}</MinimizedCardText>
     </MinimizedCard>
   );

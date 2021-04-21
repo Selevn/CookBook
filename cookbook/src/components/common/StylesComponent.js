@@ -101,13 +101,17 @@ export const InputStyled = styled(InputWrapper)`
 export const Container = styled.div`
   display: flex;
   flex-direction: ${(p) => (p.vertical ? 'column' : 'row')};
+  ${(p) => (p.wrap ? 'flex-wrap: wrap' : '')};
   ${(p) => (p.flex ? `flex: ${p.flex}` : '')};
   ${(p) => (p.margin ? `margin: ${p.margin}` : '')};
   ${(p) => (p.padding ? `padding: ${p.padding}` : '')};
   ${(p) => (p.justifyContent ? `justify-content: ${p.justifyContent}` : '')};
   ${(p) => (p.alignItems ? `align-items: ${p.alignItems}` : '')};
   ${(p) => (p.minHeight ? `min-height: ${p.minHeight}` : '')};
+  ${(p) => (p.maxHeight ? `max-height: ${p.maxHeight}` : '')};
   ${(p) => (p.height ? `height: ${p.height}` : '')};
+  ${(p) => (p.containerHeight ? `height: ${p.containerHeight}` : '')};
+  ${(p) => (p.containerWidth ? `width: ${p.containerWidth}` : '')};
   ${(p) => (p.color ? `background: ${p.color}` : '')};
   ${(p) => (p.width ? `width: ${p.width}` : '')};
 `;

@@ -42,6 +42,7 @@ export const WelcomeFoodDiv = styled(Container)`
 export const PopularBooksContainer = styled(Container)`
   min-height: 530px;
   padding-bottom: 90px;
+  padding-top: 45px;
   max-width: 1400px;
   margin: auto;
 
@@ -62,10 +63,12 @@ export const CookBooksList = styled(Container)`
   @media (max-width: 1023px) {
     justify-content: center;
   }
-
-  ${(p) =>
-    p.puzzle
-      ? css`
+  .centier {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  ${(p) => (p.puzzle
+    ? css`
           justify-content: center;
 
           ${Container} {
@@ -73,5 +76,5 @@ export const CookBooksList = styled(Container)`
             justify-content: space-between;
           }
         `
-      : css``}
+    : css``)}
 `;

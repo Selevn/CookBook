@@ -9,9 +9,6 @@ function App() {
       <GlobalStyle />
       <Navbar />
       <MainComponent />
-
-      {/* <Login/>
-      <Register/> */}
     </>
   );
 }

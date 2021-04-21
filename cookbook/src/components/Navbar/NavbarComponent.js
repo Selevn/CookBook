@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import {
   Menu,
   NavbarLink,
@@ -44,18 +43,6 @@ const NavbarComponent = () => {
       <Container height="65px" />
     </>
   );
-};
-
-NavbarComponent.propTypes = {
-  register: PropTypes.bool,
-
-  email: PropTypes.string,
-  password: PropTypes.string,
-  passwordRepeat: PropTypes.string,
-
-  setEmail: PropTypes.func,
-  setPassword: PropTypes.func,
-  setPasswordRepeat: PropTypes.func,
 };
 
 export default NavbarComponent;

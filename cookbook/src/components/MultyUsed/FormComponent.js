@@ -20,7 +20,7 @@ const FormComponent = ({
   setPasswordRepeat,
 }) => (
   <FormDiv vertical>
-    <Logo flex="10" />
+    <Logo logoHeight="50px" />
     <Container vertical>
       <br />
       <h1>{register ? 'Join our community' : 'Welcome back'}</h1>

@@ -15,6 +15,7 @@ import {
   WelcomeFoodDiv,
 } from './style/MainPageComponentStyle';
 import { MenuCard, CookCard } from '../MultyUsed/CookCard';
+import { Footer } from '../Footer';
 
 export const MainComponent = () => {
   return (
@@ -69,6 +70,7 @@ export const MainComponent = () => {
           </CookBooksList>
         </PopularBooksContainer>
       </Container>
+      <Footer />
     </>
   );
 };

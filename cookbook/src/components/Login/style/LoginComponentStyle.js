@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import React from 'react';
-import logo from '../../common/images/FeedMe.jpg';
 import { Container } from '../../common/StylesComponent';
 
 import vegetables from '../../common/images/LoginBack.jpg';
@@ -35,11 +34,4 @@ export const ImageVegetablesContainer = styled(Container)`
   @media (max-width: 1024px) {
     display: none;
   }
-`;
-
-export const ImageLogo = styled.div`
-  grid-column: 0;
-  width: 180px;
-  height: 68px;
-  background: url(${logo}) no-repeat;
 `;

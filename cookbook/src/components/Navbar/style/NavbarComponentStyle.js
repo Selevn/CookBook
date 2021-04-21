@@ -66,6 +66,9 @@ export const Menu = styled(FaBars)`
     align-self: flex-end;
     margin: auto 0;
   }
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export const NavbarMain = styled(Container)`
@@ -75,4 +78,6 @@ export const NavbarMain = styled(Container)`
   padding: 0;
   display: flex;
   justify-content: center;
+
+  z-index: 999;
 `;

@@ -126,12 +126,14 @@ export const TestContainer = styled.div`
   height: 100%;
 `;
 
-export const Image = ({ src, alt }) => {
-  return <img src={src} alt={alt} />;
+export const Image = ({ src, alt, width, height }) => {
+  return <img src={src} alt={alt} width={width} height={height} />;
 };
 Image.propTypes = {
   src: PropTypes.string,
   alt: PropTypes.string,
+  width: PropTypes.string,
+  height: PropTypes.string,
 };
 
 export const ImageStyled = styled(Image)``;

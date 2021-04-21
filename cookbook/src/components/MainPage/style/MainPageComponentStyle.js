@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { ButtonStyled, Container, H1Styled, ParagraphStyled } from '../../common/StylesComponent';
 
 export const WelcomeDiv = styled(Container)`
@@ -13,6 +13,7 @@ export const WelcomeDiv = styled(Container)`
     width: 230px;
     height: 48px;
   }
+
   ${ParagraphStyled} {
     color: white;
     font-size: 74px;
@@ -40,7 +41,7 @@ export const WelcomeFoodDiv = styled(Container)`
 
 export const PopularBooksContainer = styled(Container)`
   min-height: 530px;
-  padding-top: 90px;
+  padding-bottom: 90px;
   max-width: 1400px;
   margin: auto;
 
@@ -57,9 +58,20 @@ export const CookBooksList = styled(Container)`
   flex-wrap: wrap;
   gap: 30px;
   padding: 0 10px;
-  /*justify-content: center;*/
   justify-content: space-between;
   @media (max-width: 1023px) {
     justify-content: center;
   }
+
+  ${(p) =>
+    p.puzzle
+      ? css`
+          justify-content: center;
+
+          ${Container} {
+            gap: 15px;
+            justify-content: space-between;
+          }
+        `
+      : css``}
 `;

@@ -1,1 +1,4 @@
-export { default as CookCard } from './CookCardComponent';
+export {
+  CookCardComponent as CookCard,
+  CookCardMenuComponent as MenuCard,
+} from './CookCardComponent';

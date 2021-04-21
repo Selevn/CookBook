@@ -1,13 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import CoolBook from '../../common/images/cookbook1.jpg';
-import { Author, CookCardContainer, Name } from './style/CookCardComponentStyle';
+import {
+  Author,
+  CookCardContainer,
+  MinimizedCard,
+  MinimizedCardText,
+  Name,
+} from './style/CookCardComponentStyle';
 import { Container, Image } from '../../common/StylesComponent';
 import { Views } from '../Views';
 import { Commented } from '../Commented';
 import { Liked } from '../Liked';
 
-const CookCardComponent = ({ views, likes, comments, isLiked, isCommented, author, name }) => {
+export const CookCardComponent = ({
+  views,
+  likes,
+  comments,
+  isLiked,
+  isCommented,
+  author,
+  name,
+}) => {
   return (
     <CookCardContainer vertical>
       <Views count={views} />
@@ -43,4 +57,43 @@ CookCardComponent.defaultProps = {
   name: 'Fresh meat',
 };
 
-export default CookCardComponent;
+export const CookCardMenuComponent = ({ name, type }) => {
+  let width;
+  let height;
+  switch (type) {
+    case 'large': {
+      width = '540px';
+      height = '540px';
+      break;
+    }
+    case 'long': {
+      width = '540px';
+      height = '255px';
+      break;
+    }
+    case 'small': {
+      width = '255px';
+      height = '255px';
+      break;
+    }
+    default: {
+      width = '255px';
+      height = '255px';
+      break;
+    }
+  }
+  return (
+    <MinimizedCard image={CoolBook} height={height} width={width} type={type}>
+      <MinimizedCardText type={type}>{name}</MinimizedCardText>
+    </MinimizedCard>
+  );
+};
+
+CookCardMenuComponent.propTypes = {
+  type: PropTypes.string,
+  name: PropTypes.string,
+};
+CookCardMenuComponent.defaultProps = {
+  type: 'large',
+  name: 'Lorem Ipsum',
+};

@@ -8,11 +8,16 @@ export const CookCardContainer = styled(Container)`
       height: ${p.height};
     `;
   }}
+
   border-radius: 10px;
   padding: var(--padding-card);
   gap: 5px;
   box-shadow: 4px 4px 8px 0 var(--search-gray);
   background-color: var(--pure-white);
+
+  @media (max-width: 540px) {
+    transform: scale(0.9);
+  }
 `;
 export const Name = styled(ParagraphStyled)`
   font-size: 24px;
@@ -27,13 +32,14 @@ export const MinimizedCard = styled(Container)`
   background: url(${(p) => p.image}) no-repeat center;
   background-size: cover;
 
-  ${(p) => (p.type === 'large'
-    ? css`
+  ${(p) =>
+    p.type === 'large'
+      ? css`
           border-radius: 25px;
         `
-    : css`
+      : css`
           border-radius: 15px;
-        `)}
+        `}
 
   position: relative;
 

@@ -20,7 +20,7 @@ export const WelcomeDiv = styled(Container)`
     text-transform: capitalize;
   }
 
-  @media (max-width: 425px) {
+  @media (max-width: 500px) {
     ${ParagraphStyled} {
       color: white;
       font-size: 50px;
@@ -53,6 +53,10 @@ export const PopularBooksContainer = styled(Container)`
     margin: 0 auto 42px auto;
     text-align: center;
   }
+
+  @media (max-width: 540px) {
+    width: 100%;
+  }
 `;
 
 export const CookBooksList = styled(Container)`
@@ -65,10 +69,14 @@ export const CookBooksList = styled(Container)`
   }
   .centier {
     flex-wrap: wrap;
-    justify-content: center;
+    align-items: center;
+    @media (max-width: 475px) {
+      justify-content: center !important;
+    }
   }
-  ${(p) => (p.puzzle
-    ? css`
+  ${(p) =>
+    p.puzzle
+      ? css`
           justify-content: center;
 
           ${Container} {
@@ -76,5 +84,5 @@ export const CookBooksList = styled(Container)`
             justify-content: space-between;
           }
         `
-    : css``)}
+      : css``}
 `;

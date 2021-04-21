@@ -63,7 +63,7 @@ export const CookBooksList = styled(Container)`
   flex-wrap: wrap;
   gap: 30px;
   padding: 0 10px;
-  justify-content: space-between;
+  justify-content: center;
   @media (max-width: 1023px) {
     justify-content: center;
   }

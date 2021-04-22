@@ -20,7 +20,7 @@ const Footer = () => {
             <LinkStyled>Cookbooks</LinkStyled>
             <LinkStyled>Recepies</LinkStyled>
             <LinkStyled>About Us</LinkStyled>
-            <LinkStyled>Cookbooks@gmail.com</LinkStyled>
+            <LinkStyled href="mailto:Cookbooks@gmail.com">Cookbooks@gmail.com</LinkStyled>
           </LinksContainer>
         </FooterStyle>
       </FooterContainer>

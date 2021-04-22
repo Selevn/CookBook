@@ -1,18 +1,14 @@
 import styled from 'styled-components';
-// import React from 'react';
 import { Container, InputStyled, TextInputStyled } from '../../common/StylesComponent';
 
-export const PictureContainer = styled(Container)``;
-export const DescriptionContainer = styled(Container)``;
-export const RecepiesContainer = styled(Container)``;
-export const CurrentRecipes = styled(Container)``;
 export const ControllButtons = styled(Container)`
   justify-content: flex-end;
   gap: 15px;
-  padding-top: 40px;
+  padding-top: 80px;
 
   @media (max-width: 768px) {
     justify-content: center;
+    padding-top: 40px;
   }
 `;
 

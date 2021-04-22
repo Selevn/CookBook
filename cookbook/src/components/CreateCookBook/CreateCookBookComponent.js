@@ -16,7 +16,7 @@ const CreateCookBookComponent = () => {
       <H1Styled size="56px">Create a new cookbook</H1Styled>
       <TitleContainer>
         <HeaderStyled>Cookbook title</HeaderStyled>
-        <InputStyled />
+        <InputStyled placeholder="Title" />
       </TitleContainer>
       <TitleContainer>
         <HeaderStyled>Cookbook picture</HeaderStyled>
@@ -26,11 +26,11 @@ const CreateCookBookComponent = () => {
       </TitleContainer>
       <TitleContainer>
         <HeaderStyled>Description</HeaderStyled>
-        <DescriptionInput />
+        <DescriptionInput placeholder="Description" />
       </TitleContainer>
       <TitleContainer>
         <HeaderStyled>Recepies</HeaderStyled>
-        <InputStyled />
+        <InputStyled placeholder="Fresh meat" />
       </TitleContainer>
       <TitleContainer>
         <Recipe />

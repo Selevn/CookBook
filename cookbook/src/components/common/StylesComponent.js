@@ -152,10 +152,10 @@ export const ButtonStyled = styled(ButtonWrapper)`
   color: var(--pure-black);
 `;
 
-export const InputStyled = styled(InputWrapper)`
+export const InputStyled = styled.input`
   box-sizing: border-box;
   border-radius: 8px;
-  font-size: 30px;
+  font-size: 26px;
 
   padding: 3px 8px;
 

@@ -100,8 +100,8 @@ Recipe.defaultProps = {
   type: 'small',
   isMy: false,
   removable: true,
-  // eslint-disable-next-line
   handleRemove: () => {
+    // eslint-disable-next-line
     console.log('removed!');
   },
 };

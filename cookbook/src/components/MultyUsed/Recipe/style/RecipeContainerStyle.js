@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { Container } from '../../common/StylesComponent';
-import { Description } from '../../MultyUsed/CookCard/style/CookCardComponentStyle';
+import { Container } from '../../../common/StylesComponent';
+import { Description } from '../../CookCard/style/CookCardComponentStyle';
 
 export const ImageContainer = styled(Container)``;
 export const ToolsContainer = styled(Container)`

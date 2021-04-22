@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FaRegEdit, FaWindowClose } from 'react-icons/all';
-import { Author, Description, Name } from '../MultyUsed/CookCard/style/CookCardComponentStyle';
-import { Liked } from '../MultyUsed/Liked';
-import { Commented } from '../MultyUsed/Commented';
-import { Views } from '../MultyUsed/Views';
-import { Image } from '../common/StylesComponent';
+import { Author, Description, Name } from '../CookCard/style/CookCardComponentStyle';
+import { Liked } from '../Liked';
+import { Commented } from '../Commented';
+import { Views } from '../Views';
+import { Image } from '../../common/StylesComponent';
 
-import foodImage from '../common/images/cookbook1.jpg';
+import foodImage from '../../common/images/cookbook1.jpg';
 import {
   DataContainer,
   ImageContainer,

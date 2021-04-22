@@ -16,7 +16,7 @@ import {
 } from './style/ProfileComponentStyle';
 import { Settings } from '../Settings';
 import { CookCard } from '../MultyUsed/CookCard';
-import { Recipe } from '../Recipe';
+import { Recipe } from '../MultyUsed/Recipe';
 
 const ProfileComponent = () => {
   const myBooks = 'myBooks';

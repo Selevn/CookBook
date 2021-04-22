@@ -2,7 +2,7 @@ import React from 'react';
 import {
   ButtonStyled,
   Container,
-  H1Styled,
+  Heading,
   ImageStyled,
   ParagraphStyled,
 } from '../common/StylesComponent';
@@ -39,7 +39,7 @@ const MainPageComponent = () => {
         </WelcomeFoodContainer>
       </Container>
       <PopularBooksContainer vertical>
-        <H1Styled>Most Popular Cookbooks</H1Styled>
+        <Heading>Most Popular Cookbooks</Heading>
         <CookBooksList>
           <CookCard isLiked />
           <CookCard />
@@ -48,7 +48,7 @@ const MainPageComponent = () => {
         </CookBooksList>
       </PopularBooksContainer>
       <PopularBooksContainer vertical>
-        <H1Styled>Picked By Us</H1Styled>
+        <Heading>Picked By Us</Heading>
         <CookBooksList puzzle>
           <MenuCard type="large" />
           <Container vertical className="centier">
@@ -62,7 +62,7 @@ const MainPageComponent = () => {
       </PopularBooksContainer>
       <Container color="var(--primary-color)">
         <PopularBooksContainer vertical>
-          <H1Styled>Trending Reciepts</H1Styled>
+          <Heading>Trending Reciepts</Heading>
           <CookBooksList>
             <CookCard type="bigImage" />
             <CookCard type="bigImage" isLiked />

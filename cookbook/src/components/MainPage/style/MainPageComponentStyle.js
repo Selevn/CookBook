@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { ButtonStyled, Container, H1Styled, ParagraphStyled } from '../../common/StylesComponent';
+import { ButtonStyled, Container, Heading, ParagraphStyled } from '../../common/StylesComponent';
 
 export const WelcomeContainer = styled(Container)`
   flex-direction: column;
@@ -48,7 +48,7 @@ export const PopularBooksContainer = styled(Container)`
 
   justify-content: center;
 
-  ${H1Styled} {
+  ${Heading} {
     font-size: 36px;
     margin: 0 auto 42px auto;
     text-align: center;

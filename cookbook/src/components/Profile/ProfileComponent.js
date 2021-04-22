@@ -14,7 +14,7 @@ import {
   LinksContainer,
   UserLinks,
 } from './style/ProfileComponentStyle';
-import { Recipe } from '../Recipe';
+import { Settings } from '../Settings';
 
 const ProfileComponent = () => {
   const [addMenu, setAddMenu] = useState(false);
@@ -62,10 +62,11 @@ const ProfileComponent = () => {
         <CookCard type="normal" />
         <CookCard type="normal" />
         <CookCard type="normal" /> */}
+        {/* <Recipe />
         <Recipe />
         <Recipe />
-        <Recipe />
-        <Recipe />
+        <Recipe /> */}
+        <Settings />
       </DataContainer>
     </>
   );

@@ -17,13 +17,13 @@ const Settings = ({ name, email }) => {
           <Container>
             <PropName>Name</PropName>
             <PropChange>
-              {name} <LinkStyled>change</LinkStyled>
+              {name}&nbsp;<LinkStyled>change</LinkStyled>
             </PropChange>
           </Container>
           <Container>
             <PropName>Email</PropName>
             <PropChange>
-              {email} <LinkStyled>change</LinkStyled>
+              {email}&nbsp;<LinkStyled>change</LinkStyled>
             </PropChange>
           </Container>
           <Container>

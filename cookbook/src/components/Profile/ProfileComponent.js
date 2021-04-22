@@ -15,9 +15,17 @@ import {
   UserLinks,
 } from './style/ProfileComponentStyle';
 import { Settings } from '../Settings';
+import { CookCard } from '../MultyUsed/CookCard';
+import { Recipe } from '../Recipe';
 
 const ProfileComponent = () => {
+  const myBooks = 'myBooks';
+  const myRecipes = 'myRecipes';
+  const settings = 'settings';
+
   const [addMenu, setAddMenu] = useState(false);
+
+  const [menu, setMenu] = useState(myBooks);
 
   return (
     <>
@@ -51,22 +59,46 @@ const ProfileComponent = () => {
       </UserInformation>
       <Container>
         <LinksContainer>
-          <UserLinks>My CookBooks</UserLinks>
-          <UserLinks className="active">My Recepies</UserLinks>
-          <UserLinks>My Settings</UserLinks>
+          <UserLinks className={menu === myBooks ? 'active' : ''} onClick={() => setMenu(myBooks)}>
+            My CookBooks
+          </UserLinks>
+          <UserLinks
+            className={menu === myRecipes ? 'active' : ''}
+            onClick={() => setMenu(myRecipes)}
+          >
+            My Recepies
+          </UserLinks>
+          <UserLinks
+            className={menu === settings ? 'active' : ''}
+            onClick={() => setMenu(settings)}
+          >
+            My Settings
+          </UserLinks>
         </LinksContainer>
       </Container>
 
       <DataContainer>
-        {/* <CookCard type="normal" />
-        <CookCard type="normal" />
-        <CookCard type="normal" />
-        <CookCard type="normal" /> */}
-        {/* <Recipe />
-        <Recipe />
-        <Recipe />
-        <Recipe /> */}
-        <Settings />
+        {menu === myBooks && (
+          <>
+            <CookCard type="normal" />
+            <CookCard type="normal" />
+            <CookCard type="normal" />
+            <CookCard type="normal" />
+          </>
+        )}
+        {menu === myRecipes && (
+          <>
+            <Recipe />
+            <Recipe />
+            <Recipe />
+            <Recipe />
+          </>
+        )}
+        {menu === settings && (
+          <>
+            <Settings />
+          </>
+        )}
       </DataContainer>
     </>
   );

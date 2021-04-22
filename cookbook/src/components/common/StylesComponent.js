@@ -58,14 +58,20 @@ Logo.propTypes = {
   width: PropTypes.string,
 };
 
-const LinkWrapper = ({ className, children }) => (
-  <a className={className} href="#/">
+const LinkWrapper = ({ className, children, id, href, onClick }) => (
+  <a className={className} id={id} href={href} onClick={onClick}>
     {children}
   </a>
 );
 LinkWrapper.propTypes = {
   className: PropTypes.string,
   children: PropTypes.node,
+  id: PropTypes.string,
+  href: PropTypes.string,
+  onClick: PropTypes.func,
+};
+LinkWrapper.defaultProps = {
+  href: '#/',
 };
 
 const ButtonWrapper = ({ className, children, onClick }) => (

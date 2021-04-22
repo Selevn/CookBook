@@ -3,6 +3,13 @@ import React from 'react';
 import { Container, LinkStyled, LogoLight } from '../../common/StylesComponent';
 
 export const FooterLogo = styled(() => <LogoLight center />)``;
+export const FooterContainer = styled(Container)`
+  position: relative;
+  bottom: 0;
+  background-color: var(--light-black);
+  justify-content: center;
+  width: 100%;
+`;
 export const FooterStyle = styled(Container)`
   width: 100%;
   max-width: 1400px;
@@ -32,6 +39,7 @@ export const LinksContainer = styled(Container)`
       text-align: center;
     }
   }
+
   ${LinkStyled} {
     color: var(--pure-white);
     padding: 8px;

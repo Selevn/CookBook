@@ -12,12 +12,10 @@ export const NavbarStyle = styled(Container)`
   width: 100%;
   max-width: 1400px;
 
-  min-height: 65px;
+  min-height: 45px;
   position: sticky;
 
   flex-wrap: wrap;
-
-  padding: 10px 10px 10px 10px;
 
   @media (max-width: 1024px) {
     flex-direction: column;
@@ -72,6 +70,7 @@ export const Menu = styled(FaBars)`
 `;
 
 export const NavbarMain = styled(Container)`
+  height: 65px;
   position: fixed;
   width: 100%;
   background-color: white;
@@ -80,4 +79,8 @@ export const NavbarMain = styled(Container)`
   justify-content: center;
 
   z-index: 999;
+
+  @media (max-width: 1024px) {
+    height: auto;
+  }
 `;

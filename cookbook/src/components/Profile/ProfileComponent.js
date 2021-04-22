@@ -29,7 +29,6 @@ const ProfileComponent = () => {
 
   return (
     <>
-      <Container minHeight="20px" />
       <UserInformation>
         <ProfileImageWrapper>
           <ProfileImage src={person} />

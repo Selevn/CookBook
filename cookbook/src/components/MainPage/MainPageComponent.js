@@ -17,7 +17,7 @@ import {
 import { MenuCard, CookCard } from '../MultyUsed/CookCard';
 import { Footer } from '../Footer';
 
-export const MainComponent = () => {
+const MainPageComponent = () => {
   return (
     <>
       <Container minHeight="680px" containerHeight="680px" maxHeight="780px">
@@ -74,3 +74,5 @@ export const MainComponent = () => {
     </>
   );
 };
+
+export default MainPageComponent;

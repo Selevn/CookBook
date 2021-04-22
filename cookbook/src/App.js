@@ -1,14 +1,14 @@
 import React from 'react';
 import { GlobalStyle } from './globalStyles';
 import { Navbar } from './components/Navbar';
-import { MainComponent } from './components/MainPage/MainPageComponent';
+import { MainPage } from './components/MainPage';
 
 function App() {
   return (
     <>
       <GlobalStyle />
       <Navbar />
-      <MainComponent />
+      <MainPage />
     </>
   );
 }

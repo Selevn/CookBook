@@ -128,9 +128,21 @@ export const ButtonStyled = styled(ButtonWrapper)`
       border: 2px solid var(--primary-color);
     `}
 
+  ${(p) =>
+    p.small &&
+    css`
+      max-width: 120px;
+      max-height: 45px;
+      font-size: 18px;
+    `}
   font-family: var(--nunito-font);
   font-style: normal;
   font-weight: 600;
+  ${(p) =>
+    p.light &&
+    css`
+      font-weight: 400;
+    `}
   font-size: 18px;
   line-height: 27px;
 
@@ -141,11 +153,24 @@ export const ButtonStyled = styled(ButtonWrapper)`
 `;
 
 export const InputStyled = styled(InputWrapper)`
-  border: 1px solid var(--styled-gray);
   box-sizing: border-box;
   border-radius: 8px;
   font-size: 30px;
-  padding: 5px;
+
+  padding: 3px 8px;
+
+  background: var(--pure-white);
+  border: 1px solid var(--styled-gray);
+`;
+
+export const TextInputStyled = styled.textarea`
+  box-sizing: border-box;
+  border-radius: 8px;
+  font-size: 30px;
+  padding: 3px 8px;
+
+  background: var(--pure-white);
+  border: 1px solid var(--styled-gray);
 `;
 
 export const TestContainer = styled.div`

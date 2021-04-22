@@ -5,17 +5,20 @@ import { Author, Description, Name } from '../CookCard/style/CookCardComponentSt
 import { Liked } from '../Liked';
 import { Commented } from '../Commented';
 import { Views } from '../Views';
-import { Image } from '../../common/StylesComponent';
+import { Image, LinkStyled } from '../../common/StylesComponent';
 
 import foodImage from '../../common/images/cookbook1.jpg';
 import {
   DataContainer,
   ImageContainer,
   RecipeContainer,
+  RemoveContainer,
   Statistics,
   ToolsContainer,
+  RecipeContainerWrapper,
 } from './style/RecipeContainerStyle';
 
+RecipeContainerWrapper.propTypes = { children: PropTypes.node };
 export const Recipe = ({
   views,
   likes,
@@ -28,31 +31,42 @@ export const Recipe = ({
   // eslint-disable-next-line
   type,
   isMy,
+  removable,
+  handleRemove,
 }) => {
   return (
-    <RecipeContainer>
-      <ImageContainer>
-        <Image src={foodImage} width="235px" height="178px" />
-      </ImageContainer>
-      <DataContainer>
-        <Name>{name}</Name>
-        <Author>{author}</Author>
-        <Description>{desc}</Description>
-        <Statistics>
-          <Liked liked={isLiked} count={likes} />
-          <Commented commented={isCommented} count={comments} />
-          <Views count={views} />
-        </Statistics>
-      </DataContainer>
-      {isMy && (
-        <>
-          <ToolsContainer>
-            <FaRegEdit size="30px" color="var(--text-gray)" className="tool" />
-            <FaWindowClose size="30px" color="var(--text-gray)" className="tool" />
-          </ToolsContainer>
-        </>
+    <RecipeContainerWrapper>
+      <RecipeContainer>
+        <ImageContainer>
+          <Image src={foodImage} width="235px" height="178px" />
+        </ImageContainer>
+        <DataContainer>
+          <Name>{name}</Name>
+          <Author>{author}</Author>
+          <Description>{desc}</Description>
+          <Statistics>
+            <Liked liked={isLiked} count={likes} />
+            <Commented commented={isCommented} count={comments} />
+            <Views count={views} />
+          </Statistics>
+        </DataContainer>
+        {isMy && (
+          <>
+            <ToolsContainer>
+              <FaRegEdit size="30px" color="var(--text-gray)" className="tool" />
+              <FaWindowClose size="30px" color="var(--text-gray)" className="tool" />
+            </ToolsContainer>
+          </>
+        )}
+      </RecipeContainer>
+      {removable && (
+        <RemoveContainer>
+          <LinkStyled secondary onClick={handleRemove}>
+            Remove
+          </LinkStyled>
+        </RemoveContainer>
       )}
-    </RecipeContainer>
+    </RecipeContainerWrapper>
   );
 };
 
@@ -67,6 +81,8 @@ Recipe.propTypes = {
   desc: PropTypes.string,
   type: PropTypes.string,
   isMy: PropTypes.bool,
+  removable: PropTypes.bool,
+  handleRemove: PropTypes.func,
 };
 Recipe.defaultProps = {
   views: 999,
@@ -82,7 +98,12 @@ Recipe.defaultProps = {
     'aliquet sit vel venenatis. Dolor, risus' +
     'sit aliquam pharetra. ',
   type: 'small',
-  isMy: true,
+  isMy: false,
+  removable: true,
+  // eslint-disable-next-line
+  handleRemove: () => {
+    console.log('removed!');
+  },
 };
 
 export default Recipe;

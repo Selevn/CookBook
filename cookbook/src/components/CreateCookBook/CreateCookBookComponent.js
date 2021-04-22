@@ -1,45 +1,48 @@
 import React from 'react';
-import { ButtonStyled, H1Styled, InputStyled, ParagraphStyled } from '../common/StylesComponent';
+import { ButtonStyled, H1Styled, InputStyled } from '../common/StylesComponent';
 
 import { Recipe } from '../MultyUsed/Recipe';
 import {
   ControllButtons,
-  CurrentRecipes,
-  DescriptionContainer,
-  PictureContainer,
-  RecepiesContainer,
+  CreateCookBookPage,
+  DescriptionInput,
+  HeaderStyled,
   TitleContainer,
 } from './style/CreateCookBookComponentStyle';
 
 const CreateCookBookComponent = () => {
   return (
-    <>
-      <H1Styled>Create a new cookbook</H1Styled>
+    <CreateCookBookPage>
+      <H1Styled size="56px">Create a new cookbook</H1Styled>
       <TitleContainer>
-        <ParagraphStyled>Cookbook title</ParagraphStyled>
+        <HeaderStyled>Cookbook title</HeaderStyled>
         <InputStyled />
       </TitleContainer>
-      <PictureContainer>
-        <ParagraphStyled>Cookbook title</ParagraphStyled>
+      <TitleContainer>
+        <HeaderStyled>Cookbook picture</HeaderStyled>
+        <ButtonStyled small light>
+          Upload
+        </ButtonStyled>
+      </TitleContainer>
+      <TitleContainer>
+        <HeaderStyled>Description</HeaderStyled>
+        <DescriptionInput />
+      </TitleContainer>
+      <TitleContainer>
+        <HeaderStyled>Recepies</HeaderStyled>
         <InputStyled />
-      </PictureContainer>
-      <DescriptionContainer>
-        <ParagraphStyled>Description</ParagraphStyled>
-        <InputStyled />
-      </DescriptionContainer>
-      <RecepiesContainer>
-        <ParagraphStyled>Recepies</ParagraphStyled>
-        <InputStyled />
-      </RecepiesContainer>
-      <CurrentRecipes>
+      </TitleContainer>
+      <TitleContainer>
         <Recipe />
         <Recipe />
-      </CurrentRecipes>
+      </TitleContainer>
       <ControllButtons>
-        <ButtonStyled secondary>Cancel</ButtonStyled>
-        <ButtonStyled>Save</ButtonStyled>
+        <ButtonStyled secondary small>
+          Cancel
+        </ButtonStyled>
+        <ButtonStyled small>Save</ButtonStyled>
       </ControllButtons>
-    </>
+    </CreateCookBookPage>
   );
 };
 

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Container } from '../../../common/StylesComponent';
+import { Container, LinkStyled } from '../../../common/StylesComponent';
 import { Description } from '../../CookCard/style/CookCardComponentStyle';
 
 export const ImageContainer = styled(Container)``;
@@ -19,6 +19,20 @@ export const ToolsContainer = styled(Container)`
 
 export const Statistics = styled(Container)`
   gap: 50px;
+`;
+
+export const RemoveContainer = styled(Container)`
+  height: inherit;
+  padding: 0 0 0 20px;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+
+  ${LinkStyled} {
+    color: var(--text-gray);
+    font-size: 24px;
+    font-weight: normal;
+  }
 `;
 
 export const DataContainer = styled(Container)`
@@ -63,6 +77,29 @@ export const RecipeContainer = styled(Container)`
     ${Statistics} {
       flex-direction: column;
       gap: 10px;
+    }
+  }
+`;
+
+export const RecipeContainerWrapper = styled(Container)`
+  @media (max-width: 768px) {
+    ${RemoveContainer} {
+      padding: 0 10px;
+      ${LinkStyled} {
+        font-size: 17px;
+      }
+    }
+  }
+  @media (max-width: 425px) {
+    flex-direction: column;
+    align-items: center;
+
+    ${RemoveContainer} {
+      ${LinkStyled} {
+        font-size: 17px;
+      }
+      height: 10px;
+      margin: 0 auto;
     }
   }
 `;

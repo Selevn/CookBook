@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import { ButtonStyled, Container, H1Styled, ParagraphStyled } from '../../common/StylesComponent';
 
-export const WelcomeDiv = styled(Container)`
+export const WelcomeContainer = styled(Container)`
   flex-direction: column;
   max-width: 800px;
   padding: 0 15px 0 15px;
@@ -28,7 +28,7 @@ export const WelcomeDiv = styled(Container)`
     }
   }
 `;
-export const WelcomeFoodDiv = styled(Container)`
+export const WelcomeFoodContainer = styled(Container)`
   height: 100%;
   flex: 1;
   background: var(--light-black);

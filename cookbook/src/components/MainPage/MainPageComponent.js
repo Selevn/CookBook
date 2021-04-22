@@ -11,8 +11,8 @@ import FoodImg from '../common/images/mainFood.jpg';
 import {
   CookBooksList,
   PopularBooksContainer,
-  WelcomeDiv,
-  WelcomeFoodDiv,
+  WelcomeContainer,
+  WelcomeFoodContainer,
 } from './style/MainPageComponentStyle';
 import { MenuCard, CookCard } from '../MultyUsed/CookCard';
 import { Footer } from '../Footer';
@@ -29,14 +29,14 @@ const MainPageComponent = () => {
           justifyContent="center"
           alignItems="center"
         >
-          <WelcomeDiv>
+          <WelcomeContainer>
             <ParagraphStyled>Find and create your favourite cookbooks And Recipies</ParagraphStyled>
             <ButtonStyled>Create Account</ButtonStyled>
-          </WelcomeDiv>
+          </WelcomeContainer>
         </Container>
-        <WelcomeFoodDiv>
+        <WelcomeFoodContainer>
           <ImageStyled src={FoodImg} alt="Food image" />
-        </WelcomeFoodDiv>
+        </WelcomeFoodContainer>
       </Container>
       <PopularBooksContainer vertical>
         <H1Styled>Most Popular Cookbooks</H1Styled>

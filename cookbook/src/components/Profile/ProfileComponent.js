@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Container } from '../common/StylesComponent';
 import person from '../common/images/Person.jpeg';
-import { CookCard } from '../MultyUsed/CookCard';
 import {
   AddButton,
   AddContainer,
@@ -15,6 +14,7 @@ import {
   LinksContainer,
   UserLinks,
 } from './style/ProfileComponentStyle';
+import { Recipe } from '../Recipe';
 
 const ProfileComponent = () => {
   const [addMenu, setAddMenu] = useState(false);
@@ -58,10 +58,14 @@ const ProfileComponent = () => {
       </Container>
 
       <DataContainer>
+        {/* <CookCard type="normal" />
         <CookCard type="normal" />
         <CookCard type="normal" />
-        <CookCard type="normal" />
-        <CookCard type="normal" />
+        <CookCard type="normal" /> */}
+        <Recipe />
+        <Recipe />
+        <Recipe />
+        <Recipe />
       </DataContainer>
     </>
   );

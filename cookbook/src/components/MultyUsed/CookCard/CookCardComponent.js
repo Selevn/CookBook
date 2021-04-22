@@ -117,7 +117,9 @@ CookCardComponent.defaultProps = {
   author: 'John Doe',
   name: 'Fresh meat',
   desc:
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna amet etiam risus aliquet sit vel venenatis. Dolor, risus sit aliquam pharetra. ',
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit.' +
+    'Magna amet etiam risus aliquet sit vel venenatis. Dolor,' +
+    'risus sit aliquam pharetra. ',
   type: 'small',
 };
 

@@ -106,7 +106,8 @@ export const UserInformation = styled(Container)`
 export const DataContainer = styled(Container)`
   flex-wrap: wrap;
   max-width: 1400px;
-  margin: 50px auto;
+  margin: 30px auto;
+  padding: 10px;
   justify-content: center;
   gap: 40px;
 `;

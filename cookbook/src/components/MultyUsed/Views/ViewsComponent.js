@@ -14,5 +14,8 @@ const ViewsComponent = ({ count }) => {
 ViewsComponent.propTypes = {
   count: PropTypes.number,
 };
+ViewsComponent.defaultProps = {
+  count: 0,
+};
 
 export default ViewsComponent;

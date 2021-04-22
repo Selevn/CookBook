@@ -1,5 +1,5 @@
-import React from 'react';
-import { Container, LinkStyled } from '../common/StylesComponent';
+import React, { useState } from 'react';
+import { Container } from '../common/StylesComponent';
 import person from '../common/images/Person.jpeg';
 import { CookCard } from '../MultyUsed/CookCard';
 import {
@@ -7,19 +7,25 @@ import {
   AddContainer,
   DataContainer,
   ProfileImage,
+  ProfileImageWrapper,
   UserDescription,
   UserInformation,
   UserName,
   UserTextContainer,
+  LinksContainer,
+  UserLinks,
 } from './style/ProfileComponentStyle';
-import { LinksContainer } from '../Footer/style/FooterComponentStyle';
 
 const ProfileComponent = () => {
+  const [addMenu, setAddMenu] = useState(false);
+
   return (
     <>
       <Container minHeight="20px" />
       <UserInformation>
-        <ProfileImage src={person} />
+        <ProfileImageWrapper>
+          <ProfileImage src={person} />
+        </ProfileImageWrapper>
         <UserTextContainer>
           <UserName>John Doe</UserName>
           <UserDescription>
@@ -28,19 +34,34 @@ const ProfileComponent = () => {
           </UserDescription>
         </UserTextContainer>
         <AddContainer>
-          <AddButton>Add New CookBook</AddButton>
+          <AddButton
+            onClick={() => {
+              setAddMenu((s) => !s);
+            }}
+          >
+            Add New CookBook
+          </AddButton>
+          {addMenu && (
+            <>
+              <AddButton secondary>Add New CookBook</AddButton>
+              <AddButton secondary>Add New Reciept</AddButton>
+            </>
+          )}
         </AddContainer>
       </UserInformation>
-      <LinksContainer>
-        <LinkStyled>My CookBooks</LinkStyled>
-        <LinkStyled>My Recepies</LinkStyled>
-        <LinkStyled>My Settings</LinkStyled>
-      </LinksContainer>
+      <Container>
+        <LinksContainer>
+          <UserLinks>My CookBooks</UserLinks>
+          <UserLinks className="active">My Recepies</UserLinks>
+          <UserLinks>My Settings</UserLinks>
+        </LinksContainer>
+      </Container>
+
       <DataContainer>
-        <CookCard />
-        <CookCard />
-        <CookCard />
-        <CookCard />
+        <CookCard type="normal" />
+        <CookCard type="normal" />
+        <CookCard type="normal" />
+        <CookCard type="normal" />
       </DataContainer>
     </>
   );

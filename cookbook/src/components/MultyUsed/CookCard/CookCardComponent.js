@@ -5,6 +5,8 @@ import {
   Author,
   CookCardContainer,
   CookCardImage,
+  Description,
+  DescriptionText,
   MinimizedCard,
   MinimizedCardText,
   Name,
@@ -22,6 +24,7 @@ export const CookCardComponent = ({
   isCommented,
   author,
   name,
+  desc,
   type,
 }) => {
   let width;
@@ -29,6 +32,7 @@ export const CookCardComponent = ({
   let imgHeight;
   let imgWidth;
   let showFooter = true;
+  let showDesc = false;
   switch (type) {
     case 'small': {
       width = '225px-(var(--padding-card)*2)';
@@ -38,8 +42,11 @@ export const CookCardComponent = ({
       break;
     }
     case 'normal': {
-      width = '310px';
-      height = '395px';
+      width = 'calc(350px - (var(--padding-card)*2))';
+      height = 'calc(455px - (var(--padding-card)*2))';
+      imgHeight = '215px';
+      imgWidth = '310px';
+      showDesc = true;
       break;
     }
     case 'bigImage': {
@@ -61,7 +68,7 @@ export const CookCardComponent = ({
   }
 
   return (
-    <CookCardContainer vertical width={width} height={height}>
+    <CookCardContainer vertical containerWidth={width} containerHeight={height}>
       <Views count={views} />
       <CookCardImage
         src={CoolBook}
@@ -73,6 +80,13 @@ export const CookCardComponent = ({
         <Name>{name}</Name>
         <Author>{author}</Author>
       </Container>
+      {showDesc && (
+        <>
+          <Description maxWidth={width}>
+            <DescriptionText>{desc}</DescriptionText>
+          </Description>
+        </>
+      )}
       {showFooter && (
         <Container margin="8px 0 0 0" justifyContent="space-between">
           <Liked count={likes} liked={isLiked} />
@@ -91,6 +105,7 @@ CookCardComponent.propTypes = {
   isCommented: PropTypes.bool,
   author: PropTypes.string,
   name: PropTypes.string,
+  desc: PropTypes.string,
   type: PropTypes.string,
 };
 CookCardComponent.defaultProps = {
@@ -101,6 +116,8 @@ CookCardComponent.defaultProps = {
   isCommented: false,
   author: 'John Doe',
   name: 'Fresh meat',
+  desc:
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna amet etiam risus aliquet sit vel venenatis. Dolor, risus sit aliquam pharetra. ',
   type: 'small',
 };
 

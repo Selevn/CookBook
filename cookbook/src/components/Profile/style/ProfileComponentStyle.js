@@ -1,13 +1,14 @@
 import styled from 'styled-components';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ButtonStyled, Container, Image, ParagraphStyled } from '../../common/StylesComponent';
+import {
+  ButtonStyled,
+  Container,
+  Image,
+  LinkStyled,
+  ParagraphStyled,
+} from '../../common/StylesComponent';
 
-export const UserInformation = styled(Container)`
-  max-width: 1400px;
-  justify-content: center;
-  margin: 100px auto 50px auto;
-`;
 const ProfileImageContainer = ({ src }) => {
   return (
     <Container>
@@ -20,38 +21,102 @@ ProfileImageContainer.propTypes = {
 };
 
 export const ProfileImage = styled(Container)`
+  margin: auto;
   width: 200px;
   height: 200px;
   border-radius: 102px;
   background-image: url(${(p) => p.src});
   background-size: cover;
   background-position: center;
-
-  margin: 0 15px 0 0;
 `;
 export const UserName = styled(ParagraphStyled)`
   font-size: 36px;
   font-family: 'Roboto Light', sans-serif;
+  width: 100%;
 `;
 export const UserDescription = styled(ParagraphStyled)`
-  width: 50%;
   font-family: 'Roboto Light', sans-serif;
   font-size: 20px;
   color: var(--text-gray);
   text-align: justify;
 `;
 export const UserTextContainer = styled(Container)`
+  justify-content: start;
+  align-items: center;
   flex-direction: column;
-  margin-left: 10px;
+  flex: 4;
+  width: 50%;
+  max-width: 30vw;
 `;
 
-export const AddContainer = styled(Container)``;
-export const LinksContainer = styled(Container)``;
-export const DataContainer = styled(Container)``;
+export const AddContainer = styled(Container)`
+  flex: 1;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+`;
+
+export const LinksContainer = styled(Container)`
+  justify-content: start;
+  margin: auto;
+  width: 1400px;
+  gap: 50px;
+  .active {
+    border-bottom: 2px solid var(--primary-color);
+    color: var(--pure-black);
+  }
+
+  @media (max-width: 1024px) {
+    margin-top: 30px;
+    justify-content: center;
+  }
+  @media (max-width: 768px) {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+    width: 300px;
+  }
+`;
+export const UserLinks = styled(LinkStyled)`
+  font-size: 26px;
+  font-weight: normal;
+  color: var(--text-gray);
+`;
+
+export const UserInformation = styled(Container)`
+  max-width: 1400px;
+  justify-content: space-around;
+  margin: 100px auto 50px auto;
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    flex-wrap: wrap;
+
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin: auto;
+
+    ${UserTextContainer} {
+      max-width: 90vw;
+    }
+  }
+`;
+
+export const DataContainer = styled(Container)`
+  flex-wrap: wrap;
+  max-width: 1400px;
+  margin: 50px auto;
+  justify-content: center;
+  gap: 40px;
+`;
 export const AddButton = styled(ButtonStyled)`
   width: 212px;
   font-family: 'Roboto Light', sans-serif;
   font-size: 18px;
   text-align: center;
   font-weight: normal;
+`;
+export const ProfileImageWrapper = styled(Container)`
+  width: 300px;
 `;

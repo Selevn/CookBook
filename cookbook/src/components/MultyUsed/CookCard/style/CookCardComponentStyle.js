@@ -4,8 +4,8 @@ import { Container, ParagraphStyled } from '../../../common/StylesComponent';
 export const CookCardContainer = styled(Container)`
   ${(p) => {
     return css`
-      width: ${p.width};
-      height: ${p.height};
+      width: ${p.containerWidth};
+      height: ${p.containerHeight};
     `;
   }}
 
@@ -26,6 +26,14 @@ export const Author = styled(ParagraphStyled)`
   gap: 0;
   font-size: 15px;
   color: var(--light-black);
+`;
+export const Description = styled(Container)`
+  width: ${(p) => p.maxWidth};
+`;
+export const DescriptionText = styled(ParagraphStyled)`
+  word-wrap: break-word;
+  font-size: 15px;
+  color: var(--very-light-black);
 `;
 
 export const MinimizedCard = styled(Container)`

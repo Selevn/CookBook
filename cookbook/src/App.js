@@ -8,14 +8,16 @@ import { Footer } from './components/Footer';
 import { CreateCookBook } from './components/CreateCookBook';
 // eslint-disable-next-line
 import { Login } from './components/Login';
+// eslint-disable-next-line
 import { CreateRecepie } from './components/CreateRecepie';
+import { CookBookSearch } from './components/CookBookSearch';
 
 function App() {
   return (
     <>
       <GlobalStyle />
       <Navbar />
-      <CreateRecepie />
+      <CookBookSearch />
       <Footer />
     </>
   );

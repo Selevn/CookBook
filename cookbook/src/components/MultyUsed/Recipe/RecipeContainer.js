@@ -99,7 +99,7 @@ Recipe.defaultProps = {
     'sit aliquam pharetra. ',
   type: 'small',
   isMy: false,
-  removable: true,
+  removable: false,
   handleRemove: () => {
     // eslint-disable-next-line
     console.log('removed!');

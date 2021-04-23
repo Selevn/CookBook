@@ -93,11 +93,6 @@ InputWrapper.propTypes = {
   value: PropTypes.string,
   onChange: PropTypes.func,
 };
-const LabelWrapper = ({ className, children }) => <label className={className}>{children}</label>;
-LabelWrapper.propTypes = {
-  className: PropTypes.string,
-  children: PropTypes.node,
-};
 
 export const LinkStyled = styled(LinkWrapper)`
   color: var(--primary-color);
@@ -106,7 +101,7 @@ export const LinkStyled = styled(LinkWrapper)`
   text-decoration: none;
 `;
 
-export const LabelStyled = styled(LabelWrapper)`
+export const LabelStyled = styled.label`
   font-size: 16px;
   line-height: 22px;
   color: var(--styled-gray);
@@ -210,4 +205,23 @@ export const H1Styled = styled.h1`
   ${(p) => (p.color ? `color:${p.color};` : '')}
   ${(p) => (p.size ? `font-size:${p.size};` : '')}
   ${(p) => (p.transform ? `text-transform:${p.transform};` : '')}
+`;
+export const SelectStyled = styled.select`
+  width: 100%;
+  height: 35px;
+  background: white;
+  color: gray;
+  padding-left: 5px;
+  font-size: 14px;
+  border: none;
+  margin-left: 10px;
+
+  option {
+    color: black;
+    background: white;
+    display: flex;
+    white-space: pre;
+    min-height: 20px;
+    padding: 0px 2px 1px;
+  }
 `;

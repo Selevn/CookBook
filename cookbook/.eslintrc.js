@@ -21,6 +21,10 @@ module.exports = {
         "jsx-a11y/label-has-associated-control":"off",
 
         'linebreak-style': 'off',
+        'react/jsx-props-no-spreading': 'off',
+        'implicit-arrow-linebreak': 'off',
+        'operator-linebreak': 'off',
+        'no-confusing-arrow': 'off',
 
         'arrow-parens': 'off',
         'object-curly-newline': 'off',

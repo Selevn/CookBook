@@ -122,6 +122,20 @@ export const ButtonStyled = styled(ButtonWrapper)`
       border-radius: 8px;
       border: 2px solid var(--primary-color);
     `}
+  ${(p) =>
+    p.thick &&
+    css`
+      border: 1px solid var(--primary-color);
+    `}
+  
+  ${(p) =>
+    p.medium &&
+    css`
+      max-width: 220px;
+      max-height: 45px;
+      font-size: 18px;
+    `}
+  
 
   ${(p) =>
     p.small &&

@@ -5,7 +5,7 @@ import { Author, Description, Name } from '../CookCard/style/CookCardComponentSt
 import { Liked } from '../Liked';
 import { Commented } from '../Commented';
 import { Views } from '../Views';
-import { Image, LinkStyled } from '../../common/StylesComponent';
+import { ButtonStyled, Image, LinkStyled } from '../../common/StylesComponent';
 
 import foodImage from '../../common/images/cookbook1.jpg';
 import {
@@ -16,9 +16,12 @@ import {
   Statistics,
   ToolsContainer,
   RecipeContainerWrapper,
+  SaveContainer,
 } from './style/RecipeContainerStyle';
 
 RecipeContainerWrapper.propTypes = { children: PropTypes.node };
+
+SaveContainer.propTypes = { children: PropTypes.node };
 export const Recipe = ({
   views,
   likes,
@@ -32,6 +35,7 @@ export const Recipe = ({
   type,
   isMy,
   removable,
+  savable,
   handleRemove,
 }) => {
   return (
@@ -58,6 +62,15 @@ export const Recipe = ({
             </ToolsContainer>
           </>
         )}
+        {savable && (
+          <>
+            <SaveContainer>
+              <ButtonStyled secondary light thick>
+                Save
+              </ButtonStyled>
+            </SaveContainer>
+          </>
+        )}
       </RecipeContainer>
       {removable && (
         <RemoveContainer>
@@ -82,6 +95,7 @@ Recipe.propTypes = {
   type: PropTypes.string,
   isMy: PropTypes.bool,
   removable: PropTypes.bool,
+  savable: PropTypes.bool,
   handleRemove: PropTypes.func,
 };
 Recipe.defaultProps = {
@@ -100,6 +114,7 @@ Recipe.defaultProps = {
   type: 'small',
   isMy: false,
   removable: false,
+  savable: true,
   handleRemove: () => {
     // eslint-disable-next-line
     console.log('removed!');

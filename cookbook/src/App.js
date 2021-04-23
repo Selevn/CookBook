@@ -11,13 +11,14 @@ import { Login } from './components/Login';
 // eslint-disable-next-line
 import { CreateRecepie } from './components/CreateRecepie';
 import { CookBookSearch } from './components/CookBookSearch';
+import { ItemPage } from './components/ItemPage';
 
 function App() {
   return (
     <>
       <GlobalStyle />
       <Navbar />
-      <CookBookSearch />
+      <ItemPage />
       <Footer />
     </>
   );

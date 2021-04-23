@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Container, LinkStyled } from '../../../common/StylesComponent';
+import { ButtonStyled, Container, LinkStyled } from '../../../common/StylesComponent';
 import { Description } from '../../CookCard/style/CookCardComponentStyle';
 
 export const ImageContainer = styled(Container)``;
@@ -14,6 +14,17 @@ export const ToolsContainer = styled(Container)`
   .tool:hover {
     cursor: pointer;
     color: var(--primary-color) !important;
+  }
+`;
+export const SaveContainer = styled(ToolsContainer)`
+  bottom: 20px;
+  position: static;
+  right: 20px;
+  padding: 0 15px 15px 0;
+  margin: auto 0 0 auto;
+  ${ButtonStyled} {
+    height: 36px;
+    width: 84px;
   }
 `;
 

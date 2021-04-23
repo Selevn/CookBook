@@ -1,15 +1,11 @@
 import styled from 'styled-components';
 import { Container, H1Styled, LabelStyled, LinkStyled } from '../../common/StylesComponent';
+import { LinksContainer } from '../../Profile/style/ProfileComponentStyle';
 
-export const SearchMainComponent = styled(Container)`
-  max-width: 1400px;
-  padding: 50px;
-  margin: auto;
-  gap: 60px;
-`;
 export const FilterContainer = styled(Container)`
   flex: 1;
   height: 417px;
+  max-width: 350px;
   padding: 30px;
   flex-direction: column;
   gap: 25px;
@@ -24,6 +20,36 @@ export const FilterContainer = styled(Container)`
     color: var(--pure-black);
     font-size: 20px;
     margin: auto auto 15px 0;
+  }
+`;
+export const ResultsContainer = styled(Container)`
+  flex: 2;
+  max-width: 70%;
+  flex-direction: column;
+  ${LinksContainer} {
+    width: inherit;
+    margin: 0;
+  }
+`;
+export const SearchMainComponent = styled(Container)`
+  max-width: 1400px;
+  min-height: 100vh;
+  padding: 50px;
+  margin: auto;
+  gap: 60px;
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    align-items: center;
+
+    ${FilterContainer} {
+      width: 100%;
+      max-width: none;
+    }
+    ${ResultsContainer} {
+      width: 100%;
+      max-width: none;
+    }
   }
 `;
 export const HeaderContainer = styled(Container)`
@@ -53,11 +79,6 @@ export const SortContainer = styled(Container)`
   }
 `;
 
-export const ResultsContainer = styled(Container)`
-  flex: 2;
-  max-width: 70%;
-  flex-direction: column;
-`;
 export const InputUniteContainer = styled(Container)`
   align-items: center;
 
@@ -71,6 +92,6 @@ export const InputUniteContainer = styled(Container)`
 export const ResultCardsContainer = styled(Container)`
   padding-top: 40px;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 60px;
+  justify-content: space-evenly;
+  gap: 30px;
 `;

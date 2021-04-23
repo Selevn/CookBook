@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import React from 'react';
-import logo from '../../common/images/FeedMe.jpg';
 import { Container } from '../../common/StylesComponent';
 
 import vegetables from '../../common/images/LoginBack.jpg';
@@ -18,6 +17,7 @@ export const FormDiv = styled(Container)`
   margin: auto;
   height: 503px;
   max-width: 400px;
+  min-width: 375px;
   background: var(--pure-white);
   border-radius: 16px;
   @media (max-width: 425px) {
@@ -31,14 +31,7 @@ export const FormDiv = styled(Container)`
 export const ImageVegetable = () => <img src={vegetables} alt="as" />;
 
 export const ImageVegetablesContainer = styled(Container)`
-  @media (max-width: 1300px) {
+  @media (max-width: 1024px) {
     display: none;
   }
-`;
-
-export const ImageLogo = styled.div`
-  grid-column: 0;
-  width: 180px;
-  height: 68px;
-  background: url(${logo}) no-repeat;
 `;

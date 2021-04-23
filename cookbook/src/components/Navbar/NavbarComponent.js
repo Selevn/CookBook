@@ -1,27 +1,48 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { NavbarStyle } from './style/NavbarComponentStyle';
-import { TestContainer } from '../common/StylesComponent';
-import { Logo } from '../common/StylesComponent';
+import React, { useCallback, useState } from 'react';
+import {
+  Menu,
+  NavbarLink,
+  NavbarLogo,
+  NavbarMain,
+  NavbarStyle,
+  SearchStyled,
+} from './style/NavbarComponentStyle';
+import { Container } from '../common/StylesComponent';
 
-const NavbarComponent = () => (
-  <NavbarStyle height="65px">
-    <Logo alignSelf={'center'} />
-    <TestContainer color="red" flex={2} />
-    <TestContainer color="blue" flex={1} />
-  </NavbarStyle>
-);
+const NavbarComponent = () => {
+  const [menuOpen, setMenuOpen] = useState(true);
+  const handleMenuClick = useCallback(() => setMenuOpen((s) => !s), [menuOpen]);
 
-NavbarComponent.propTypes = {
-  register: PropTypes.bool,
-
-  email: PropTypes.string,
-  password: PropTypes.string,
-  passwordRepeat: PropTypes.string,
-
-  setEmail: PropTypes.func,
-  setPassword: PropTypes.func,
-  setPasswordRepeat: PropTypes.func,
+  return (
+    <>
+      <NavbarMain>
+        <NavbarStyle hide={menuOpen}>
+          <Menu onClick={handleMenuClick} />
+          <NavbarLogo alignSelf="center" className="mustBeHidden" />
+          <Container flex={4} className="mustBeHidden">
+            <Container padding="15px" justifyContent="flex-end" alignItems="center" flex={1}>
+              <NavbarLink>Cookbooks</NavbarLink>
+            </Container>
+            <Container padding="15px" justifyContent="flex-start" alignItems="center" flex={1}>
+              <NavbarLink>Recepies</NavbarLink>
+            </Container>
+          </Container>
+          <Container flex={5} justifyContent="center" alignItems="center" className="mustBeHidden">
+            <SearchStyled />
+          </Container>
+          <Container flex={4} className="mustBeHidden">
+            <Container padding="15px" justifyContent="flex-end" alignItems="center" flex={1}>
+              <NavbarLink>Sign Up</NavbarLink>
+            </Container>
+            <Container padding="15px" justifyContent="flex-start" alignItems="center" flex={1}>
+              <NavbarLink>Sign In</NavbarLink>
+            </Container>
+          </Container>
+        </NavbarStyle>
+      </NavbarMain>
+      <Container height="65px" />
+    </>
+  );
 };
 
 export default NavbarComponent;

@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormDiv } from '../Login/style/LoginComponentStyle';
-import { Logo } from '../common/StylesComponent';
 import {
+  Logo,
   ButtonStyled,
   Container,
   InputStyled,
@@ -20,7 +20,7 @@ const FormComponent = ({
   setPasswordRepeat,
 }) => (
   <FormDiv vertical>
-    <Logo flex="10" />
+    <Logo logoHeight="50px" />
     <Container vertical>
       <br />
       <h1>{register ? 'Join our community' : 'Welcome back'}</h1>

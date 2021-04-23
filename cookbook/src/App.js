@@ -1,17 +1,14 @@
 import React from 'react';
 import { GlobalStyle } from './globalStyles';
-
-import { Login } from './components/Login';
-import { Register } from './components/Register';
 import { Navbar } from './components/Navbar';
+import { MainPage } from './components/MainPage';
 
 function App() {
   return (
     <>
-      <Login />
-      <Register />
       <GlobalStyle />
       <Navbar />
+      <MainPage />
     </>
   );
 }

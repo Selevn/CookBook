@@ -3,25 +3,63 @@ import '../../index.css';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import logo from '../common/images/FeedMe.jpg';
+import logo from './Feedme.svg';
+import lightlogo from './FeedmeLight.svg';
+
+export const Container = styled.div`
+  display: flex;
+  flex-direction: ${(p) => (p.vertical ? 'column' : 'row')};
+  ${(p) => (p.wrap ? 'flex-wrap: wrap' : '')};
+  ${(p) => (p.flex ? `flex: ${p.flex}` : '')};
+  ${(p) => (p.margin ? `margin: ${p.margin}` : '')};
+  ${(p) => (p.padding ? `padding: ${p.padding}` : '')};
+  ${(p) => (p.justifyContent ? `justify-content: ${p.justifyContent}` : '')};
+  ${(p) => (p.alignItems ? `align-items: ${p.alignItems}` : '')};
+  ${(p) => (p.minHeight ? `min-height: ${p.minHeight}` : '')};
+  ${(p) => (p.maxHeight ? `max-height: ${p.maxHeight}` : '')};
+  ${(p) => (p.height ? `height: ${p.height}` : '')};
+  ${(p) => (p.containerHeight ? `height: ${p.containerHeight}` : '')};
+  ${(p) => (p.containerWidth ? `width: ${p.containerWidth}` : '')};
+  ${(p) => (p.color ? `background: ${p.color}` : '')};
+  ${(p) => (p.width ? `width: ${p.width}` : '')};
+`;
 
 const LogoImage = () => <img src={logo} alt="Logo" />;
+const LogoImageLight = () => <img src={lightlogo} alt="Logo" />;
 
-const LogoWrapper = styled.div`
+const LogoWrapper = styled(Container)`
   align-self: ${(p) => (p.alignSelf ? p.alignSelf : 'start')};
   justify-content: center;
   width: 175px;
-  height: 37px;
+  height: ${(p) => (p.logoHeight ? p.logoHeight : '37px')};
 `;
 
-export const Logo = (p) => (
-  <LogoWrapper {...p}>
+export const Logo = ({ alignSelf, className, logoHeight }) => (
+  <LogoWrapper className={className} alignSelf={alignSelf} logoHeight={logoHeight}>
     <LogoImage />
   </LogoWrapper>
 );
+export const LogoLight = ({ alignSelf, className, logoHeight, LogoWidth }) => (
+  <LogoWrapper
+    className={className}
+    alignSelf={alignSelf}
+    logoHeight={logoHeight}
+    LogoWidth={LogoWidth}
+  >
+    <LogoImageLight />
+  </LogoWrapper>
+);
+LogoLight.propTypes = Logo.propTypes;
+
+Logo.propTypes = {
+  alignSelf: PropTypes.bool,
+  className: PropTypes.string,
+  logoHeight: PropTypes.string,
+  width: PropTypes.string,
+};
 
 const LinkWrapper = ({ className, children }) => (
-  <a className={className} href="*">
+  <a className={className} href="#/">
     {children}
   </a>
 );
@@ -94,18 +132,6 @@ export const InputStyled = styled(InputWrapper)`
   padding: 5px;
 `;
 
-export const Container = styled.div`
-  display: flex;
-  flex-direction: ${(p) => (p.vertical ? 'column' : 'row')};
-  ${(p) => (p.flex ? `flex: ${p.flex}` : '')};
-  ${(p) => (p.margin ? `margin: ${p.margin}` : '')};
-  ${(p) => (p.padding ? `padding: ${p.padding}` : '')};
-  ${(p) => (p.justifyContent ? `justify-content: ${p.justifyContent}` : '')};
-  ${(p) => (p.minHeight ? `min-height: ${p.minHeight}` : '')};
-  ${(p) => (p.height ? `height: ${p.height}` : '')};
-  ${(p) => (p.color ? `background: ${p.color}` : '')};
-`;
-
 export const TestContainer = styled.div`
   display: flex;
   flex-direction: ${(p) => (p.vertical ? 'column' : 'row')};
@@ -118,4 +144,29 @@ export const TestContainer = styled.div`
   ${(p) => (p.color ? `background: ${p.color}` : '')};
   width: 100%;
   height: 100%;
+`;
+
+export const Image = ({ src, alt, width, height }) => {
+  return <img src={src} alt={alt} width={width} height={height} />;
+};
+Image.propTypes = {
+  src: PropTypes.string,
+  alt: PropTypes.string,
+  width: PropTypes.string,
+  height: PropTypes.string,
+};
+
+export const ImageStyled = styled(Image)``;
+
+export const ParagraphStyled = styled.p`
+  ${(p) => (p.color ? `color:${p.color};` : '')}
+  ${(p) => (p.size ? `font-size:${p.size};` : '')}
+  ${(p) => (p.transform ? `text-transform:${p.transform};` : '')}
+`;
+
+export const Heading = styled.h1`
+  font-weight: bold;
+  ${(p) => (p.color ? `color:${p.color};` : '')}
+  ${(p) => (p.size ? `font-size:${p.size};` : '')}
+  ${(p) => (p.transform ? `text-transform:${p.transform};` : '')}
 `;

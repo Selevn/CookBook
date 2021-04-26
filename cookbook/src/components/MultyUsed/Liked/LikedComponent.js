@@ -15,4 +15,8 @@ LikedComponent.propTypes = {
   count: PropTypes.number,
   liked: PropTypes.bool,
 };
+LikedComponent.defaultProps = {
+  count: 0,
+  liked: false,
+};
 export default LikedComponent;

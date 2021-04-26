@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import '../../index.css';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -58,22 +58,31 @@ Logo.propTypes = {
   width: PropTypes.string,
 };
 
-const LinkWrapper = ({ className, children }) => (
-  <a className={className} href="#/">
+const LinkWrapper = ({ className, children, id, href, onClick }) => (
+  <a className={className} id={id} href={href} onClick={onClick}>
     {children}
   </a>
 );
 LinkWrapper.propTypes = {
   className: PropTypes.string,
   children: PropTypes.node,
+  id: PropTypes.string,
+  href: PropTypes.string,
+  onClick: PropTypes.func,
+};
+LinkWrapper.defaultProps = {
+  href: '#/',
 };
 
-const ButtonWrapper = ({ className, children }) => (
-  <button className={className}>{children}</button>
+const ButtonWrapper = ({ className, children, onClick }) => (
+  <button className={className} onClick={onClick}>
+    {children}
+  </button>
 );
 ButtonWrapper.propTypes = {
   className: PropTypes.string,
   children: PropTypes.node,
+  onClick: PropTypes.func,
 };
 const InputWrapper = ({ className, type, onChange, value }) => (
   <input className={className} type={type} onChange={onChange} value={value} />
@@ -109,6 +118,15 @@ export const ButtonStyled = styled(ButtonWrapper)`
 
   background: var(--primary-color);
   border-radius: 8px;
+  border: none;
+
+  ${(p) =>
+    p.secondary &&
+    css`
+      background: var(--pure-white);
+      border-radius: 8px;
+      border: 2px solid var(--primary-color);
+    `}
 
   font-family: var(--nunito-font);
   font-style: normal;
@@ -118,8 +136,6 @@ export const ButtonStyled = styled(ButtonWrapper)`
 
   align-items: center;
   text-align: center;
-
-  border: none;
 
   color: var(--pure-black);
 `;

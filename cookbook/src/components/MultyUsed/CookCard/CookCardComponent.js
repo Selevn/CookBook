@@ -5,6 +5,8 @@ import {
   Author,
   CookCardContainer,
   CookCardImage,
+  Description,
+  DescriptionText,
   MinimizedCard,
   MinimizedCardText,
   Name,
@@ -25,6 +27,11 @@ const calculateSizes = (type) => {
       break;
     }
     case 'normal': {
+      answer.width = 'calc(350px - (var(--padding-card)*2))';
+      answer.height = 'calc(455px - (var(--padding-card)*2))';
+      answer.imgHeight = '215px';
+      answer.imgWidth = '310px';
+      answer.showDesc = true;
       answer.width = '310px';
       answer.height = '395px';
       break;
@@ -57,12 +64,14 @@ export const CookCardComponent = ({
   isCommented,
   author,
   name,
+  desc,
   type,
+  showDesc,
 }) => {
   const { width, height, imgHeight, imgWidth, showFooter } = calculateSizes(type);
 
   return (
-    <CookCardContainer vertical width={width} height={height}>
+    <CookCardContainer vertical containerWidth={width} containerHeight={height}>
       <Views count={views} />
       <CookCardImage
         src={CoolBook}
@@ -74,6 +83,13 @@ export const CookCardComponent = ({
         <Name>{name}</Name>
         <Author>{author}</Author>
       </Container>
+      {showDesc && (
+        <>
+          <Description maxWidth={width}>
+            <DescriptionText>{desc}</DescriptionText>
+          </Description>
+        </>
+      )}
       {showFooter && (
         <Container margin="8px 0 0 0" justifyContent="space-between">
           <Liked count={likes} liked={isLiked} />
@@ -92,7 +108,9 @@ CookCardComponent.propTypes = {
   isCommented: PropTypes.bool,
   author: PropTypes.string,
   name: PropTypes.string,
+  desc: PropTypes.string,
   type: PropTypes.string,
+  showDesc: PropTypes.bool,
 };
 CookCardComponent.defaultProps = {
   views: 999,
@@ -102,6 +120,10 @@ CookCardComponent.defaultProps = {
   isCommented: false,
   author: 'John Doe',
   name: 'Fresh meat',
+  desc:
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit.' +
+    'Magna amet etiam risus aliquet sit vel venenatis. Dolor,' +
+    'risus sit aliquam pharetra. ',
   type: 'small',
 };
 

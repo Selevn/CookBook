@@ -1,11 +1,16 @@
 import React from 'react';
 import { Container, LinkStyled } from '../common/StylesComponent';
-import { FooterLogo, FooterStyle, LinksContainer } from './style/FooterComponentStyle';
+import {
+  FooterContainer,
+  FooterLogo,
+  FooterStyle,
+  LinksContainer,
+} from './style/FooterComponentStyle';
 
 const Footer = () => {
   return (
     <>
-      <Container color="var(--light-black)" justifyContent="center">
+      <FooterContainer>
         <FooterStyle color="var(--light-black)">
           <Container>
             <FooterLogo />
@@ -15,10 +20,10 @@ const Footer = () => {
             <LinkStyled>Cookbooks</LinkStyled>
             <LinkStyled>Recepies</LinkStyled>
             <LinkStyled>About Us</LinkStyled>
-            <LinkStyled>Cookbooks@gmail.com</LinkStyled>
+            <LinkStyled href="mailto:Cookbooks@gmail.com">Cookbooks@gmail.com</LinkStyled>
           </LinksContainer>
         </FooterStyle>
-      </Container>
+      </FooterContainer>
     </>
   );
 };

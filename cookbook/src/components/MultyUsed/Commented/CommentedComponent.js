@@ -20,4 +20,8 @@ CommentedComponent.propTypes = {
   count: PropTypes.number,
   commented: PropTypes.bool,
 };
+CommentedComponent.defaultProps = {
+  count: 0,
+  commented: false,
+};
 export default CommentedComponent;

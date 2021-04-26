@@ -180,7 +180,7 @@ export const ParagraphStyled = styled.p`
   ${(p) => (p.transform ? `text-transform:${p.transform};` : '')}
 `;
 
-export const H1Styled = styled.h1`
+export const Heading = styled.h1`
   font-weight: bold;
   ${(p) => (p.color ? `color:${p.color};` : '')}
   ${(p) => (p.size ? `font-size:${p.size};` : '')}

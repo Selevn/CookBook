@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   Menu,
   NavbarLink,
@@ -11,13 +11,13 @@ import { Container } from '../common/StylesComponent';
 
 const NavbarComponent = () => {
   const [menuOpen, setMenuOpen] = useState(true);
-  const menuClick = () => setMenuOpen((s) => !s);
+  const handleMenuClick = useCallback(() => setMenuOpen((s) => !s), [menuOpen]);
 
   return (
     <>
       <NavbarMain>
         <NavbarStyle hide={menuOpen}>
-          <Menu onClick={menuClick} />
+          <Menu onClick={handleMenuClick} />
           <NavbarLogo alignSelf="center" className="mustBeHidden" />
           <Container flex={4} className="mustBeHidden">
             <Container padding="15px" justifyContent="flex-end" alignItems="center" flex={1}>

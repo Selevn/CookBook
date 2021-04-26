@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { ButtonStyled, Container, H1Styled, LinkStyled } from '../../common/StylesComponent';
+import { ButtonStyled, Container, Heading, LinkStyled } from '../../common/StylesComponent';
 
 export const SettingsContainer = styled(Container)`
-  ${H1Styled} {
+  ${Heading} {
     margin-bottom: 30px;
   }
 

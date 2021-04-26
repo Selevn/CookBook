@@ -2,7 +2,7 @@ import React from 'react';
 import {
   ButtonStyled,
   Container,
-  H1Styled,
+  Heading,
   ImageStyled,
   ParagraphStyled,
 } from '../common/StylesComponent';
@@ -11,13 +11,12 @@ import FoodImg from '../common/images/mainFood.jpg';
 import {
   CookBooksList,
   PopularBooksContainer,
-  WelcomeDiv,
-  WelcomeFoodDiv,
+  WelcomeContainer,
+  WelcomeFoodContainer,
 } from './style/MainPageComponentStyle';
 import { MenuCard, CookCard } from '../MultyUsed/CookCard';
-import { Footer } from '../Footer';
 
-export const MainComponent = () => {
+const MainPageComponent = () => {
   return (
     <>
       <Container minHeight="680px" containerHeight="680px" maxHeight="780px">
@@ -29,17 +28,17 @@ export const MainComponent = () => {
           justifyContent="center"
           alignItems="center"
         >
-          <WelcomeDiv>
+          <WelcomeContainer>
             <ParagraphStyled>Find and create your favourite cookbooks And Recipies</ParagraphStyled>
             <ButtonStyled>Create Account</ButtonStyled>
-          </WelcomeDiv>
+          </WelcomeContainer>
         </Container>
-        <WelcomeFoodDiv>
+        <WelcomeFoodContainer>
           <ImageStyled src={FoodImg} alt="Food image" />
-        </WelcomeFoodDiv>
+        </WelcomeFoodContainer>
       </Container>
       <PopularBooksContainer vertical>
-        <H1Styled>Most Popular Cookbooks</H1Styled>
+        <Heading>Most Popular Cookbooks</Heading>
         <CookBooksList>
           <CookCard isLiked />
           <CookCard />
@@ -48,7 +47,7 @@ export const MainComponent = () => {
         </CookBooksList>
       </PopularBooksContainer>
       <PopularBooksContainer vertical>
-        <H1Styled>Picked By Us</H1Styled>
+        <Heading>Picked By Us</Heading>
         <CookBooksList puzzle>
           <MenuCard type="large" />
           <Container vertical className="centier">
@@ -62,7 +61,7 @@ export const MainComponent = () => {
       </PopularBooksContainer>
       <Container color="var(--primary-color)">
         <PopularBooksContainer vertical>
-          <H1Styled>Trending Reciepts</H1Styled>
+          <Heading>Trending Reciepts</Heading>
           <CookBooksList>
             <CookCard type="bigImage" />
             <CookCard type="bigImage" isLiked />
@@ -70,7 +69,8 @@ export const MainComponent = () => {
           </CookBooksList>
         </PopularBooksContainer>
       </Container>
-      <Footer />
     </>
   );
 };
+
+export default MainPageComponent;

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ButtonStyled, Container, H1Styled, LinkStyled } from '../common/StylesComponent';
+import { ButtonStyled, Container, Heading, LinkStyled } from '../common/StylesComponent';
 import {
   PropChange,
   PropertiesContainer,
@@ -12,7 +12,7 @@ const Settings = ({ name, email }) => {
   return (
     <>
       <SettingsContainer>
-        <H1Styled>Personal information</H1Styled>
+        <Heading>Personal information</Heading>
         <PropertiesContainer>
           <Container>
             <PropName>Name</PropName>

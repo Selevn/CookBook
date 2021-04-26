@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import CoolBook from '../../common/images/cookbook1.jpg';
 import person from '../../common/images/Person.jpeg';
 import {
   Body,
@@ -10,8 +9,7 @@ import {
   PersonImage,
   TextDataContainer,
 } from './style/CommentComponentStyle';
-import LikedComponent from '../Liked/LikedComponent';
-import { LinkStyled, ParagraphStyled } from '../../common/StylesComponent';
+import { ParagraphStyled } from '../../common/StylesComponent';
 
 const CommentComponent = ({ name, text, date }) => {
   return (

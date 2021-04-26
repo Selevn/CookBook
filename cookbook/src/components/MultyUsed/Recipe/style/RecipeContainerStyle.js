@@ -30,6 +30,18 @@ export const SaveContainer = styled(ToolsContainer)`
 
 export const Statistics = styled(Container)`
   gap: 50px;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 10px;
+  }
+`;
+export const StatisticsContainer = styled(Container)`
+  justify-content: space-between;
+  align-items: center;
+  @media (max-width: 500px) {
+    flex-direction: column;
+    gap: 15px;
+  }
 `;
 
 export const RemoveContainer = styled(Container)`

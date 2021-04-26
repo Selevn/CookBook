@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { Container, LinkStyled, ParagraphStyled } from '../../../common/StylesComponent';
 
 export const TextDataContainer = styled(Container)`
@@ -23,14 +23,6 @@ export const Body = styled(Container)`
   padding-left: 20px;
   margin: auto 0 0 auto;
 `;
-
-export const CommentContainer = styled(Container)`
-  gap: 0;
-  flex-direction: row;
-  width: 100%;
-  font-size: 15px;
-  color: var(--light-black);
-`;
 export const PersonImage = styled(Container)`
   height: 80px;
   width: 80px;
@@ -39,4 +31,24 @@ export const PersonImage = styled(Container)`
   border-radius: 8px;
   background: url(${(p) => p.src}) no-repeat center;
   background-size: cover;
+`;
+export const CommentContainer = styled(Container)`
+  gap: 0;
+  flex-direction: row;
+  width: 100%;
+  font-size: 15px;
+  color: var(--light-black);
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    ${PersonImage} {
+      margin-left: 20px;
+    }
+    ${Header} {
+      padding: 10px 20px 5px 20px;
+      ${ParagraphStyled} {
+        font-size: 14px;
+      }
+    }
+  }
 `;

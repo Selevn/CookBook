@@ -50,8 +50,12 @@ const ProfileComponent = () => {
           </AddButton>
           {addMenu && (
             <>
-              <AddButton secondary>Add New CookBook</AddButton>
-              <AddButton secondary>Add New Reciept</AddButton>
+              <AddButton href="/newCookBook" secondary>
+                Add New CookBook
+              </AddButton>
+              <AddButton href="/newRecipe" secondary>
+                Add New Reciept
+              </AddButton>
             </>
           )}
         </AddContainer>

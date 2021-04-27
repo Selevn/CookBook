@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import CoolBook from '../../common/images/cookbook1.jpg';
+import { useHistory } from 'react-router-dom';
+import CookBook from '../../common/images/cookbook1.jpg';
 import {
   Author,
   CookCardContainer,
@@ -67,11 +68,20 @@ export const CookCardComponent = ({
     }
   }
 
+  const history = useHistory();
   return (
-    <CookCardContainer vertical containerWidth={width} containerHeight={height}>
+    <CookCardContainer
+      onClick={() => {
+        history.push('/info/cookbook/1');
+      }}
+      className="hoverer"
+      vertical
+      containerWidth={width}
+      containerHeight={height}
+    >
       <Views count={views} />
       <CookCardImage
-        src={CoolBook}
+        src={CookBook}
         width={imgWidth}
         height={imgHeight}
         alt="CookBook front image"
@@ -149,7 +159,13 @@ export const CookCardMenuComponent = ({ name, type }) => {
     }
   }
   return (
-    <MinimizedCard image={CoolBook} containerHeight={height} containerWidth={width} type={type}>
+    <MinimizedCard
+      className="hoverer"
+      image={CookBook}
+      containerHeight={height}
+      containerWidth={width}
+      type={type}
+    >
       <MinimizedCardText type={type}>{name}</MinimizedCardText>
     </MinimizedCard>
   );

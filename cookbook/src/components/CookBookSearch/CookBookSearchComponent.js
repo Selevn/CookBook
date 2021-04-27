@@ -1,4 +1,6 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { withRouter } from 'react-router-dom';
+import { PropTypes } from 'prop-types';
 import {
   FilterContainer,
   HeaderContainer,
@@ -14,14 +16,19 @@ import { CookCard } from '../MultyUsed/CookCard';
 import { Recipe } from '../MultyUsed/Recipe';
 import Checkbox from '../MultyUsed/CheckBox/CheckBox';
 
-const SearchComponent = () => {
+const SearchComponent = ({ match }) => {
   const cookbooks = 'cookbooks';
   const recipes = 'recipes';
   const vegeterianConst = 'vegeterian';
   const noMilkConst = 'noMilk';
   const noEggsConst = 'noEggs';
 
-  const [menu, setMenu] = useState(cookbooks);
+  const type = match.params.type;
+  const [menu, setMenu] = useState(type === 'cookbooks' ? cookbooks : recipes);
+  useEffect(() => {
+    setMenu(type === 'cookbooks' ? cookbooks : recipes);
+  }, [match.params.type]);
+
   const [foodPref, setFoodPref] = useState({
     vegeterian: false,
     noMilkConst: false,
@@ -183,5 +190,8 @@ const SearchComponent = () => {
     </SearchMainComponent>
   );
 };
+SearchComponent.propTypes = {
+  match: PropTypes.object,
+};
 
-export default SearchComponent;
+export default withRouter(SearchComponent);

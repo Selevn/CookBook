@@ -3,6 +3,8 @@ import '../../index.css';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import { Link, useHistory } from 'react-router-dom';
+
 import logo from './Feedme.svg';
 import lightlogo from './FeedmeLight.svg';
 
@@ -34,11 +36,27 @@ const LogoWrapper = styled(Container)`
   height: ${(p) => (p.logoHeight ? p.logoHeight : '37px')};
 `;
 
-export const Logo = ({ alignSelf, className, logoHeight }) => (
-  <LogoWrapper className={className} alignSelf={alignSelf} logoHeight={logoHeight}>
-    <LogoImage />
-  </LogoWrapper>
-);
+export const Logo = ({ alignSelf, className, logoHeight }) => {
+  const href = '/';
+  const history = useHistory();
+  let redirector = () => {};
+  if (href) {
+    redirector = () => {
+      history.push(href);
+    };
+  }
+  return (
+    <LogoWrapper
+      className={`${className} clickable`}
+      alignSelf={alignSelf}
+      logoHeight={logoHeight}
+      onClick={redirector}
+    >
+      <LogoImage />
+    </LogoWrapper>
+  );
+};
+
 export const LogoLight = ({ alignSelf, className, logoHeight, LogoWidth }) => (
   <LogoWrapper
     className={className}
@@ -58,32 +76,51 @@ Logo.propTypes = {
   width: PropTypes.string,
 };
 
-const LinkWrapper = ({ className, children, id, href, onClick }) => (
-  <a className={className} id={id} href={href} onClick={onClick}>
-    {children}
-  </a>
-);
+const LinkWrapper = ({ className, children, id, onClick, to }) => {
+  if (to === '') {
+    to = () => {};
+  }
+  return (
+    <Link to={to} className={className} id={id} onClick={onClick}>
+      {children}
+    </Link>
+  );
+};
 LinkWrapper.propTypes = {
   className: PropTypes.string,
   children: PropTypes.node,
   id: PropTypes.string,
-  href: PropTypes.string,
+  to: PropTypes.string,
   onClick: PropTypes.func,
 };
 LinkWrapper.defaultProps = {
-  href: '#/',
+  to: '',
 };
 
-const ButtonWrapper = ({ className, children, onClick }) => (
-  <button className={className} onClick={onClick}>
-    {children}
-  </button>
-);
+const ButtonWrapper = ({ className, children, onClick, href }) => {
+  const history = useHistory();
+  const redirector = (e) => {
+    e.preventDefault();
+    history.push(href);
+  };
+  const clickHandle = (e) => {
+    onClick && onClick(e);
+    href && redirector(e);
+  };
+
+  return (
+    <button className={`${className} clickable`} onClick={clickHandle}>
+      {children}
+    </button>
+  );
+};
 ButtonWrapper.propTypes = {
   className: PropTypes.string,
   children: PropTypes.node,
   onClick: PropTypes.func,
+  href: PropTypes.func,
 };
+
 const InputWrapper = ({ className, type, onChange, value }) => (
   <input className={className} type={type} onChange={onChange} value={value} />
 );
@@ -127,7 +164,7 @@ export const ButtonStyled = styled(ButtonWrapper)`
     css`
       border: 1px solid var(--primary-color);
     `}
-  
+
   ${(p) =>
     p.medium &&
     css`
@@ -135,7 +172,7 @@ export const ButtonStyled = styled(ButtonWrapper)`
       max-height: 45px;
       font-size: 18px;
     `}
-  
+
 
   ${(p) =>
     p.small &&

@@ -26,7 +26,9 @@ const FormComponent = ({
       <h1>{register ? 'Join our community' : 'Welcome back'}</h1>
       <p>
         {register ? 'Already have an account?' : 'New here?'}
-        <LinkStyled>{register ? ' Sign In' : ' Create an account'}</LinkStyled>
+        <LinkStyled to={register ? '/login' : '/register'}>
+          {register ? ' Sign In' : ' Create an account'}
+        </LinkStyled>
       </p>
     </Container>
     <Container minHeight={register ? '60%' : '40%'} vertical justifyContent="center">

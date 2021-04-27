@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import { Recipe } from '../MultyUsed/Recipe';
 import {
   Comments,
@@ -38,8 +39,11 @@ const ItemPageComponent = ({
   author,
   name,
   desc,
-  type,
+  match,
 }) => {
+  // eslint-disable-next-line
+  const { id, type } = match.params;
+
   return (
     <ItemContainer>
       <CookBookContainer>
@@ -109,7 +113,7 @@ const ItemPageComponent = ({
           </ButtonStyled>
         </StatisticsContainer>
       </CookBookContainer>
-      {type === 'book' && (
+      {type === 'cookbook' && (
         <>
           <RecepiesContainer>
             <H1Styled>Recepies</H1Styled>
@@ -147,7 +151,8 @@ ItemPageComponent.propTypes = {
   author: PropTypes.string,
   name: PropTypes.string,
   desc: PropTypes.string,
-  type: PropTypes.oneOf(['book', 'recipe']),
+
+  match: PropTypes.object,
 };
 ItemPageComponent.defaultProps = {
   views: 999,
@@ -162,7 +167,6 @@ ItemPageComponent.defaultProps = {
     'non tempus pellentesque. Erat platea augue sed amet,tempor, sed sollicitudin. Viverra tin' +
     'eu nulla pulvinar eget dolor. Dui, lacus sed ut id egestas elit, mi. Pretium elementum co' +
     'amet cursus massa dictum. Ac, pharetra nisi, morbi maecenas facilisi.\n',
-  type: 'recipe',
 };
 
-export default ItemPageComponent;
+export default withRouter(ItemPageComponent);

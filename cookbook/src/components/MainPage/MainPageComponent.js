@@ -15,9 +15,8 @@ import {
   WelcomeFoodDiv,
 } from './style/MainPageComponentStyle';
 import { MenuCard, CookCard } from '../MultyUsed/CookCard';
-import { Footer } from '../Footer';
 
-export const MainComponent = () => {
+const MainComponent = () => {
   return (
     <>
       <Container minHeight="680px" containerHeight="680px" maxHeight="780px">
@@ -31,7 +30,7 @@ export const MainComponent = () => {
         >
           <WelcomeDiv>
             <ParagraphStyled>Find and create your favourite cookbooks And Recipies</ParagraphStyled>
-            <ButtonStyled>Create Account</ButtonStyled>
+            <ButtonStyled href="/login">Create Account</ButtonStyled>
           </WelcomeDiv>
         </Container>
         <WelcomeFoodDiv>
@@ -70,7 +69,8 @@ export const MainComponent = () => {
           </CookBooksList>
         </PopularBooksContainer>
       </Container>
-      <Footer />
     </>
   );
 };
+
+export default MainComponent;

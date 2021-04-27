@@ -18,13 +18,13 @@ const NavbarComponent = () => {
       <NavbarMain>
         <NavbarStyle hide={menuOpen}>
           <Menu onClick={menuClick} />
-          <NavbarLogo alignSelf="center" className="mustBeHidden" />
+          <NavbarLogo alignSelf="center" className="mustBeHidden" href="/" />
           <Container flex={4} className="mustBeHidden">
             <Container padding="15px" justifyContent="flex-end" alignItems="center" flex={1}>
-              <NavbarLink>Cookbooks</NavbarLink>
+              <NavbarLink to="/search/cookbooks">Cookbooks</NavbarLink>
             </Container>
             <Container padding="15px" justifyContent="flex-start" alignItems="center" flex={1}>
-              <NavbarLink>Recepies</NavbarLink>
+              <NavbarLink to="/search/recipes">Recepies</NavbarLink>
             </Container>
           </Container>
           <Container flex={5} justifyContent="center" alignItems="center" className="mustBeHidden">
@@ -32,10 +32,10 @@ const NavbarComponent = () => {
           </Container>
           <Container flex={4} className="mustBeHidden">
             <Container padding="15px" justifyContent="flex-end" alignItems="center" flex={1}>
-              <NavbarLink>Sign Up</NavbarLink>
+              <NavbarLink to="/register">Sign Up</NavbarLink>
             </Container>
             <Container padding="15px" justifyContent="flex-start" alignItems="center" flex={1}>
-              <NavbarLink>Sign In</NavbarLink>
+              <NavbarLink to="/login">Sign In</NavbarLink>
             </Container>
           </Container>
         </NavbarStyle>

@@ -37,6 +37,12 @@ export const DescriptionText = styled(ParagraphStyled)`
 `;
 
 export const MinimizedCard = styled(Container)`
+  transition: all 0.2s ease-in-out;
+  :hover {
+    transform: scale(1.04);
+    cursor: pointer;
+  }
+
   background: url(${(p) => p.image}) no-repeat center;
   background-size: cover;
 

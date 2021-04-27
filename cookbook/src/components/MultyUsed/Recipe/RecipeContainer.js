@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FaRegEdit, FaWindowClose } from 'react-icons/all';
+import { useHistory } from 'react-router-dom';
 import { Author, Description, Name } from '../CookCard/style/CookCardComponentStyle';
 import { Liked } from '../Liked';
 import { Commented } from '../Commented';
@@ -38,8 +39,14 @@ export const Recipe = ({
   savable,
   handleRemove,
 }) => {
+  const history = useHistory();
   return (
-    <RecipeContainerWrapper>
+    <RecipeContainerWrapper
+      onClick={() => {
+        history.push('/info/recipe/1');
+      }}
+      className="hoverer"
+    >
       <RecipeContainer>
         <ImageContainer>
           <Image src={foodImage} width="235px" height="178px" />

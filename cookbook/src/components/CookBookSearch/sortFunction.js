@@ -12,7 +12,7 @@ export const searchSorter = (type) => {
     case COMMON.NEWEST:
       return (a, b) => Date.parse(b.creationDate) - Date.parse(a.creationDate);
     case COMMON.LIKED:
-      return (a, b) => b.likesIds.length - a.likesIds.length;
+      return (a, b) => b.likes - a.likes;
     case COMMON.OURCHOISE:
       return () => Math.random() - 0.5;
     default:

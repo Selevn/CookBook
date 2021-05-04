@@ -5,6 +5,8 @@ const {password} = require("../../passwords");
 const {ObjectId, aggregate} = require('mongoose')
 const mongoose = require('mongoose')
 
+const aggregatePaginate = require('mongoose-aggregate-paginate-v2');
+
 const CookBooks = require('./../models/CookBookModel')
 const Users = require('./../models/UserModel')
 const Comments = require('./../models/CommentModel')
@@ -35,12 +37,14 @@ exports.getUser = async (id) => {
     return Users.findOne({_id: Number(id)});
 }
 exports.getUserCookBooks = async (id) => {
-    return await CookBooks.aggregate([
+    const aggregate = await CookBooks.aggregate([
         authorIdMatcher(id),
         recipesLookUp,
         authorLookup,
-        commentsLookup
+        commentsLookup,
     ])
+    return await CookBooks.aggregatePaginate(aggregate, {page: 1, limit: 10})
+
 }
 exports.getUserRecipes = async (id) => {
     return await Recipes.aggregate([
@@ -48,28 +52,30 @@ exports.getUserRecipes = async (id) => {
         authorLookup,
         commentsLookup
     ])
+    const aggregate = await Recipes.aggregate([
+        authorIdMatcher(id),
+        authorLookup,
+        commentsLookup
+    ])
+    return await Recipes.aggregatePaginate(aggregate, {page: 1, limit: 10})
 }
 
 
 exports.getCookBooks = async (filters) => {
-    if(filters){
+
         const filterArr = []
         for (const filter in filters) {
             if(filters[filter] == 'true')
                 filterArr.push(filter)
         }
-        return CookBooks.aggregate([
-            filtersMatcher(filterArr),
-            recipesLookUp,
-            authorLookup,
-            commentsLookup
-        ])
-    }
-    return CookBooks.aggregate([
+
+    const aggregate = await CookBooks.aggregate([
+        filtersMatcher(filterArr),
         recipesLookUp,
         authorLookup,
-        commentsLookup
+        commentsLookup,
     ])
+    return await CookBooks.aggregatePaginate(aggregate, {page: 1, limit: 10})
 }
 exports.getCookBook = async (id) => {
     return CookBooks.aggregate([
@@ -87,7 +93,7 @@ exports.getRecipes = async (filter) => {
         return Recipes.aggregate([
             cookTimeFilter(filter.cookTime),
             authorLookup,
-            commentsLookup
+            commentsLookup,
         ])
     }
     return Recipes.aggregate([

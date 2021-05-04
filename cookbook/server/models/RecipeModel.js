@@ -1,3 +1,4 @@
+const aggregatePaginate = require("mongoose-aggregate-paginate-v2");
 const {Schema, model} = require('mongoose')
 
 const schema = new Schema({
@@ -30,10 +31,9 @@ const schema = new Schema({
             "Number"
         ]
     },
-    "likesIds": {
-        "type": [
+    "likes": {
+        "type":
             "Number"
-        ]
     },
     "ingredients": {
         "type": [
@@ -46,5 +46,5 @@ const schema = new Schema({
         ]
     }
 })
-
+schema.plugin(aggregatePaginate)
 module.exports = model('Recipe', schema)

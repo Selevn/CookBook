@@ -18,7 +18,7 @@ import { Liked } from '../Liked';
 
 export const CookCardComponent = ({
   views,
-  likesIds: likes,
+  likes,
   comments,
   isLiked,
   isCommented,
@@ -49,7 +49,7 @@ export const CookCardComponent = ({
       imgHeight = '215px';
       imgWidth = '310px';
       showDesc = true;
-      desc = `${desc.slice(0, desc.indexOf(' ', 150))}...`;
+      //desc = desc && `${desc.slice(0, desc.indexOf(' ', 150))}...`;
       break;
     }
     case 'bigImage': {
@@ -105,7 +105,7 @@ export const CookCardComponent = ({
       )}
       {showFooter && (
         <Container margin="8px 0 0 0" justifyContent="space-between">
-          <Liked count={likes.length || 0} liked={isLiked} />
+          <Liked count={likes || 0} liked={isLiked} />
           <Commented count={comments.length || 0} commented={isCommented} />
         </Container>
       )}
@@ -115,8 +115,7 @@ export const CookCardComponent = ({
 
 CookCardComponent.propTypes = {
   views: PropTypes.number,
-  likes: PropTypes.array || PropTypes.number,
-  likesIds: PropTypes.array,
+  likes: PropTypes.number,
   comments: PropTypes.array,
   isLiked: PropTypes.bool,
   isCommented: PropTypes.bool,

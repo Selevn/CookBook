@@ -24,7 +24,7 @@ RecipeContainerWrapper.propTypes = { children: PropTypes.node };
 SaveContainer.propTypes = { children: PropTypes.node };
 export const Recipe = ({
   views,
-  likesIds: likes,
+  likes,
   commentsIds: comments,
   isLiked,
   isCommented,
@@ -58,7 +58,7 @@ export const Recipe = ({
           <Author>{`${author && author[0].name.first} ${author && author[0].name.last}`}</Author>
           <Description>{description}</Description>
           <Statistics>
-            <Liked liked={isLiked} count={likes.length} />
+            <Liked liked={isLiked} count={likes} />
             <Commented commented={isCommented} count={comments.length} />
             <Views count={views} />
           </Statistics>
@@ -94,7 +94,7 @@ export const Recipe = ({
 
 Recipe.propTypes = {
   views: PropTypes.number,
-  likesIds: PropTypes.array,
+  likes: PropTypes.number,
   commentsIds: PropTypes.array,
   isLiked: PropTypes.bool,
   isCommented: PropTypes.bool,

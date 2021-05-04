@@ -46,6 +46,7 @@ const ItemPageComponent = ({ match }) => {
       if (type === 'cookbook') {
         const data = await fetchData(ROUTES.COOKBOOK_CLIENT(id), setLoading);
         setItem(data[0]);
+        console.log(data[0]);
         setRecipes(data[0].recipes);
         setComments(data[0].comments);
       } else {
@@ -104,7 +105,7 @@ const ItemPageComponent = ({ match }) => {
           )}
           <StatisticsContainer>
             <Statistics>
-              <Liked count={(item && item.likesIds.length) || 0} isLiked={isLiked} />
+              <Liked count={(item && item.likes) || 0} isLiked={isLiked} />
               <Commented count={(item && item.commentsIds.length) || 0} isCommented={isCommented} />
               <Views count={(item && item.views) || 0} />
             </Statistics>

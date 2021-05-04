@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
-import CookBook from '../../common/images/cookbook1.jpg';
 import {
   Author,
   CookCardContainer,
@@ -19,7 +18,7 @@ import { Liked } from '../Liked';
 
 export const CookCardComponent = ({
   views,
-  likes,
+  likesIds: likes,
   comments,
   isLiked,
   isCommented,
@@ -27,6 +26,8 @@ export const CookCardComponent = ({
   name,
   desc,
   type,
+  image,
+  _id: id,
 }) => {
   let width;
   let height;
@@ -48,6 +49,7 @@ export const CookCardComponent = ({
       imgHeight = '215px';
       imgWidth = '310px';
       showDesc = true;
+      desc = `${desc.slice(0, desc.indexOf(' ', 150))}...`;
       break;
     }
     case 'bigImage': {
@@ -61,9 +63,13 @@ export const CookCardComponent = ({
     case 'long': {
       width = '215px';
       height = '215px';
+      imgHeight = '236px';
+      imgWidth = '310px';
       break;
     }
     default: {
+      imgHeight = '236px';
+      imgWidth = '310px';
       break;
     }
   }
@@ -72,7 +78,7 @@ export const CookCardComponent = ({
   return (
     <CookCardContainer
       onClick={() => {
-        history.push('/info/cookbook/1');
+        history.push(`/info/cookbook/${id}`);
       }}
       className="hoverer"
       vertical
@@ -81,14 +87,14 @@ export const CookCardComponent = ({
     >
       <Views count={views} />
       <CookCardImage
-        src={CookBook}
+        src={`${image}`}
         width={imgWidth}
         height={imgHeight}
         alt="CookBook front image"
       />
       <Container vertical>
         <Name>{name}</Name>
-        <Author>{author}</Author>
+        <Author>{`${author[0].name.first} ${author[0].name.last}`}</Author>
       </Container>
       {showDesc && (
         <>
@@ -99,8 +105,8 @@ export const CookCardComponent = ({
       )}
       {showFooter && (
         <Container margin="8px 0 0 0" justifyContent="space-between">
-          <Liked count={likes} liked={isLiked} />
-          <Commented count={comments} commented={isCommented} />
+          <Liked count={likes.length || 0} liked={isLiked} />
+          <Commented count={comments.length || 0} commented={isCommented} />
         </Container>
       )}
     </CookCardContainer>
@@ -109,31 +115,20 @@ export const CookCardComponent = ({
 
 CookCardComponent.propTypes = {
   views: PropTypes.number,
-  likes: PropTypes.number,
-  comments: PropTypes.number,
+  likes: PropTypes.array || PropTypes.number,
+  likesIds: PropTypes.array,
+  comments: PropTypes.array,
   isLiked: PropTypes.bool,
   isCommented: PropTypes.bool,
-  author: PropTypes.string,
+  author: PropTypes.array,
   name: PropTypes.string,
   desc: PropTypes.string,
   type: PropTypes.string,
-};
-CookCardComponent.defaultProps = {
-  views: 999,
-  likes: 400,
-  comments: 7,
-  isLiked: false,
-  isCommented: false,
-  author: 'John Doe',
-  name: 'Fresh meat',
-  desc:
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit.' +
-    'Magna amet etiam risus aliquet sit vel venenatis. Dolor,' +
-    'risus sit aliquam pharetra. ',
-  type: 'small',
+  image: PropTypes.string,
+  _id: PropTypes.number,
 };
 
-export const CookCardMenuComponent = ({ name, type }) => {
+export const CookCardMenuComponent = ({ name, type, image, _id: id }) => {
   let width;
   let height;
   switch (type) {
@@ -158,13 +153,19 @@ export const CookCardMenuComponent = ({ name, type }) => {
       break;
     }
   }
+
+  const history = useHistory();
   return (
     <MinimizedCard
       className="hoverer"
-      image={CookBook}
+      image={image}
       containerHeight={height}
       containerWidth={width}
       type={type}
+      onClick={(e) => {
+        e.preventDefault();
+        history.push(`info/cookbook/${id}`);
+      }}
     >
       <MinimizedCardText type={type}>{name}</MinimizedCardText>
     </MinimizedCard>
@@ -174,8 +175,6 @@ export const CookCardMenuComponent = ({ name, type }) => {
 CookCardMenuComponent.propTypes = {
   type: PropTypes.string,
   name: PropTypes.string,
-};
-CookCardMenuComponent.defaultProps = {
-  type: 'large',
-  name: 'Lorem Ipsum',
+  image: PropTypes.string,
+  _id: PropTypes.number,
 };

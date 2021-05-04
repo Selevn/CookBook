@@ -30,6 +30,7 @@ export const SaveContainer = styled(ToolsContainer)`
 
 export const Statistics = styled(Container)`
   gap: 50px;
+  padding-top: 10px;
   @media (max-width: 768px) {
     flex-direction: column;
     gap: 10px;
@@ -105,6 +106,10 @@ export const RecipeContainer = styled(Container)`
 `;
 
 export const RecipeContainerWrapper = styled(Container)`
+  @media (min-width: 768px) {
+    max-height: 218px;
+  }
+
   @media (max-width: 768px) {
     ${RemoveContainer} {
       padding: 0 10px;

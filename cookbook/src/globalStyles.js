@@ -14,4 +14,11 @@ export const GlobalStyle = createGlobalStyle`
     min-height: 100vh;
     height: 100%;
   }
+  .loading{
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    max-width: 300px;
+    max-height:300px;
+  }
 `;

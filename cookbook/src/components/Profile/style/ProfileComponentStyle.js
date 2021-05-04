@@ -111,6 +111,10 @@ export const DataContainer = styled(Container)`
   justify-content: center;
   gap: 40px;
   min-height: 410px;
+
+  h1 {
+    margin: auto;
+  }
 `;
 export const AddButton = styled(ButtonStyled)`
   width: 212px;

@@ -70,7 +70,7 @@ export const LogoLight = ({ alignSelf, className, logoHeight, LogoWidth }) => (
 LogoLight.propTypes = Logo.propTypes;
 
 Logo.propTypes = {
-  alignSelf: PropTypes.bool,
+  alignSelf: PropTypes.string,
   className: PropTypes.string,
   logoHeight: PropTypes.string,
   width: PropTypes.string,
@@ -118,7 +118,7 @@ ButtonWrapper.propTypes = {
   className: PropTypes.string,
   children: PropTypes.node,
   onClick: PropTypes.func,
-  href: PropTypes.func,
+  href: PropTypes.string,
 };
 
 const InputWrapper = ({ className, type, onChange, value }) => (
@@ -233,14 +233,15 @@ export const TestContainer = styled.div`
   height: 100%;
 `;
 
-export const Image = ({ src, alt, width, height }) => {
-  return <img src={src} alt={alt} width={width} height={height} />;
+export const Image = ({ src, alt, width, height, radius }) => {
+  return <img src={src} alt={alt} width={width} height={height} style={{ borderRadius: radius }} />;
 };
 Image.propTypes = {
   src: PropTypes.string,
   alt: PropTypes.string,
   width: PropTypes.string,
   height: PropTypes.string,
+  radius: PropTypes.string,
 };
 
 export const ImageStyled = styled(Image)``;

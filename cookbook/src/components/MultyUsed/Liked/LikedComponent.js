@@ -6,7 +6,7 @@ import { ViewsContainer, ViewsParagraph } from '../Views/style/ViewsComponentSty
 const LikedComponent = ({ count, liked }) => {
   return (
     <ViewsContainer>
-      {liked ? <FaHeart size="18px" color="var(--primary-color)" /> : <FaRegHeart size="18px" />}
+      {liked ? <FaHeart size="14px" color="var(--primary-color)" /> : <FaRegHeart size="14px" />}
       <ViewsParagraph>{count} likes</ViewsParagraph>
     </ViewsContainer>
   );

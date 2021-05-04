@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   ButtonStyled,
   Container,
@@ -15,8 +15,32 @@ import {
   WelcomeFoodDiv,
 } from './style/MainPageComponentStyle';
 import { MenuCard, CookCard } from '../MultyUsed/CookCard';
+import { fetchData } from '../../Connectors/dataProvider';
+import { COMMON, ROUTES } from '../../constants';
+import { searchSorter } from '../CookBookSearch/sortFunction';
+import { Loading } from '../MultyUsed/Loading/Loading';
 
 const MainComponent = () => {
+  const [cookbooks, setCookbooks] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const mostPopularCookBooks = useMemo(() => {
+    return cookbooks.sort(searchSorter(COMMON.POPULAR)).slice(0, 4);
+  }, [cookbooks]);
+  const pickedByUs = useMemo(() => {
+    return cookbooks.sort(searchSorter(COMMON.OURCHOISE)).slice(0, 4);
+  }, [cookbooks]);
+  const trendingCookbooks = useMemo(() => {
+    return cookbooks.sort(searchSorter(COMMON.LIKED)).slice(0, 3);
+  }, [cookbooks]);
+
+  // Можно заюзать мемо
+  useEffect(() => {
+    (async () => {
+      const data = await fetchData(ROUTES.COOKBOOKS, setLoading);
+      setCookbooks(data);
+    })();
+  }, []);
+
   return (
     <>
       <Container minHeight="680px" containerHeight="680px" maxHeight="780px">
@@ -40,32 +64,36 @@ const MainComponent = () => {
       <PopularBooksContainer vertical>
         <H1Styled>Most Popular Cookbooks</H1Styled>
         <CookBooksList>
-          <CookCard isLiked />
-          <CookCard />
-          <CookCard isCommented />
-          <CookCard />
+          {loading && <Loading />}
+          {mostPopularCookBooks &&
+            mostPopularCookBooks.map((item) => {
+              return <CookCard type="small" key={item._id} {...item} />;
+            })}
         </CookBooksList>
       </PopularBooksContainer>
       <PopularBooksContainer vertical>
         <H1Styled>Picked By Us</H1Styled>
+        {loading && <Loading />}
         <CookBooksList puzzle>
-          <MenuCard type="large" />
+          {pickedByUs && <MenuCard type="large" {...pickedByUs[0]} />}
           <Container vertical className="centier">
-            <MenuCard type="long" />
+            {pickedByUs && <MenuCard type="long" {...pickedByUs[1]} />}
             <Container className="centier">
-              <MenuCard type="small" />
-              <MenuCard type="small" />
+              {pickedByUs && <MenuCard type="small" {...pickedByUs[2]} />}
+              {pickedByUs && <MenuCard type="small" {...pickedByUs[3]} />}
             </Container>
           </Container>
         </CookBooksList>
       </PopularBooksContainer>
       <Container color="var(--primary-color)">
         <PopularBooksContainer vertical>
-          <H1Styled>Trending Reciepts</H1Styled>
+          <H1Styled>Trending Cookbooks</H1Styled>
           <CookBooksList>
-            <CookCard type="bigImage" />
-            <CookCard type="bigImage" isLiked />
-            <CookCard type="bigImage" isCommented />
+            {loading && <Loading />}
+            {trendingCookbooks &&
+              trendingCookbooks.map((item) => (
+                <CookCard key={item._id} type="bigImage" {...item} />
+              ))}
           </CookBooksList>
         </PopularBooksContainer>
       </Container>

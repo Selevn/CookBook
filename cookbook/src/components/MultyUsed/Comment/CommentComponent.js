@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import person from '../../common/images/Person.jpeg';
 import {
   Body,
   CommentContainer,
@@ -11,13 +10,15 @@ import {
 } from './style/CommentComponentStyle';
 import { ParagraphStyled } from '../../common/StylesComponent';
 
-const CommentComponent = ({ name, text, date }) => {
+const CommentComponent = ({ author, text, date }) => {
   return (
     <CommentContainer>
-      <PersonImage src={person} />
+      <PersonImage src={author && author[0].image} />
       <TextDataContainer>
         <Header>
-          <Name>{name}</Name>
+          <Name to={`/profile/${author && author[0]._id}`}>
+            {author && `${author[0].name.first} ${author[0].name.last}`}
+          </Name>
           <ParagraphStyled>{date}</ParagraphStyled>
         </Header>
         <Body>{text}</Body>
@@ -25,24 +26,10 @@ const CommentComponent = ({ name, text, date }) => {
     </CommentContainer>
   );
 };
-
 CommentComponent.propTypes = {
-  name: PropTypes.string,
+  author: PropTypes.array,
   text: PropTypes.string,
   date: PropTypes.string,
-};
-CommentComponent.defaultProps = {
-  name: 'Anna Dark',
-  text:
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit.' +
-    'Magna amet etiam risus aliquet sit vel venenatis. Dolor,' +
-    'Magna amet etiam risus aliquet sit vel venenatis. Dolor,' +
-    'Magna amet etiam risus aliquet sit vel venenatis. Dolor,' +
-    'Magna amet etiam risus aliquet sit vel venenatis. Dolor,' +
-    'Magna amet etiam risus aliquet sit vel venenatis. Dolor,' +
-    'Magna amet etiam risus aliquet sit vel venenatis. Dolor,' +
-    'risus sit aliquam pharetra. ',
-  date: '5 minutes ago',
 };
 
 export default CommentComponent;

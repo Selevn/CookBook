@@ -63,7 +63,7 @@ export const RecipeStatsContainer = styled(Container)`
   @media (max-width: 1024px) {
     flex-direction: column;
   }
-  align-items: center;
+  align-items: start;
   margin-bottom: 20px;
 `;
 export const RecipeStats = styled(Container)`

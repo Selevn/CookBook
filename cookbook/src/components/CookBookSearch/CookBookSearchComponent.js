@@ -4,134 +4,70 @@ import { PropTypes } from 'prop-types';
 import {
   FilterContainer,
   HeaderContainer,
-  InputUniteContainer,
   ResultCardsContainer,
   ResultsContainer,
   SearchMainComponent,
   SortContainer,
 } from './style/CookBookSearchComponentStyle';
 import { LinksContainer, UserLinks } from '../Profile/style/ProfileComponentStyle';
-import { H1Styled, LabelStyled, LinkStyled } from '../common/StylesComponent';
-import { CookCard } from '../MultyUsed/CookCard';
-import { Recipe } from '../MultyUsed/Recipe';
+import { ButtonStyled, H1Styled, LabelStyled } from '../common/StylesComponent';
 import Checkbox from '../MultyUsed/CheckBox/CheckBox';
+import { Recipes, RecipesMenu } from './Recipes';
+import { CookBooks, CookBooksMenu } from './CookBooks';
+import { COMMON } from '../../constants';
 
 const SearchComponent = ({ match }) => {
-  const cookbooks = 'cookbooks';
-  const recipes = 'recipes';
-  const vegeterianConst = 'vegeterian';
-  const noMilkConst = 'noMilk';
-  const noEggsConst = 'noEggs';
+  const foodPrefInitialValue = {
+    vegeterian: false,
+    noMilk: false,
+    noEggs: false,
+  };
 
   const type = match.params.type;
+
+  const cookbooks = 'cookbooks';
+  const recipes = 'recipes';
+
   const [menu, setMenu] = useState(type === 'cookbooks' ? cookbooks : recipes);
   useEffect(() => {
     setMenu(type === 'cookbooks' ? cookbooks : recipes);
-  }, [match.params.type]);
+  }, [type]);
 
-  const [foodPref, setFoodPref] = useState({
-    vegeterian: false,
-    noMilkConst: false,
-    noEggsConst: false,
-  });
-  const handleCheckboxReducer = useCallback((name) => {
-    setFoodPref((s) => ({ ...s, [name]: !s[name] }));
-  }, []);
+  const [foodPref, setFoodPref] = useState(foodPrefInitialValue);
 
   const [hideMy, setHideMy] = useState(false);
+  const [sort, setSort] = useState(COMMON.POPULAR);
+
+  const [cookTime, setCookTime] = useState(COMMON.ALLCONSTANT);
+
+  const clearFilters = useCallback(() => {
+    setSort(COMMON.POPULAR);
+    setCookTime(COMMON.ALLCONSTANT);
+    setFoodPref(foodPrefInitialValue);
+    setHideMy(false);
+  }, []);
 
   return (
     <SearchMainComponent>
       <FilterContainer>
         <HeaderContainer alignItems="baseline">
           <H1Styled>Filter</H1Styled>
-          <LinkStyled>clear all</LinkStyled>
+          <ButtonStyled small light secondary onClick={clearFilters}>
+            Clear all
+          </ButtonStyled>
         </HeaderContainer>
         <SortContainer>
           <H1Styled>Sort by</H1Styled>
-          <select>
-            <option>Popularity</option>
-            <option>Newest</option>
-            <option>Most liked</option>
+          <select value={sort} onChange={(e) => setSort(e.target.value)}>
+            <option value={COMMON.POPULAR}>Popularity</option>
+            <option value={COMMON.NEWEST}>Newest</option>
+            <option value={COMMON.LIKED}>Most liked</option>
           </select>
         </SortContainer>
         {menu === cookbooks ? (
-          <>
-            <SortContainer>
-              <H1Styled>Cookbook type</H1Styled>
-              <InputUniteContainer>
-                <LabelStyled
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleCheckboxReducer(vegeterianConst);
-                  }}
-                >
-                  <Checkbox
-                    type="checkbox"
-                    id="vegeterian"
-                    name="vegeterian"
-                    value="vegeterian"
-                    class="custom-checkbox"
-                    checked={foodPref.vegeterian}
-                  />
-                  Vegeterian
-                </LabelStyled>
-              </InputUniteContainer>
-
-              <InputUniteContainer>
-                <LabelStyled
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleCheckboxReducer(noEggsConst);
-                  }}
-                >
-                  <Checkbox
-                    type="checkbox"
-                    id="noEggs"
-                    name="noEggs"
-                    value="noEggs"
-                    class="custom-checkbox"
-                    checked={foodPref.noEggs}
-                  />
-                  Without eggs
-                </LabelStyled>
-              </InputUniteContainer>
-
-              <InputUniteContainer>
-                <LabelStyled
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleCheckboxReducer(noMilkConst);
-                  }}
-                >
-                  <Checkbox
-                    type="checkbox"
-                    id="hideMy"
-                    name="hideMy"
-                    value="hideMy"
-                    class="custom-checkbox"
-                    checked={foodPref.noMilk}
-                  />
-                  Without milk
-                </LabelStyled>
-              </InputUniteContainer>
-            </SortContainer>
-          </>
+          <CookBooksMenu setFoodPref={setFoodPref} foodPref={foodPref} />
         ) : (
-          <>
-            <SortContainer>
-              <H1Styled>Cooking time</H1Styled>
-              <select>
-                <option>All</option>
-                <option>&#60;20 min</option>
-                <option>20 min - 40 min</option>
-                <option>40 min - 1 hour</option>
-                <option>1 hour - 2 hours</option>
-                <option>2 hours - 3 hours</option>
-                <option>&#62;3 hours</option>
-              </select>
-            </SortContainer>
-          </>
+          <RecipesMenu cookTime={cookTime} setCookTime={setCookTime} />
         )}
 
         <LabelStyled
@@ -165,26 +101,8 @@ const SearchComponent = ({ match }) => {
           </UserLinks>
         </LinksContainer>
         <ResultCardsContainer>
-          {menu === cookbooks && (
-            <>
-              <CookCard type="normal" />
-              <CookCard type="normal" />
-              <CookCard type="normal" />
-              <CookCard type="normal" />
-              <CookCard type="normal" />
-              <CookCard type="normal" />
-            </>
-          )}
-          {menu === recipes && (
-            <>
-              <Recipe />
-              <Recipe />
-              <Recipe />
-              <Recipe />
-              <Recipe />
-              <Recipe />
-            </>
-          )}
+          {menu === cookbooks && <CookBooks filters={foodPref} sortBy={sort} />}
+          {menu === recipes && <Recipes filters={cookTime} sortBy={sort} />}
         </ResultCardsContainer>
       </ResultsContainer>
     </SearchMainComponent>

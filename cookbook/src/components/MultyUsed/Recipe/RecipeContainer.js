@@ -8,7 +8,6 @@ import { Commented } from '../Commented';
 import { Views } from '../Views';
 import { ButtonStyled, Image, LinkStyled } from '../../common/StylesComponent';
 
-import foodImage from '../../common/images/cookbook1.jpg';
 import {
   DataContainer,
   ImageContainer,
@@ -25,8 +24,8 @@ RecipeContainerWrapper.propTypes = { children: PropTypes.node };
 SaveContainer.propTypes = { children: PropTypes.node };
 export const Recipe = ({
   views,
-  likes,
-  comments,
+  likesIds: likes,
+  commentsIds: comments,
   isLiked,
   isCommented,
   author,
@@ -38,26 +37,29 @@ export const Recipe = ({
   removable,
   savable,
   handleRemove,
+  image,
+  _id: id,
 }) => {
+  const description = `${desc.slice(0, desc.indexOf(' ', 250))}...`;
   const history = useHistory();
   return (
     <RecipeContainerWrapper
       onClick={() => {
-        history.push('/info/recipe/1');
+        history.push(`/info/recipe/${id}`);
       }}
       className="hoverer"
     >
       <RecipeContainer>
         <ImageContainer>
-          <Image src={foodImage} width="235px" height="178px" />
+          <Image src={image} width="235px" height="178px" radius="10px" />
         </ImageContainer>
         <DataContainer>
           <Name>{name}</Name>
-          <Author>{author}</Author>
-          <Description>{desc}</Description>
+          <Author>{`${author && author[0].name.first} ${author && author[0].name.last}`}</Author>
+          <Description>{description}</Description>
           <Statistics>
-            <Liked liked={isLiked} count={likes} />
-            <Commented commented={isCommented} count={comments} />
+            <Liked liked={isLiked} count={likes.length} />
+            <Commented commented={isCommented} count={comments.length} />
             <Views count={views} />
           </Statistics>
         </DataContainer>
@@ -92,11 +94,11 @@ export const Recipe = ({
 
 Recipe.propTypes = {
   views: PropTypes.number,
-  likes: PropTypes.number,
-  comments: PropTypes.number,
+  likesIds: PropTypes.array,
+  commentsIds: PropTypes.array,
   isLiked: PropTypes.bool,
   isCommented: PropTypes.bool,
-  author: PropTypes.string,
+  author: PropTypes.array,
   name: PropTypes.string,
   desc: PropTypes.string,
   type: PropTypes.string,
@@ -104,28 +106,8 @@ Recipe.propTypes = {
   removable: PropTypes.bool,
   savable: PropTypes.bool,
   handleRemove: PropTypes.func,
-};
-Recipe.defaultProps = {
-  views: 999,
-  likes: 400,
-  comments: 7,
-  isLiked: false,
-  isCommented: false,
-  author: 'John Doe',
-  name: 'Fresh meat',
-  desc:
-    'Lorem ipsum dolor sit amet, consectetur' +
-    'adipiscing elit. Magna amet etiam risus' +
-    'aliquet sit vel venenatis. Dolor, risus' +
-    'sit aliquam pharetra. ',
-  type: 'small',
-  isMy: false,
-  removable: false,
-  savable: true,
-  handleRemove: () => {
-    // eslint-disable-next-line
-    console.log('removed!');
-  },
+  _id: PropTypes.number,
+  image: PropTypes.string,
 };
 
 export default Recipe;

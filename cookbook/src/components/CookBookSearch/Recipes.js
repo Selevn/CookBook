@@ -10,42 +10,43 @@ import { searchSorter } from './sortFunction';
 import { Loading } from '../MultyUsed/Loading/Loading';
 
 export const Recipes = ({ filters, sortBy }) => {
-  const paginatorInitState = {nextPage: 1, hasNextPage: true};
+  const paginatorInitState = { nextPage: 1, hasNextPage: true };
 
   const [items, setItems] = useState([]);
   const [paginator, setPaginator] = useState(paginatorInitState);
 
   const ItemsSetter = useCallback(
-      (_items) => {
-        if(_items)
-          setItems(items.concat(_items))
-        else
-          setItems([])
-      }, [items]
-  )
+    (_items) => {
+      if (_items) setItems(items.concat(_items));
+      else setItems([]);
+    }, [items],
+  );
 
   const fetchRecipes = useCallback(() => {
     (async () => {
-      const data = await fetchData(ROUTES.RECIPES, ()=>{}, { cookTime: filters, sortBy: sortBy, page: paginator.nextPage })
+      console.log('paginator');
+      const data = await fetchData(
+          ROUTES.RECIPES, () => {}, { cookTime: filters, sortBy, page: paginator.nextPage }
+      );
       setPaginator({ nextPage: data.nextPage, hasNextPage: data.hasNextPage });
-      ItemsSetter(data.docs)
+      ItemsSetter(data.docs);
     })();
   }, [sortBy, filters, paginator.nextPage, items]);
 
-
-  useEffect(()=>{
+  useEffect(() => {
     (async() => {
-      setItems([])
+      console.log('initial');
+      setItems([]);
       const data = await fetchData(ROUTES.RECIPES, () => {
-      }, {cookTime: filters, sortBy: sortBy, page: 1})
+      }, { cookTime: filters, sortBy, page: 1 });
+      console.log(data);
       setPaginator({ nextPage: data.nextPage, hasNextPage: data.hasNextPage });
-      setItems(data.docs)
-    })()
-  },[sortBy, filters])
+      setItems(data.docs);
+    })();
+  }, [sortBy, filters]);
 
   return (
     <>
-      {(
       <InfiniteScroll
         dataLength={items.length}
         hasMore={paginator.hasNextPage}
@@ -54,7 +55,6 @@ export const Recipes = ({ filters, sortBy }) => {
       >
         {items && items.map((item) => <Recipe key={item._id} {...item} />)}
       </InfiniteScroll>
-      )}
     </>
   );
 };

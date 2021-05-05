@@ -46,7 +46,6 @@ const ItemPageComponent = ({ match }) => {
       if (type === 'cookbook') {
         const data = await fetchData(ROUTES.COOKBOOK_CLIENT(id), setLoading);
         setItem(data[0]);
-        console.log(data[0]);
         setRecipes(data[0].recipes);
         setComments(data[0].comments);
       } else {

@@ -1,3 +1,4 @@
+
 const fs = require("fs");
 const path = require("path");
 const {COMMON} = require("../../src/constants");
@@ -100,8 +101,7 @@ exports.getRecipes = async (filter) => {
             commentsLookup,
         ]);
     }
-    console.log((await aggregate).length)
-    return await CookBooks.aggregatePaginate(aggregate, {page: Number(filter.page), limit: 15, sort:dataSearchSorter(filter.sortBy)})
+    return await Recipes.aggregatePaginate(aggregate, {page: Number(filter.page), limit: 15, sort:dataSearchSorter(filter.sortBy)})
 }
 exports.getRecipe = async (id) => {
     return Recipes.aggregate([

@@ -106,6 +106,7 @@ export const RecipeContainer = styled(Container)`
 `;
 
 export const RecipeContainerWrapper = styled(Container)`
+  
   @media (min-width: 768px) {
     max-height: 218px;
   }

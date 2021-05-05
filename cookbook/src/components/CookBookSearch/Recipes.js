@@ -24,23 +24,23 @@ export const Recipes = ({ filters, sortBy }) => {
   const fetchRecipes = useCallback(() => {
     (async () => {
       const data = await fetchData(
-          ROUTES.RECIPES, () => {}, { cookTime: filters, sortBy, page: paginator.nextPage }
+        ROUTES.RECIPES, () => {}, { cookTime: filters, sortBy, page: paginator.nextPage },
       );
       setPaginator({ nextPage: data.nextPage, hasNextPage: data.hasNextPage });
       ItemsSetter(data.docs);
     })();
   }, [sortBy, filters, paginator.nextPage, items]);
 
-  //firstLoad
+  // firstLoad
   useEffect(() => {
     (async() => {
-      setLoader(true)
+      setLoader(true);
       setItems([]);
       const data = await fetchData(ROUTES.RECIPES, () => {
       }, { cookTime: filters, sortBy, page: 1 });
       setPaginator({ nextPage: data.nextPage, hasNextPage: data.hasNextPage });
       setItems(data.docs);
-      setLoader(false)
+      setLoader(false);
     })();
   }, [sortBy, filters]);
 
@@ -51,8 +51,9 @@ export const Recipes = ({ filters, sortBy }) => {
         hasMore={paginator.hasNextPage}
         loader={<Loading />}
         next={fetchRecipes}
+        className="infinity-scroller"
       >
-        {loader && <Loading/>}
+        {loader && <Loading />}
         {!loader && items && items.map((item) => <Recipe key={item._id} {...item} />)}
         {!loader && items && items.length === 0 && (<h1>No recipes</h1>)}
       </InfiniteScroll>

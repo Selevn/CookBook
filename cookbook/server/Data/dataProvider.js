@@ -35,6 +35,8 @@ async function start() {
 
 start().then(r => console.log('Connected to bd'))
 
+const aggregateOptions = (page = 1, sortBy = COMMON.NEWEST) => ({page: Number(page), limit: 15, sort:dataSearchSorter(sortBy)})
+
 exports.getUser = async (id) => {
     return Users.findOne({_id: Number(id)});
 }
@@ -71,7 +73,7 @@ exports.getCookBooks = async (filters) => {
         authorLookup,
         commentsLookup,
     ])
-    return await CookBooks.aggregatePaginate(aggregate, {page: 1, limit: 10})
+    return await CookBooks.aggregatePaginate(aggregate, aggregateOptions(filters.page, filters.sortBy))
 }
 exports.getCookBook = async (id) => {
     return CookBooks.aggregate([
@@ -101,7 +103,7 @@ exports.getRecipes = async (filter) => {
             commentsLookup,
         ]);
     }
-    return await Recipes.aggregatePaginate(aggregate, {page: Number(filter.page), limit: 15, sort:dataSearchSorter(filter.sortBy)})
+    return await Recipes.aggregatePaginate(aggregate, aggregateOptions(filter.page, filter.sortBy))
 }
 exports.getRecipe = async (id) => {
     return Recipes.aggregate([

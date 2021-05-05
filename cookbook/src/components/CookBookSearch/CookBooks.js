@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import { PropTypes } from 'prop-types';
 import { fetchData } from '../../Connectors/dataProvider';
 import { ROUTES } from '../../constants';
@@ -8,26 +9,65 @@ import { H1Styled, LabelStyled } from '../common/StylesComponent';
 import Checkbox from '../MultyUsed/CheckBox/CheckBox';
 import { searchSorter } from './sortFunction';
 import { Loading } from '../MultyUsed/Loading/Loading';
+import {Recipe} from "../MultyUsed/Recipe";
 
 export const CookBooks = ({ filters, sortBy }) => {
+  const paginatorInitState = { nextPage: 1, hasNextPage: true };
+
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [paginator, setPaginator] = useState(paginatorInitState);
+
+
+  const ItemsSetter = useCallback(
+      (_items) => {
+        setItems(items.concat(_items));
+      }, [items],
+  );
 
   useEffect(() => {
     (async () => {
       const data = await fetchData(ROUTES.COOKBOOKS, setLoading, filters);
-      setItems(data);
+      setItems(data.docs);
     })();
   }, [filters, sortBy]);
 
+  const fetchBooks = useCallback(() => {
+    (async () => {
+      const data = await fetchData(
+          ROUTES.COOKBOOKS, () => {}, { ...filters, sortBy, page: paginator.nextPage }
+      );
+      setPaginator({ nextPage: data.nextPage, hasNextPage: data.hasNextPage });
+      ItemsSetter(data.docs);
+    })();
+  }, [sortBy, filters, paginator.nextPage, items]);
+
+  //firstLoad
+  useEffect(() => {
+    (async() => {
+      setLoading(true)
+      setItems([]);
+      const data = await fetchData(ROUTES.COOKBOOKS, () => {
+      }, { ...filters, sortBy, page: 1 });
+      setPaginator({ nextPage: data.nextPage, hasNextPage: data.hasNextPage });
+      setItems(data.docs);
+      setLoading(false)
+    })();
+  }, [sortBy, filters]);
   return (
     <>
-      {loading && <Loading />}
 
-      {items &&
-        items
-          .sort(searchSorter(sortBy))
-          .map((item) => <CookCard key={item._id} type="normal" {...item} />)}
+        <InfiniteScroll
+            dataLength={items.length}
+            hasMore={paginator.hasNextPage}
+            loader={<Loading />}
+            next={fetchBooks}
+        >
+          {loading && <Loading/>}
+          {!loading && items && items.map((item) => <CookCard key={item._id} {...item} />)}
+          {!loading && items && items.length === 0 && (<h1>No cookbooks</h1>)}
+        </InfiniteScroll>
+
     </>
   );
 };

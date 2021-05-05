@@ -6,25 +6,23 @@ import { fetchData } from '../../Connectors/dataProvider';
 import { COMMON, ROUTES } from '../../constants';
 import { SortContainer } from './style/CookBookSearchComponentStyle';
 import { H1Styled } from '../common/StylesComponent';
-import { searchSorter } from './sortFunction';
 import { Loading } from '../MultyUsed/Loading/Loading';
 
 export const Recipes = ({ filters, sortBy }) => {
   const paginatorInitState = { nextPage: 1, hasNextPage: true };
 
   const [items, setItems] = useState([]);
+  const [loader, setLoader] = useState(false);
   const [paginator, setPaginator] = useState(paginatorInitState);
 
   const ItemsSetter = useCallback(
     (_items) => {
-      if (_items) setItems(items.concat(_items));
-      else setItems([]);
+      setItems(items.concat(_items));
     }, [items],
   );
 
   const fetchRecipes = useCallback(() => {
     (async () => {
-      console.log('paginator');
       const data = await fetchData(
           ROUTES.RECIPES, () => {}, { cookTime: filters, sortBy, page: paginator.nextPage }
       );
@@ -33,15 +31,16 @@ export const Recipes = ({ filters, sortBy }) => {
     })();
   }, [sortBy, filters, paginator.nextPage, items]);
 
+  //firstLoad
   useEffect(() => {
     (async() => {
-      console.log('initial');
+      setLoader(true)
       setItems([]);
       const data = await fetchData(ROUTES.RECIPES, () => {
       }, { cookTime: filters, sortBy, page: 1 });
-      console.log(data);
       setPaginator({ nextPage: data.nextPage, hasNextPage: data.hasNextPage });
       setItems(data.docs);
+      setLoader(false)
     })();
   }, [sortBy, filters]);
 
@@ -53,7 +52,9 @@ export const Recipes = ({ filters, sortBy }) => {
         loader={<Loading />}
         next={fetchRecipes}
       >
-        {items && items.map((item) => <Recipe key={item._id} {...item} />)}
+        {loader && <Loading/>}
+        {!loader && items && items.map((item) => <Recipe key={item._id} {...item} />)}
+        {!loader && items && items.length === 0 && (<h1>No recipes</h1>)}
       </InfiniteScroll>
     </>
   );

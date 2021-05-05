@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { PropTypes } from 'prop-types';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import { Recipe } from '../MultyUsed/Recipe';
 import { fetchData } from '../../Connectors/dataProvider';
 import { COMMON, ROUTES } from '../../constants';
@@ -9,19 +10,51 @@ import { searchSorter } from './sortFunction';
 import { Loading } from '../MultyUsed/Loading/Loading';
 
 export const Recipes = ({ filters, sortBy }) => {
+  const paginatorInitState = {nextPage: 1, hasNextPage: true};
+
   const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(false);
-  useEffect(() => {
+  const [paginator, setPaginator] = useState(paginatorInitState);
+
+  const ItemsSetter = useCallback(
+      (_items) => {
+        if(_items)
+          setItems(items.concat(_items))
+        else
+          setItems([])
+      }, [items]
+  )
+
+  const fetchRecipes = useCallback(() => {
     (async () => {
-      const data = await fetchData(ROUTES.RECIPES, setLoading, { cookTime: filters });
-      setItems(data);
+      const data = await fetchData(ROUTES.RECIPES, ()=>{}, { cookTime: filters, sortBy: sortBy, page: paginator.nextPage })
+      setPaginator({ nextPage: data.nextPage, hasNextPage: data.hasNextPage });
+      ItemsSetter(data.docs)
     })();
-  }, [filters, sortBy]);
+  }, [sortBy, filters, paginator.nextPage, items]);
+
+
+  useEffect(()=>{
+    (async() => {
+      setItems([])
+      const data = await fetchData(ROUTES.RECIPES, () => {
+      }, {cookTime: filters, sortBy: sortBy, page: 1})
+      setPaginator({ nextPage: data.nextPage, hasNextPage: data.hasNextPage });
+      setItems(data.docs)
+    })()
+  },[sortBy, filters])
 
   return (
     <>
-      {loading && <Loading />}
-      {items && items.sort(searchSorter(sortBy)).map((item) => <Recipe key={item._id} {...item} />)}
+      {(
+      <InfiniteScroll
+        dataLength={items.length}
+        hasMore={paginator.hasNextPage}
+        loader={<Loading />}
+        next={fetchRecipes}
+      >
+        {items && items.map((item) => <Recipe key={item._id} {...item} />)}
+      </InfiniteScroll>
+      )}
     </>
   );
 };

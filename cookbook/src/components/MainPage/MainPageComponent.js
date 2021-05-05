@@ -37,7 +37,7 @@ const MainComponent = () => {
   useEffect(() => {
     (async () => {
       const data = await fetchData(ROUTES.COOKBOOKS, setLoading);
-      console.log(data.docs)
+      console.log(data.docs);
       setCookbooks(data.docs);
     })();
   }, []);

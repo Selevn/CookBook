@@ -10,8 +10,8 @@ export const ProfileCookBooks = (id) => {
   useEffect(() => {
     (async () => {
       const data = await fetchData(`/api/users/cookbooks/${id}`, setLoading);
-      console.log(data)
-      setCookBooks(data);
+      console.log(data.docs);
+      setCookBooks(data.docs);
     })();
   }, [id]);
 

@@ -49,7 +49,7 @@ export const CookCardComponent = ({
       imgHeight = '215px';
       imgWidth = '310px';
       showDesc = true;
-      //desc = desc && `${desc.slice(0, desc.indexOf(' ', 150))}...`;
+      desc = desc && `${desc.slice(0, desc.indexOf(' ', 150))}...`;
       break;
     }
     case 'bigImage': {

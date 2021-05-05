@@ -7,6 +7,7 @@ import { COMMON, ROUTES } from '../../constants';
 import { SortContainer } from './style/CookBookSearchComponentStyle';
 import { H1Styled } from '../common/StylesComponent';
 import { Loading } from '../MultyUsed/Loading/Loading';
+import { InfinityScroll } from '../MultyUsed/InfiniteScroll';
 
 export const Recipes = ({ filters, sortBy }) => {
   const paginatorInitState = { nextPage: 1, hasNextPage: true };
@@ -23,6 +24,7 @@ export const Recipes = ({ filters, sortBy }) => {
 
   const fetchRecipes = useCallback(() => {
     (async () => {
+
       const data = await fetchData(
         ROUTES.RECIPES, () => {}, { cookTime: filters, sortBy, page: paginator.nextPage },
       );
@@ -46,7 +48,8 @@ export const Recipes = ({ filters, sortBy }) => {
 
   return (
     <>
-      <InfiniteScroll
+      {/*<InfinityScroll/>*/}
+      <InfinityScroll
         dataLength={items.length}
         hasMore={paginator.hasNextPage}
         loader={<Loading />}
@@ -56,7 +59,7 @@ export const Recipes = ({ filters, sortBy }) => {
         {loader && <Loading />}
         {!loader && items && items.map((item) => <Recipe key={item._id} {...item} />)}
         {!loader && items && items.length === 0 && (<h1>No recipes</h1>)}
-      </InfiniteScroll>
+      </InfinityScroll>
     </>
   );
 };

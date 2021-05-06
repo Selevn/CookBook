@@ -7,7 +7,10 @@ import { COMMON, ROUTES } from '../../constants';
 import { SortContainer } from './style/CookBookSearchComponentStyle';
 import { H1Styled } from '../common/StylesComponent';
 import { Loading } from '../MultyUsed/Loading/Loading';
-import { InfinityScroll } from '../MultyUsed/InfiniteScroll';
+import { InfinityScrolls } from '../MultyUsed/InfiniteScroll';
+
+
+
 
 export const Recipes = ({ filters, sortBy }) => {
   const paginatorInitState = { nextPage: 1, hasNextPage: true };
@@ -24,13 +27,16 @@ export const Recipes = ({ filters, sortBy }) => {
 
   const fetchRecipes = useCallback(() => {
     (async () => {
-
-      const data = await fetchData(
-        ROUTES.RECIPES, () => {}, { cookTime: filters, sortBy, page: paginator.nextPage },
-      );
-      setPaginator({ nextPage: data.nextPage, hasNextPage: data.hasNextPage });
-      ItemsSetter(data.docs);
-    })();
+      if(paginator.hasNextPage){
+        const data = await fetchData(
+            ROUTES.RECIPES, () => {}, { cookTime: filters, sortBy, page: paginator.nextPage },
+        );
+        console.log(data)
+        setPaginator({ nextPage: data.nextPage, hasNextPage: data.hasNextPage });
+        setItems(items.concat(data.docs));
+      }
+    }
+    )();
   }, [sortBy, filters, paginator.nextPage, items]);
 
   // firstLoad
@@ -46,20 +52,23 @@ export const Recipes = ({ filters, sortBy }) => {
     })();
   }, [sortBy, filters]);
 
+  const [picker, setPicker] = useState(true)
+  useEffect(()=>{fetchRecipes()},[picker])
   return (
     <>
       {/*<InfinityScroll/>*/}
-      <InfinityScroll
+      <InfinityScrolls
         dataLength={items.length}
         hasMore={paginator.hasNextPage}
         loader={<Loading />}
         next={fetchRecipes}
+        next2={setPicker}
         className="infinity-scroller"
       >
         {loader && <Loading />}
         {!loader && items && items.map((item) => <Recipe key={item._id} {...item} />)}
         {!loader && items && items.length === 0 && (<h1>No recipes</h1>)}
-      </InfinityScroll>
+      </InfinityScrolls>
     </>
   );
 };

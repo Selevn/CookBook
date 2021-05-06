@@ -42,7 +42,6 @@ const ProfileComponent = ({ match }) => {
       setUser(data);
     })();
   }, [id]);
-
   return (
     <>
       <UserInformation>

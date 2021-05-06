@@ -44,23 +44,23 @@ const aggregateOptions = (page = 1, sortBy = COMMON.NEWEST) => ({
 exports.getUser = async (id) => {
     return Users.findOne({_id: Number(id)});
 }
-exports.getUserCookBooks = async (id) => {
+exports.getUserCookBooks = async (id, filters) => {
     const aggregate = CookBooks.aggregate([
         authorIdMatcher(id),
         recipesLookUp,
         authorLookup,
         commentsLookup,
     ])
-    return await paginator(aggregate, {page: 1, limit: 10})
+    return await paginator(aggregate, aggregateOptions(filters.page, filters.sortBy))
 
 }
-exports.getUserRecipes = async (id) => {
+exports.getUserRecipes = async (id, filters) => {
     const aggregate = Recipes.aggregate([
         authorIdMatcher(id),
         authorLookup,
         commentsLookup
     ])
-    return await paginator(aggregate, {page: 1, limit: 10})
+    return await paginator(aggregate, aggregateOptions(filters.page, filters.sortBy))
 }
 
 

@@ -6,19 +6,43 @@ const calculatePercent = () => {
     return window.pageYOffset / (document.querySelector('body').offsetHeight - window.innerHeight) * 100;
 }
 
-export const InfinityScroll = ({children, hasMore, loader, next}) => {
-    const [loading, setLoading] = useState(false);
+const debouncer = (func, wait) => {
+    let timeout;
 
-    const scrollHandler = async (e) => {
+    return function executedFunction() {
+        const context = this;
+
+        const later = function() {
+            timeout = null;
+        };
+
+        const callNow = !timeout;
+
+        clearTimeout(timeout);
+
+        timeout = setTimeout(later, wait);
+
+        if (callNow) func.apply(context);
+    };
+};
+
+// не работает loader потому что запрос идёт во внешнем компоненте
+export const InfinityScrolls = ({children, hasMore, loader, next, next2:setter}) => {
+    const [loading, setLoading] = useState(false);
+    const nextHandler = debouncer(() => {
+        setter(s=>!s)
+        /*setLoading(true)
+        next()
+        setLoading(false)*/
+    }, 500)
+
+    const scrollHandler = () => {
         if (calculatePercent() > 80){
             if(hasMore && !loading){
-                setLoading(true)
-                await next()
-                setLoading(false)
+                nextHandler()
             }
         }
     }
-
 
     useEffect(() => {
         window.addEventListener('scroll', scrollHandler);

@@ -44,6 +44,8 @@ const ItemPageComponent = ({ match }) => {
   useEffect(() => {
     (async () => {
       if (type === 'cookbook') {
+        console.log(id)
+        console.log(ROUTES.COOKBOOK_CLIENT(id))
         const data = await fetchData(ROUTES.COOKBOOK_CLIENT(id), setLoading);
         setItem(data[0]);
         setRecipes(data[0].recipes);

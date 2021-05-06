@@ -11,6 +11,10 @@ const CookBooks = require('./../models/CookBookModel')
 const Users = require('./../models/UserModel')
 const Comments = require('./../models/CommentModel')
 const Recipes = require('./../models/RecipeModel')
+const {privateUserData} = require("../models/lookups");
+const {publicUserData} = require("../models/lookups");
+const {passwordMatcher} = require("../models/lookups");
+const {emailMatcher} = require("../models/lookups");
 const {paginator} = require("./paginator");
 const {dataSearchSorter} = require("./dataSorter");
 const {cookTimeFilter} = require("../models/lookups");
@@ -42,7 +46,7 @@ const aggregateOptions = (page = 1, sortBy = COMMON.NEWEST) => ({
 })
 
 exports.getUser = async (id) => {
-    return Users.findOne({_id: Number(id)});
+    return await Users.aggregate([_idMatcher(id), publicUserData]);
 }
 exports.getUserCookBooks = async (id, filters) => {
     const aggregate = CookBooks.aggregate([
@@ -123,6 +127,15 @@ exports.getRecipe = async (id) => {
         commentsLookup,
     ]);
 }
+
+exports.getUserLogin = async (email, password) => {
+    return Users.aggregate([
+        emailMatcher(email),
+        passwordMatcher(password),
+        privateUserData
+    ]);
+}
+
 
 
 /*

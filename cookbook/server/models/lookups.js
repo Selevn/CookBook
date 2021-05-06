@@ -55,10 +55,23 @@ exports.recipesLookUp =
             as: "recipes"
         }
     }
+exports.publicUserData = ({$project: {"password": 0, "email": 0}})
+exports.privateUserData = ({$project: {"password": 0}})
+
 exports._idMatcher = (id) =>
     ({
         $match: {_id: Number(id)}
     })
+
+exports.emailMatcher = (email) =>
+    ({
+        $match: {email: email}
+    })
+exports.passwordMatcher = (password) =>
+    ({
+        $match: {password: password}
+    })
+
 exports.authorIdMatcher = (id) =>
     ({
         $match: {author: Number(id)}
@@ -70,12 +83,12 @@ exports.filtersMatcher = (filters) =>
                 $expr:
                     {
                         $setEquals:
-                            [ "$filters", filters ]
+                            ["$filters", filters]
                     }
             }
     })
 exports.cookTimeFilter = (filter) =>
     ({
-        $match:{cookTime:Number(filter)}
+        $match: {cookTime: Number(filter)}
     })
 

@@ -3,6 +3,7 @@ const {getCookbook, getCookBookRecipes, getCookbooks, getRecipe, getRecipes} = r
 
 const express = require("express");
 const bodyParser = require("body-parser");
+const {getUserLogin} = require("./Data/dataProvider");
 const {ROUTES} = require("../src/constants");
 const {getUserRecipes} = require("./Data/dataProvider");
 const {getUserCookBooks} = require("./Data/dataProvider");
@@ -30,44 +31,55 @@ app.use((req,res,next)=>{
 
 app.get(ROUTES.COOKBOOKS, async (req, res) => {
     const items = await getCookBooks(req.query);
-    res.json(JSON.stringify(items))
+    res.json(items)
 });
 app.get(ROUTES.RECIPES, async (req, res) => {
     const data = await getRecipes(req.query);
     res.json(
-        JSON.stringify(data)
+        data
     );
 });
 app.get(`${ROUTES.COOKBOOKS}:id`, async (req, res) => {
     const items = await getCookBook(req.params['id'],req.query);
     res.json(
-        JSON.stringify(items)
+        items
     );
 });
 app.get(`${ROUTES.RECIPES}:id`, async (req, res) => {
     const data = await getRecipe(req.params['id'],req.query);
     res.json(
-        JSON.stringify(data)
+        data
     );
 });
 app.get(`${ROUTES.USERS}:id`, async (req, res) => {
     const data = await getUser(req.params['id'],req.query);
     res.json(
-        JSON.stringify(data)
+        data
     );
 });
 app.get(`${ROUTES.USER_COOKBOOKS}:userId`, async (req, res) => {
     const data = await getUserCookBooks(req.params['userId'],req.query);
     res.json(
-        JSON.stringify(data)
+        data
     );
 });
 app.get(`${ROUTES.USER_RECIPES}:userId`, async (req, res) => {
     const data = await getUserRecipes(req.params['userId'],req.query);
     res.json(
-        JSON.stringify(data)
+        data
     );
 });
+
+app.post(`/api/login`, async (req, res) => {
+    const {email, password} = req.body;
+    console.log(email)
+    console.log(password)
+    console.log((await getUserLogin(email, password)))
+
+    res.send('ok')
+});
+
+
 
 
 /*

@@ -8,13 +8,6 @@ exports.ROUTES = {
   RECIPES:__ROUTES__.RECIPES,
   USERS:__ROUTES__.USERS,
 
-
-
-
-  /*COOKBOOK_SERVER: `${this.COOKBOOKS}:id`,
-  RECIPE_SERVER: `${this.RECIPES}:id`,
-  USER_RECIPES_SERVER: `${this.USERS_RECIPES}:userId`,*/
-
   RECIPE_CLIENT: (id) => `${__ROUTES__.RECIPES}${id}`,
   COOKBOOK_CLIENT: (id) => `${__ROUTES__.COOKBOOKS}${id}`,
   USER_CLIENT: (id) => `${__ROUTES__.USERS}${id}`,

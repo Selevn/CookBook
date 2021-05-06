@@ -10,6 +10,20 @@ export const fetchData = async (url, setLoader, settings) => {
   const response = await fetch(localurl);
   setLoader(false);
   if (response.status !== 200) throw Error(response);
-  const data = JSON.parse(await response.json());
+  const data = await response.json();
   return data;
+};
+
+export const logReg = async (url, data) => {
+  const response = await fetch(url, {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+  if (response.status !== 200) throw Error(response);
+  const answer = await response.json();
+  console.log(answer)
+  return answer;
 };

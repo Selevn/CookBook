@@ -39,7 +39,7 @@ const ProfileComponent = ({ match }) => {
   useEffect(() => {
     (async () => {
       const data = await fetchData(ROUTES.USER_CLIENT(id), setLoading);
-      setUser(data);
+      setUser(data[0]);
     })();
   }, [id]);
   return (

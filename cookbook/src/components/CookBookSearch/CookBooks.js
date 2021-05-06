@@ -8,62 +8,29 @@ import { InputUniteContainer, SortContainer } from './style/CookBookSearchCompon
 import { H1Styled, LabelStyled } from '../common/StylesComponent';
 import Checkbox from '../MultyUsed/CheckBox/CheckBox';
 import { Loading } from '../MultyUsed/Loading/Loading';
-
+import {useFetch} from "../MultyUsed/CustomHooks/useFetch";
 export const CookBooks = ({ filters, sortBy }) => {
-  const paginatorInitState = { nextPage: 1, hasNextPage: true };
 
   const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [paginator, setPaginator] = useState(paginatorInitState);
 
-  const ItemsSetter = useCallback(
-    (_items) => {
-      setItems(items.concat(_items));
-    }, [items],
-  );
-
-  useEffect(() => {
-    (async () => {
-      const data = await fetchData(ROUTES.COOKBOOKS, setLoading, filters);
-      setItems(data.docs);
-    })();
-  }, [filters, sortBy]);
-
-  const fetchBooks = useCallback(() => {
-    (async () => {
-      const data = await fetchData(
-        ROUTES.COOKBOOKS, () => {}, { ...filters, sortBy, page: paginator.nextPage },
-      );
-      setPaginator({ nextPage: data.nextPage, hasNextPage: data.hasNextPage });
-      ItemsSetter(data.docs);
-      console.log(data);
-    })();
-  }, [sortBy, filters, paginator.nextPage, items]);
-
+  const [fetchBooks, hasNext] = useFetch(ROUTES.COOKBOOKS, setItems,{ ...filters, sortBy })
+  useEffect(()=>{console.count("changed!")},[fetchBooks])
   // firstLoad
   useEffect(() => {
-    (async() => {
-      setLoading(true);
-      setItems([]);
-      const data = await fetchData(ROUTES.COOKBOOKS, () => {
-      }, { ...filters, sortBy, page: 1 });
-      setPaginator({ nextPage: data.nextPage, hasNextPage: data.hasNextPage });
-      setItems(data.docs);
-      setLoading(false);
-    })();
+    fetchBooks();
   }, [sortBy, filters]);
+
   return (
     <>
       <InfiniteScroll
         dataLength={items.length}
-        hasMore={paginator.hasNextPage}
+        hasMore={hasNext}
         loader={<Loading />}
         next={fetchBooks}
         className="infinity-scroller"
       >
-        {loading && <Loading />}
-        {!loading && items && items.map((item) => <CookCard key={item._id} {...item} />)}
-        {!loading && items && items.length === 0 && (<h1>No cookbooks</h1>)}
+        {items && items.map((item) => <CookCard key={item._id} {...item} />)}
+        {items && items.length === 0 && (<h1>No cookbooks</h1>)}
       </InfiniteScroll>
     </>
   );

@@ -27,12 +27,17 @@ const debouncer = (func, wait) => {
 };
 
 // не работает loader потому что запрос идёт во внешнем компоненте
-export const InfinityScrolls = ({children, hasMore, loader, next, next2:setter}) => {
+export const InfinityScrolls = function ({children, hasMore, loader, next, dataLength}) {
+
+    const fetcher = useCallback(()=>{
+        next()
+    },[dataLength])
+
     const [loading, setLoading] = useState(false);
     const nextHandler = debouncer(() => {
         /*setter(s=>!s)*/
         setLoading(true)
-        next()
+        fetcher()
         setLoading(false)
     }, 500)
 

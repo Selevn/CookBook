@@ -8,6 +8,7 @@ import { SortContainer } from './style/CookBookSearchComponentStyle';
 import { H1Styled } from '../common/StylesComponent';
 import { Loading } from '../MultyUsed/Loading/Loading';
 import { InfinityScrolls } from '../MultyUsed/InfiniteScroll';
+import {useFetch} from "../MultyUsed/CustomHooks/useFetch";
 
 const paginatorInitState = { nextPage: 1, hasNextPage: true };
 
@@ -15,95 +16,29 @@ export const Recipes = ({ filters, sortBy }) => {
 
 
   const [items, setItems] = useState([]);
-  const [loader, setLoader] = useState(false);
-  const [paginator, setPaginator] = useState(paginatorInitState);
-
-  console.log('paginator: ', paginator);
-
-  /*const ItemsSetter = useCallback(
-    (newItems) => {
-      setItems([...items, ...newItems]);
-    }, [items],
-  );*/
-
-  const fetchRecipes = useCallback(() => {
-    (async () => {
-      console.log(paginator.nextPage);
-      if (paginator.hasNextPage){
-        const data = await fetchData(
-            ROUTES.RECIPES, () => {}, { cookTime: filters, sortBy, page: paginator.nextPage },
-        );
-        console.log(data)
-        setPaginator({ nextPage: data.nextPage, hasNextPage: data.hasNextPage });
-        setItems(items.concat(data.docs));
-      }
-    }
-    )();
-
-   /* const loadData = async () => {
-      console.log(paginator.nextPage);
-      if (paginator.hasNextPage){
-        const data = await fetchData(
-            ROUTES.RECIPES, () => {}, { cookTime: filters, sortBy, page: paginator.nextPage },
-        );
-        console.log(data)
-        setPaginator({ nextPage: data.nextPage, hasNextPage: data.hasNextPage });
-        setItems(items.concat(data.docs));
-      }
-    };
-
-    loadData()*/
-
-  }, [sortBy, filters, paginator.nextPage, items]);
 
 
-  /*const fetchRecipes = async () => {
-    console.log(paginator.nextPage);
-    if (paginator.hasNextPage){
-      const data = await fetchData(
-          ROUTES.RECIPES, () => {}, { cookTime: filters, sortBy, page: paginator.nextPage },
-      );
-      console.log(data)
-      setPaginator({ nextPage: data.nextPage, hasNextPage: data.hasNextPage });
-      setItems(items.concat(data.docs));
-    }
-  }*/
-
-  /*useEffect(() => {
-    console.log('fetchRecipes updated');
-  }, [fetchRecipes])*/
+  const [fetchRecipes, hasNext, loader] = useFetch(ROUTES.RECIPES, setItems, { cookTime: filters, sortBy })
+  useEffect(()=>{console.count("changed!")},[fetchRecipes])
 
   // firstLoad
   useEffect(() => {
-    (async() => {
-      setLoader(true);
-      setItems([]);
-
-      const data = await fetchData(ROUTES.RECIPES, () => {
-      }, { cookTime: filters, sortBy, page: 1 });
-      setPaginator({ nextPage: data.nextPage, hasNextPage: data.hasNextPage });
-      setItems(data.docs);
-      setLoader(false);
-    })();
+    fetchRecipes();
   }, [sortBy, filters]);
-
-  //deprecated
-/*  const [picker, setPicker] = useState(true)
-  useEffect(()=>{fetchRecipes()},[picker])*/
 
   return (
     <>
       {/*<InfinityScroll/>*/}
       <InfinityScrolls
         dataLength={items.length}
-        hasMore={paginator.hasNextPage}
+        hasMore={hasNext}
         loader={<Loading />}
         next={fetchRecipes}
 
         className="infinity-scroller"
       >
         {loader && <Loading />}
-        {!loader && items && items.map((item) => <Recipe key={item._id} {...item} />)}
+        {items && items.map((item) => <Recipe key={item._id} {...item} />)}
         {!loader && items && items.length === 0 && (<h1>No recipes</h1>)}
       </InfinityScrolls>
     </>

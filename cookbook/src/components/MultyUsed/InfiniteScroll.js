@@ -30,10 +30,10 @@ const debouncer = (func, wait) => {
 export const InfinityScrolls = ({children, hasMore, loader, next, next2:setter}) => {
     const [loading, setLoading] = useState(false);
     const nextHandler = debouncer(() => {
-        setter(s=>!s)
-        /*setLoading(true)
+        /*setter(s=>!s)*/
+        setLoading(true)
         next()
-        setLoading(false)*/
+        setLoading(false)
     }, 500)
 
     const scrollHandler = () => {

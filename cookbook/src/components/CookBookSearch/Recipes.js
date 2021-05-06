@@ -9,25 +9,27 @@ import { H1Styled } from '../common/StylesComponent';
 import { Loading } from '../MultyUsed/Loading/Loading';
 import { InfinityScrolls } from '../MultyUsed/InfiniteScroll';
 
-
-
+const paginatorInitState = { nextPage: 1, hasNextPage: true };
 
 export const Recipes = ({ filters, sortBy }) => {
-  const paginatorInitState = { nextPage: 1, hasNextPage: true };
+
 
   const [items, setItems] = useState([]);
   const [loader, setLoader] = useState(false);
   const [paginator, setPaginator] = useState(paginatorInitState);
 
-  const ItemsSetter = useCallback(
-    (_items) => {
-      setItems(items.concat(_items));
+  console.log('paginator: ', paginator);
+
+  /*const ItemsSetter = useCallback(
+    (newItems) => {
+      setItems([...items, ...newItems]);
     }, [items],
-  );
+  );*/
 
   const fetchRecipes = useCallback(() => {
     (async () => {
-      if(paginator.hasNextPage){
+      console.log(paginator.nextPage);
+      if (paginator.hasNextPage){
         const data = await fetchData(
             ROUTES.RECIPES, () => {}, { cookTime: filters, sortBy, page: paginator.nextPage },
         );
@@ -37,13 +39,46 @@ export const Recipes = ({ filters, sortBy }) => {
       }
     }
     )();
+
+   /* const loadData = async () => {
+      console.log(paginator.nextPage);
+      if (paginator.hasNextPage){
+        const data = await fetchData(
+            ROUTES.RECIPES, () => {}, { cookTime: filters, sortBy, page: paginator.nextPage },
+        );
+        console.log(data)
+        setPaginator({ nextPage: data.nextPage, hasNextPage: data.hasNextPage });
+        setItems(items.concat(data.docs));
+      }
+    };
+
+    loadData()*/
+
   }, [sortBy, filters, paginator.nextPage, items]);
+
+
+  /*const fetchRecipes = async () => {
+    console.log(paginator.nextPage);
+    if (paginator.hasNextPage){
+      const data = await fetchData(
+          ROUTES.RECIPES, () => {}, { cookTime: filters, sortBy, page: paginator.nextPage },
+      );
+      console.log(data)
+      setPaginator({ nextPage: data.nextPage, hasNextPage: data.hasNextPage });
+      setItems(items.concat(data.docs));
+    }
+  }*/
+
+  /*useEffect(() => {
+    console.log('fetchRecipes updated');
+  }, [fetchRecipes])*/
 
   // firstLoad
   useEffect(() => {
     (async() => {
       setLoader(true);
       setItems([]);
+
       const data = await fetchData(ROUTES.RECIPES, () => {
       }, { cookTime: filters, sortBy, page: 1 });
       setPaginator({ nextPage: data.nextPage, hasNextPage: data.hasNextPage });
@@ -52,8 +87,10 @@ export const Recipes = ({ filters, sortBy }) => {
     })();
   }, [sortBy, filters]);
 
-  const [picker, setPicker] = useState(true)
-  useEffect(()=>{fetchRecipes()},[picker])
+  //deprecated
+/*  const [picker, setPicker] = useState(true)
+  useEffect(()=>{fetchRecipes()},[picker])*/
+
   return (
     <>
       {/*<InfinityScroll/>*/}
@@ -62,7 +99,7 @@ export const Recipes = ({ filters, sortBy }) => {
         hasMore={paginator.hasNextPage}
         loader={<Loading />}
         next={fetchRecipes}
-        next2={setPicker}
+
         className="infinity-scroller"
       >
         {loader && <Loading />}

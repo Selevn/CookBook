@@ -7,7 +7,7 @@
 1. Put `.env` file in `cookbook` directory
 2. Use command inside `cookbook`: `npm i`
 3. Use command inside `cookbook/server`: `npm i`
-
+4. Use command inside `cookbooks/server/Keys`:  `node generateKeys.js` for generating JWT key pair
 ---
 
 In the `cookbook` directory, you can run:

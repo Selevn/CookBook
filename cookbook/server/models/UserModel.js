@@ -21,6 +21,9 @@ const schema = new Schema({
     "password": {
         "type": "String"
     },
+    "salt": {
+        "type": "String"
+    },
     "desc": {
         "type": "String"
     },

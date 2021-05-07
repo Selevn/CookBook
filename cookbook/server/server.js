@@ -1,33 +1,38 @@
-
-const {getCookbook, getCookBookRecipes, getCookbooks, getRecipe, getRecipes} = require('./Data/dataProvider');// "./Data/dataProvider.js";
-
 const express = require("express");
 const bodyParser = require("body-parser");
-const {getUserLogin} = require("./Data/dataProvider");
+const {validateEmail, validatePassword} = require("./validator/validator");
 const {ROUTES} = require("../src/constants");
-const {getUserRecipes} = require("./Data/dataProvider");
-const {getUserCookBooks} = require("./Data/dataProvider");
-const {getCookBook} = require("./Data/dataProvider");
-const {getComments} = require("./Data/dataProvider");
-const {getComment} = require("./Data/dataProvider");
-const {getCookBooks} = require("./Data/dataProvider");
-const {getUser} = require("./Data/dataProvider");
-const {normalizeCookbooks} = require("./Data/dataNormalizer");
-const {normalizeRecipes} = require("./Data/dataNormalizer");
-
+const {
+    getCookBook,
+    getCookBooks,
+    getUser,
+    getUserCookBooks,
+    getUserRecipes,
+    getUserLogin,
+    createUser,
+    getRecipe,
+    getRecipes
+} = require("./Data/dataProvider");
+const passport = require('passport')
+const {getUserForLogin} = require("./Data/dataProvider");
+const {checkPassword} = require("./JWT/PasswordHasher");
+const {getPassword} = require("./JWT/PasswordHasher");
+const {issueJWT} = require("./JWT/PasswordHasher");
 
 const app = express();
 const port = process.env.PORT || 5000;
 
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 
 /*
 app.use((req,res,next)=>{
     setTimeout(next,500)
 })
 */
+require('./JWT/PassportConfig.js')(passport)
+app.use(passport.initialize());
 
 app.get(ROUTES.COOKBOOKS, async (req, res) => {
     const items = await getCookBooks(req.query);
@@ -40,31 +45,31 @@ app.get(ROUTES.RECIPES, async (req, res) => {
     );
 });
 app.get(`${ROUTES.COOKBOOKS}:id`, async (req, res) => {
-    const items = await getCookBook(req.params['id'],req.query);
+    const items = await getCookBook(req.params['id'], req.query);
     res.json(
         items
     );
 });
 app.get(`${ROUTES.RECIPES}:id`, async (req, res) => {
-    const data = await getRecipe(req.params['id'],req.query);
+    const data = await getRecipe(req.params['id'], req.query);
     res.json(
         data
     );
 });
 app.get(`${ROUTES.USERS}:id`, async (req, res) => {
-    const data = await getUser(req.params['id'],req.query);
+    const data = await getUser(req.params['id'], req.query);
     res.json(
         data
     );
 });
 app.get(`${ROUTES.USER_COOKBOOKS}:userId`, async (req, res) => {
-    const data = await getUserCookBooks(req.params['userId'],req.query);
+    const data = await getUserCookBooks(req.params['userId'], req.query);
     res.json(
         data
     );
 });
 app.get(`${ROUTES.USER_RECIPES}:userId`, async (req, res) => {
-    const data = await getUserRecipes(req.params['userId'],req.query);
+    const data = await getUserRecipes(req.params['userId'], req.query);
     res.json(
         data
     );
@@ -72,15 +77,64 @@ app.get(`${ROUTES.USER_RECIPES}:userId`, async (req, res) => {
 
 app.post(`/api/login`, async (req, res) => {
     const {email, password} = req.body;
-    console.log(email)
-    console.log(password)
-    console.log((await getUserLogin(email, password)))
+    const user = (await getUserForLogin(email))[0]
+    if (user) {
+        if (checkPassword(password, user.password, user.salt)) {
+            delete user.password
+            delete user.salt
 
-    res.send('ok')
+            const jwt = issueJWT(user)
+
+            res.json({
+                success: true,
+                user: {...user},
+                token: jwt.token,
+                expiresIn: jwt.expiresIn
+            })
+        } else {
+            res.json({
+                success: false
+            })
+        }
+    } else {
+        res.json({
+            success: false
+        })
+    }
+
+
+});
+app.post(`/api/register`, async (req, res, next) => {
+    const {email, password, repeatPassword} = req.body;
+    if (password === repeatPassword && validateEmail(email) && validatePassword(password)) {
+        const {hash, salt} = getPassword(password)
+        if((await getUserForLogin(email))[0]){
+            res.json({
+                success: false,
+                message: "This email is already in use."
+            })
+            return
+        }
+        createUser({email: email, password: hash, salt: salt})
+            .then((user) => {
+                res.json({
+                    success: true,
+                })
+            })
+            .catch(err => next(err))
+    } else {
+        res.json({
+            success: false,
+            message: "Error in validating register fields. Check them and try again"
+        })
+    }
 });
 
-
-
+app.get('/api/test', passport.authenticate('jwt', {session: false}), (req, res, next) => {
+    res.json({
+        success: true,
+    })
+})
 
 /*
 
@@ -98,7 +152,6 @@ app.get(`/api/recipes/:id`, async (req, res) => {
         JSON.stringify(data)
     );
 });*/
-
 
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

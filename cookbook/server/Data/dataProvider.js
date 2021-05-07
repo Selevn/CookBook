@@ -137,6 +137,22 @@ exports.getUserLogin = async (email, password) => {
         privateUserData
     ]);
 }
+exports.getUserForLogin = async (email) => {
+    return Users.aggregate([
+        emailMatcher(email)
+    ]);
+}
+
+
+exports.createUser = async (user) => {
+    const newUser = {
+        ...user,
+        name: {first: 'Valar', last: 'Morghulis'},
+        image: 'http://tastyethnics.com/wp-content/uploads/bb-plugin/cache/default-profile-square.png',
+        _id: (await Users.countDocuments({}))+1
+    }
+    return (new Users(newUser)).save();
+}
 
 
 

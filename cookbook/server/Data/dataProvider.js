@@ -1,7 +1,6 @@
 const fs = require("fs");
 const path = require("path");
 const {COMMON} = require("../../src/constants");
-const {password} = require("../../passwords");
 const {ObjectId, aggregate} = require('mongoose')
 const mongoose = require('mongoose')
 
@@ -23,9 +22,12 @@ const {authorIdMatcher} = require("../models/lookups");
 const {_idMatcher} = require("../models/lookups");
 const {recipesLookUp, authorLookup, commentsLookup} = require("../models/lookups");
 
+const dotenv = require('dotenv');
+dotenv.config({path: '../.env'});
+
 async function start() {
     try {
-        await mongoose.connect('mongodb+srv://Selevn:' + password + '@cluster0.9kpqi.mongodb.net/CookBook?retryWrites=true&w=majority',
+        await mongoose.connect(process.env.DB_CONNECTION_STRING,
             {
                 useNewUrlParser: true,
                 useFindAndModify: false,

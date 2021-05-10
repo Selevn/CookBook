@@ -78,6 +78,7 @@ app.get(`${ROUTES.USER_RECIPES}:userId`, async (req, res) => {
 app.post(`/api/login`, async (req, res) => {
     const {email, password} = req.body;
     const user = (await getUserForLogin(email))[0]
+    console.log(user)
     if (user) {
         if (checkPassword(password, user.password, user.salt)) {
             delete user.password

@@ -9,7 +9,10 @@ import {
     LabelStyled,
     LinkStyled,
 } from '../common/StylesComponent';
-import {logReg} from "../../Connectors/dataProvider";
+import {Login} from "../../Connectors/dataProvider";
+import {useDispatch, useSelector} from "react-redux";
+import {profileActions} from "../../Redux/Profile";
+import {authActions} from "../../Redux/AuthKey";
 
 const FormComponent = ({
                            email,
@@ -21,8 +24,15 @@ const FormComponent = ({
                            setPasswordRepeat,
                        }) => {
 
+    const dispatch = useDispatch();
+
     const LoginFunction =  async () => {
-        logReg('/api/login/', {email: email, password: password})
+        const answer = await Login('/api/login/', {email: email, password: password})
+        if(answer.success){
+            dispatch(profileActions.setProfile(answer.user));
+            dispatch(authActions.setToken(answer.token));
+        }
+        //TODO: else show err
     }
 
     return (

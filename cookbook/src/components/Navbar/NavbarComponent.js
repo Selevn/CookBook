@@ -1,48 +1,62 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
-  Menu,
-  NavbarLink,
-  NavbarLogo,
-  NavbarMain,
-  NavbarStyle,
-  SearchStyled,
+    Menu,
+    NavbarLink,
+    NavbarLogo,
+    NavbarMain,
+    NavbarStyle,
+    SearchStyled,
 } from './style/NavbarComponentStyle';
-import { Container } from '../common/StylesComponent';
+import {Container} from '../common/StylesComponent';
+import {useSelector} from "react-redux";
 
 const NavbarComponent = () => {
-  const [menuOpen, setMenuOpen] = useState(true);
-  const menuClick = () => setMenuOpen((s) => !s);
+    const [menuOpen, setMenuOpen] = useState(true);
+    const menuClick = () => setMenuOpen((s) => !s);
 
-  return (
-    <>
-      <NavbarMain>
-        <NavbarStyle hide={menuOpen}>
-          <Menu onClick={menuClick} />
-          <NavbarLogo alignSelf="center" className="mustBeHidden" href="/" />
-          <Container flex={4} className="mustBeHidden">
-            <Container padding="15px" justifyContent="flex-end" alignItems="center" flex={1}>
-              <NavbarLink to="/search/cookbooks">Cookbooks</NavbarLink>
-            </Container>
-            <Container padding="15px" justifyContent="flex-start" alignItems="center" flex={1}>
-              <NavbarLink to="/search/recipes">Recepies</NavbarLink>
-            </Container>
-          </Container>
-          <Container flex={5} justifyContent="center" alignItems="center" className="mustBeHidden">
-            <SearchStyled />
-          </Container>
-          <Container flex={4} className="mustBeHidden">
-            <Container padding="15px" justifyContent="flex-end" alignItems="center" flex={1}>
-              <NavbarLink to="/register">Sign Up</NavbarLink>
-            </Container>
-            <Container padding="15px" justifyContent="flex-start" alignItems="center" flex={1}>
-              <NavbarLink to="/login">Sign In</NavbarLink>
-            </Container>
-          </Container>
-        </NavbarStyle>
-      </NavbarMain>
-      <Container height="65px" />
-    </>
-  );
+    const {profile} = useSelector(state => state.profile);
+    const {auth} = useSelector(state => state.auth);
+
+    return (
+        <>
+            <NavbarMain>
+                <NavbarStyle hide={menuOpen}>
+                    <Menu onClick={menuClick}/>
+                    <NavbarLogo alignSelf="center" className="mustBeHidden" href="/"/>
+                    <Container flex={4} className="mustBeHidden">
+                        <Container padding="15px" justifyContent="flex-end" alignItems="center" flex={1}>
+                            <NavbarLink to="/search/cookbooks">Cookbooks</NavbarLink>
+                        </Container>
+                        <Container padding="15px" justifyContent="flex-start" alignItems="center" flex={1}>
+                            <NavbarLink to="/search/recipes">Recepies</NavbarLink>
+                        </Container>
+                    </Container>
+                    <Container flex={5} justifyContent="center" alignItems="center" className="mustBeHidden">
+                        <SearchStyled/>
+                    </Container>
+                    {!profile &&
+                    (<Container flex={4} className="mustBeHidden">
+                        <Container padding="15px" justifyContent="flex-end" alignItems="center" flex={1}>
+                            <NavbarLink to="/register">Sign Up</NavbarLink>
+                        </Container>
+                        <Container padding="15px" justifyContent="flex-start" alignItems="center" flex={1}>
+                            <NavbarLink to="/login">Sign In</NavbarLink>
+                        </Container>
+                    </Container>)}
+                    {profile &&
+                    (<Container flex={4} className="mustBeHidden">
+                        <Container padding="15px" justifyContent="flex-end" alignItems="center" flex={1}>
+                            <NavbarLink to={`/profile/${profile._id}`}>{`${profile.name.first} ${profile.name.last}`}</NavbarLink>
+                        </Container>
+                        {/*<Container padding="15px" justifyContent="flex-start" alignItems="center" flex={1}>
+                            <NavbarLink to="/login">Logout</NavbarLink>
+                        </Container>*/}
+                    </Container>)}
+                </NavbarStyle>
+            </NavbarMain>
+            <Container height="65px"/>
+        </>
+    );
 };
 
 export default NavbarComponent;

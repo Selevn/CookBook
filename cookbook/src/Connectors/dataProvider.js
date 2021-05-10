@@ -14,7 +14,19 @@ export const fetchData = async (url, setLoader, settings) => {
   return data;
 };
 
-export const logReg = async (url, data) => {
+export const Login = async (url, data) => {
+  const response = await fetch(url, {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+  if (response.status !== 200) throw Error(response);
+  return await response.json();
+};
+
+export const Register = async (url, data) => {
   const response = await fetch(url, {
     method: 'POST',
     body: JSON.stringify(data),
@@ -27,3 +39,4 @@ export const logReg = async (url, data) => {
   console.log(answer)
   return answer;
 };
+

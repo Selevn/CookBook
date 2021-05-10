@@ -15,8 +15,17 @@ exports.ROUTES = {
   USER_CLIENT_COOKBOOKS: (id) => `${__ROUTES__.USERS}cookbooks/${id}`,
   USER_CLIENT_RECIPES: (id) => `${__ROUTES__.USERS}recipes/${id}`,
 
+  USER_CLIENT_LIKED_COOKBOOKS: (id) => `${__ROUTES__.USERS}liked/cookbooks/${id}`,
+  USER_CLIENT_LIKED_RECIPES: (id) => `${__ROUTES__.USERS}liked/recipes/${id}`,
+
+
   USER_RECIPES: `${__ROUTES__.USERS}recipes/`,
   USER_COOKBOOKS: `${__ROUTES__.USERS}cookbooks/`,
+
+  USER_LIKED_RECIPES: `${__ROUTES__.USERS}liked/recipes/`,
+  USER_LIKED_COOKBOOKS: `${__ROUTES__.USERS}liked/cookbooks/`,
+
+
 };
 
 exports.COMMON = {

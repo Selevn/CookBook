@@ -55,6 +55,29 @@ exports.recipesLookUp =
             as: "recipes"
         }
     }
+exports.likedRecipesLookUp =
+    {
+        $lookup: {
+            from: "recipes",
+            let: {"liked.recipes": "$recipesIds"},
+            pipeline: [
+                {$match: {"$expr": {"$in": ["$_id", "$$recipesIds"]}}},
+                {
+                    $lookup: {
+                        from: "users",
+                        let: {user_id: "$author"},
+                        pipeline: [
+                            {$match: {$expr: {$eq: ["$_id", "$$user_id"]}},},
+                            {$project: {_id: 1, name: 1, image: 1}}
+                        ],
+                        as: "author"
+                    }
+                },
+            ],
+            as: "recipes"
+        }
+    }
+
 exports.publicUserData = ({$project: {"password": 0, "email": 0}})
 exports.privateUserData = ({$project: {"password": 0}})
 
@@ -76,6 +99,11 @@ exports.authorIdMatcher = (id) =>
     ({
         $match: {author: Number(id)}
     })
+exports.userLikedMatcher = (ids) =>
+    ({
+        $match: {_id: {$in : ids}}
+    })
+
 exports.filtersMatcher = (filters) =>
     ({
         $match:

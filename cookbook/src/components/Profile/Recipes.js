@@ -6,10 +6,16 @@ import {Recipe} from '../MultyUsed/Recipe';
 import {ROUTES} from "../../constants";
 import {useFetch} from "../MultyUsed/CustomHooks/useFetch";
 
-export const ProfileRecipes = ({id}) => {
+export const ProfileRecipes = ({id, isLiked}) => {
     const [items, setItems] = useState([]);
+    let fetchUrl;
+    if(isLiked)
+        fetchUrl = ROUTES.USER_CLIENT_LIKED_RECIPES(id)
+    else
+        fetchUrl = ROUTES.USER_CLIENT_RECIPES(id)
 
-    const [fetchRecipes, hasNextPage, loader] = useFetch(ROUTES.USER_CLIENT_RECIPES(id), setItems)
+
+    const [fetchRecipes, hasNextPage, loader] = useFetch(fetchUrl, setItems)
 
     // firstLoad
     useEffect(() => {

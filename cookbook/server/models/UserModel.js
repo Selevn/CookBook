@@ -28,9 +28,16 @@ const schema = new Schema({
         "type": "String"
     },
     "likes": {
-        "type": [
-            "Number"
-        ]
+        "recipes": {
+            "type": [
+                "Number"
+            ]
+        },
+        "cookBooks": {
+            "type": [
+                "Number"
+            ]
+        }
     },
     "comments": {
         "type": [

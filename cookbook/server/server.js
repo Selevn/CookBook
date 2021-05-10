@@ -8,12 +8,13 @@ const {
     getUser,
     getUserCookBooks,
     getUserRecipes,
-    getUserLogin,
     createUser,
     getRecipe,
     getRecipes
 } = require("./Data/dataProvider");
 const passport = require('passport')
+const {getUserLikedRecipes} = require("./Data/dataProvider");
+const {getUserLikedCookBooks} = require("./Data/dataProvider");
 const {getUserForLogin} = require("./Data/dataProvider");
 const {checkPassword} = require("./JWT/PasswordHasher");
 const {getPassword} = require("./JWT/PasswordHasher");
@@ -74,6 +75,20 @@ app.get(`${ROUTES.USER_RECIPES}:userId`, async (req, res) => {
         data
     );
 });
+
+app.get(`${ROUTES.USER_LIKED_COOKBOOKS}:userId`, async (req, res) => {
+    const data = await getUserLikedCookBooks(req.params['userId'], req.query);
+    res.json(
+        data
+    );
+});
+app.get(`${ROUTES.USER_LIKED_RECIPES}:userId`, async (req, res) => {
+    const data = await getUserLikedRecipes(req.params['userId'], req.query);
+    res.json(
+        data
+    );
+});
+
 
 app.post(`/api/login`, async (req, res) => {
     const {email, password} = req.body;

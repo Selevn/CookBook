@@ -23,6 +23,7 @@ const {_idMatcher} = require("../models/lookups");
 const {recipesLookUp, authorLookup, commentsLookup} = require("../models/lookups");
 
 const dotenv = require('dotenv');
+const {userLikedMatcher} = require("../models/lookups");
 dotenv.config({path: '../.env'});
 
 async function start() {
@@ -53,13 +54,25 @@ exports.getUser = async (id) => {
 exports.getUserCookBooks = async (id, filters) => {
     const aggregate = CookBooks.aggregate([
         authorIdMatcher(id),
-        recipesLookUp,
         authorLookup,
         commentsLookup,
     ])
     return await paginator(aggregate, aggregateOptions(filters.page, filters.sortBy))
-
 }
+
+exports.getUserLikedCookBooks = async (id, filters) => {
+    const user = (await exports.getUser(id))[0]
+    //TODO: убери потом
+    user.likes.cookBooks  = user.likes.cookBooks || []
+
+    const aggregate = CookBooks.aggregate([
+        userLikedMatcher(user.likes.cookBooks),
+        authorLookup,
+        commentsLookup,
+    ])
+    return await paginator(aggregate, aggregateOptions(filters.page, filters.sortBy))
+}
+
 exports.getUserRecipes = async (id, filters) => {
     const aggregate = Recipes.aggregate([
         authorIdMatcher(id),
@@ -68,6 +81,18 @@ exports.getUserRecipes = async (id, filters) => {
     ])
     return await paginator(aggregate, aggregateOptions(filters.page, filters.sortBy))
 }
+exports.getUserLikedRecipes = async (id, filters) => {
+    const user = (await exports.getUser(id))[0]
+    //TODO: убери потом
+    user.likes.recipes  = user.likes.recipes || []
+    const aggregate = Recipes.aggregate([
+        userLikedMatcher(user.likes.recipes),
+        authorLookup,
+        commentsLookup
+    ])
+    return await paginator(aggregate, aggregateOptions(filters.page, filters.sortBy))
+}
+
 
 
 exports.getCookBooks = async (filters) => {

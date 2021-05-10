@@ -181,6 +181,15 @@ export const ButtonStyled = styled(ButtonWrapper)`
       max-height: 45px;
       font-size: 18px;
     `}
+  
+  ${(p) =>
+    p.tiny &&
+    css`
+      max-width: 90px;
+      max-height: 40px;
+      font-size: 14px;
+    `}
+  
   font-family: var(--nunito-font);
   font-style: normal;
   font-weight: 600;

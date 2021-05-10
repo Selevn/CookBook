@@ -10,9 +10,11 @@ import {
     LinkStyled,
 } from '../common/StylesComponent';
 import {Login} from "../../Connectors/dataProvider";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {profileActions} from "../../Redux/Profile";
 import {authActions} from "../../Redux/AuthKey";
+import {useHistory} from "react-router-dom";
+
 
 const FormComponent = ({
                            email,
@@ -25,12 +27,13 @@ const FormComponent = ({
                        }) => {
 
     const dispatch = useDispatch();
-
+    const history = useHistory();
     const LoginFunction =  async () => {
         const answer = await Login('/api/login/', {email: email, password: password})
         if(answer.success){
             dispatch(profileActions.setProfile(answer.user));
             dispatch(authActions.setToken(answer.token));
+            history.push('/')
         }
         //TODO: else show err
     }

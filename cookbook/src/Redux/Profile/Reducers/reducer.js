@@ -1,5 +1,5 @@
 import {profileActionTypes} from "../Actions/loginActions";
-import {GetData, PutData} from "../../../LocalStorage/Storage";
+import {GetData, PutData, Remove} from "../../../LocalStorage/Storage";
 const PROFILE = "profile"
 
 const initialState = {
@@ -12,6 +12,11 @@ export const profileReducer = (state = initialState, action) => {
         {
             PutData(PROFILE, action.payload)
             return {...state, profile: action.payload}
+        }
+        case profileActionTypes.LOGOUT:
+        {
+            Remove(PROFILE)
+            return {...state, profile: null}
         }
         default: {
             return state

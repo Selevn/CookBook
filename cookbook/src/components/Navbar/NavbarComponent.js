@@ -11,12 +11,13 @@ import {ButtonStyled, Container} from '../common/StylesComponent';
 import {useDispatch, useSelector} from "react-redux";
 import {profileActions} from "../../Redux/Profile";
 import {authActions} from "../../Redux/AuthKey";
+import {useReduxState} from "../MultyUsed/CustomHooks/useReduxState";
 
 const NavbarComponent = () => {
     const [menuOpen, setMenuOpen] = useState(true);
     const menuClick = () => setMenuOpen((s) => !s);
 
-    const {profile} = useSelector(state => state.profile);
+    const {profile} = useReduxState();
 
     const dispatch = useDispatch();
 

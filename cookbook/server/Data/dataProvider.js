@@ -63,7 +63,7 @@ exports.getUserCookBooks = async (id, filters) => {
 exports.getUserLikedCookBooks = async (id, filters) => {
     const user = (await exports.getUser(id))[0]
     //TODO: убери потом
-    user.likes.cookBooks  = user.likes.cookBooks || []
+    user.likes.cookBooks = user.likes.cookBooks || []
 
     const aggregate = CookBooks.aggregate([
         userLikedMatcher(user.likes.cookBooks),
@@ -84,7 +84,7 @@ exports.getUserRecipes = async (id, filters) => {
 exports.getUserLikedRecipes = async (id, filters) => {
     const user = (await exports.getUser(id))[0]
     //TODO: убери потом
-    user.likes.recipes  = user.likes.recipes || []
+    user.likes.recipes = user.likes.recipes || []
     const aggregate = Recipes.aggregate([
         userLikedMatcher(user.likes.recipes),
         authorLookup,
@@ -93,7 +93,54 @@ exports.getUserLikedRecipes = async (id, filters) => {
     return await paginator(aggregate, aggregateOptions(filters.page, filters.sortBy))
 }
 
-
+exports.likeCookBook = async (userId, id) => {
+    try {
+        const user = (await exports.getUser(userId))[0]
+        user.likes.cookBooks = user.likes.cookBooks || []
+        if (user.likes.cookBooks.includes(Number(id))) {
+            //remove
+            await CookBooks.updateOne({_id: Number(id)}, {$inc: {'likes': -1}})
+            await Users.updateOne(
+                {_id: Number(userId)},
+                {$pull: {"likes.cookBooks": Number(id)}}
+            )
+        } else {
+            //add
+            await CookBooks.updateOne({_id: Number(id)}, {$inc: {'likes': 1}})
+            await Users.updateOne(
+                {_id: Number(userId)},
+                {$push: {"likes.cookBooks": Number(id)}}
+            )
+        }
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+exports.likeRecipe = async (userId, id) => {
+    try {
+        const user = (await exports.getUser(userId))[0]
+        user.likes.recipes = user.likes.recipes || []
+        if (user.likes.recipes.includes(Number(id))) {
+            //remove
+            await Recipes.updateOne({_id: Number(id)}, {$inc: {'likes': -1}})
+            await Users.updateOne(
+                {_id: Number(userId)},
+                {$pull: {"likes.recipes": Number(id)}}
+            )
+        } else {
+            //add
+            await Recipes.updateOne({_id: Number(id)}, {$inc: {'likes': 1}})
+            await Users.updateOne(
+                {_id: Number(userId)},
+                {$push: {"likes.recipes": Number(id)}}
+            )
+        }
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
 
 exports.getCookBooks = async (filters) => {
     console.log(filters)
@@ -111,11 +158,11 @@ exports.getCookBooks = async (filters) => {
         ])
     else
         aggregate = CookBooks.aggregate([
-        filtersMatcher(filterArr),
-        recipesLookUp,
-        authorLookup,
-        commentsLookup,
-    ])
+            filtersMatcher(filterArr),
+            recipesLookUp,
+            authorLookup,
+            commentsLookup,
+        ])
     return await paginator(aggregate, aggregateOptions(filters.page, filters.sortBy))
 }
 exports.getCookBook = async (id) => {
@@ -168,11 +215,10 @@ exports.createUser = async (user) => {
         name: {first: 'Valar', last: 'Morghulis'},
         desc: "",
         image: 'http://tastyethnics.com/wp-content/uploads/bb-plugin/cache/default-profile-square.png',
-        _id: (await Users.countDocuments({}))+1
+        _id: (await Users.countDocuments({})) + 1
     }
     return (new Users(newUser)).save();
 }
-
 
 
 /*

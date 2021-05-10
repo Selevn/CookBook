@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { Recipe } from '../MultyUsed/Recipe';
@@ -28,24 +28,39 @@ import { Comment } from '../MultyUsed/Comment';
 import { Liked } from '../MultyUsed/Liked';
 import { Commented } from '../MultyUsed/Commented';
 import { Views } from '../MultyUsed/Views';
-import { fetchData } from '../../Connectors/dataProvider';
+import {fetchData, SendData} from '../../Connectors/dataProvider';
 import { ROUTES } from '../../constants';
 import { Loading } from '../MultyUsed/Loading/Loading';
+import {useReduxState} from "../MultyUsed/CustomHooks/useReduxState";
+import {useDispatch} from "react-redux";
+import {profileActions} from "../../Redux/Profile";
 
 const ItemPageComponent = ({ match }) => {
-  const [loading, setLoading] = useState(false);
+  const {profile, auth} = useReduxState();
+  const dispatcher = useDispatch();
+
   const { id, type } = match.params;
-  const isLiked = false;
+
+  const [loading, setLoading] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
   const isCommented = false;
   const [item, setItem] = useState(false);
   const [recipes, setRecipes] = useState([]);
   const [comments, setComments] = useState([]);
 
+  useEffect(()=>{
+    if(profile)
+    {
+      if(type === 'cookbook')
+        setIsLiked(profile.likes.cookBooks.includes(Number(id)))
+      else
+        setIsLiked(profile.likes.recipes.includes(Number(id)))
+    }
+  },[profile])
+
   useEffect(() => {
     (async () => {
       if (type === 'cookbook') {
-        console.log(id)
-        console.log(ROUTES.COOKBOOK_CLIENT(id))
         const data = await fetchData(ROUTES.COOKBOOK_CLIENT(id), setLoading);
         setItem(data[0]);
         setRecipes(data[0].recipes);
@@ -57,6 +72,34 @@ const ItemPageComponent = ({ match }) => {
       }
     })();
   }, [id, type]);
+
+  const doLike = useCallback(()=>{
+    (async ()=>{
+      let url, status;
+      if(type === 'cookbook')
+        url = ROUTES.USER_LIKE_COOKBOOK
+      else
+        url = ROUTES.USER_LIKE_RECIPE
+      if(profile && auth)
+      {
+        const result = await SendData(url,{from:profile._id, to: Number(id)}, auth)
+        if(result.success)
+        {
+          //todo: LIKE COUNT FIX
+          setIsLiked(s=>!s);
+          if(isLiked)
+            setItem(s=>({...s, likes: s.likes-1}));
+          else
+            setItem(s=>({...s, likes: s.likes+1}));
+
+          if(type === 'cookbook')
+            dispatcher(profileActions.likeCookbook(Number(id)))
+          else
+            dispatcher(profileActions.likeRecipe(Number(id)))
+        }
+      }
+    })()
+  },[id, type, isLiked])
 
   return (
     <ItemContainer>
@@ -106,13 +149,11 @@ const ItemPageComponent = ({ match }) => {
           )}
           <StatisticsContainer>
             <Statistics>
-              <Liked count={(item && item.likes) || 0} isLiked={isLiked} />
+              <Liked count={(item && item.likes) || 0} isLiked={isLiked} doLike={doLike}/>
               <Commented count={(item && item.commentsIds.length) || 0} isCommented={isCommented} />
               <Views count={(item && item.views) || 0} />
             </Statistics>
-            <ButtonStyled medium light>
-              Clone to my {type === 'recipe' ? 'Recipes' : 'Cookbooks'}
-            </ButtonStyled>
+
           </StatisticsContainer>
         </CookBookContainer>
       )}

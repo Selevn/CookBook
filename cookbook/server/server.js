@@ -13,6 +13,8 @@ const {
     getRecipes
 } = require("./Data/dataProvider");
 const passport = require('passport')
+const {likeRecipe} = require("./Data/dataProvider");
+const {likeCookBook} = require("./Data/dataProvider");
 const {getUserLikedRecipes} = require("./Data/dataProvider");
 const {getUserLikedCookBooks} = require("./Data/dataProvider");
 const {getUserForLogin} = require("./Data/dataProvider");
@@ -88,6 +90,20 @@ app.get(`${ROUTES.USER_LIKED_RECIPES}:userId`, async (req, res) => {
         data
     );
 });
+
+app.post(`${ROUTES.USER_LIKE_COOKBOOK}`, passport.authenticate('jwt', {session: false}),async (req, res) => {
+    res.json(
+        {success: await likeCookBook(req.body.from, req.body.to)}
+    );
+});
+app.post(`${ROUTES.USER_LIKE_RECIPE}`, passport.authenticate('jwt', {session: false}),async (req, res) => {
+    res.json(
+        {success:await likeRecipe(req.body.from, req.body.to)}
+    );
+});
+
+
+
 
 
 app.post(`/api/login`, async (req, res) => {

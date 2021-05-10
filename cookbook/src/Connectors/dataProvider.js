@@ -25,6 +25,19 @@ export const Login = async (url, data) => {
   if (response.status !== 200) throw Error(response);
   return await response.json();
 };
+export const SendData = async (url, data, authKey) => {
+  const response = await fetch(url, {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': authKey
+    }
+  });
+  if (response.status !== 200 && response.status !== 401) throw Error(response);
+  if (response.status === 401) return {success:false};
+  return await response.json();
+};
 
 export const Register = async (url, data) => {
   const response = await fetch(url, {
@@ -39,4 +52,5 @@ export const Register = async (url, data) => {
   console.log(answer)
   return answer;
 };
+
 

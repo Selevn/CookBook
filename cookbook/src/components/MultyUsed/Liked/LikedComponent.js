@@ -3,20 +3,22 @@ import { FaHeart, FaRegHeart } from 'react-icons/all';
 import PropTypes from 'prop-types';
 import { ViewsContainer, ViewsParagraph } from '../Views/style/ViewsComponentStyle';
 
-const LikedComponent = ({ count, liked }) => {
+const LikedComponent = ({ count, isLiked, doLike }) => {
   return (
-    <ViewsContainer>
-      {liked ? <FaHeart size="14px" color="var(--primary-color)" /> : <FaRegHeart size="14px" />}
+    <ViewsContainer clickable onClick={doLike}>
+      {isLiked ? <FaHeart size="14px" color="var(--primary-color)" /> : <FaRegHeart size="14px" />}
       <ViewsParagraph>{count} likes</ViewsParagraph>
     </ViewsContainer>
   );
 };
 LikedComponent.propTypes = {
   count: PropTypes.number,
-  liked: PropTypes.bool,
+  isLiked: PropTypes.bool,
+  doLike: PropTypes.func,
 };
 LikedComponent.defaultProps = {
   count: 0,
-  liked: false,
+  isLiked: false,
+  doLike: ()=>{},
 };
 export default LikedComponent;

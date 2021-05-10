@@ -19,11 +19,15 @@ exports.ROUTES = {
   USER_CLIENT_LIKED_RECIPES: (id) => `${__ROUTES__.USERS}liked/recipes/${id}`,
 
 
+
   USER_RECIPES: `${__ROUTES__.USERS}recipes/`,
   USER_COOKBOOKS: `${__ROUTES__.USERS}cookbooks/`,
 
   USER_LIKED_RECIPES: `${__ROUTES__.USERS}liked/recipes/`,
   USER_LIKED_COOKBOOKS: `${__ROUTES__.USERS}liked/cookbooks/`,
+
+  USER_LIKE_COOKBOOK: `${__ROUTES__.COOKBOOKS}like/`,
+  USER_LIKE_RECIPE: `${__ROUTES__.RECIPES}like/`,
 
 
 };

@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Recipe } from '../MultyUsed/Recipe';
-import { fetchData } from '../../Connectors/dataProvider';
 import { COMMON, ROUTES } from '../../constants';
 import { SortContainer } from './style/CookBookSearchComponentStyle';
 import { H1Styled } from '../common/StylesComponent';
@@ -10,14 +9,8 @@ import { Loading } from '../MultyUsed/Loading/Loading';
 import { InfinityScrolls } from '../MultyUsed/InfiniteScroll';
 import {useFetch} from "../MultyUsed/CustomHooks/useFetch";
 
-const paginatorInitState = { nextPage: 1, hasNextPage: true };
-
 export const Recipes = ({ filters, sortBy }) => {
-
-
   const [items, setItems] = useState([]);
-
-
   const [fetchRecipes, hasNext, loader] = useFetch(ROUTES.RECIPES, setItems, { cookTime: filters, sortBy })
   useEffect(()=>{console.count("changed!")},[fetchRecipes])
 

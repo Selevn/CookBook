@@ -177,8 +177,6 @@ exports.getCookBook = async (id) => {
 //continue
 //filters & authors
 exports.getRecipes = async (filter) => {
-
-    console.log(filter);
     let aggregate;
     if (filter.cookTime !== '1000') {
         aggregate = Recipes.aggregate([

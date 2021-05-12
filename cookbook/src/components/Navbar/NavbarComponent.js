@@ -17,8 +17,9 @@ const NavbarComponent = () => {
     const [menuOpen, setMenuOpen] = useState(true);
     const menuClick = () => setMenuOpen((s) => !s);
 
-    const {profile} = useReduxState();
+    //const profile = useSelector(state=>state.profile);
 
+    const {profile} = useReduxState();
     const dispatch = useDispatch();
 
     const Logout = useCallback(()=>{

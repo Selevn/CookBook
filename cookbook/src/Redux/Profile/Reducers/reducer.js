@@ -19,10 +19,10 @@ export const profileReducer = (state = initialState, action) => {
         case profileActionTypes.LIKE_RECIPE:
         {
             const inputId = Number(action.payload)
-            if(state.profile.likes.recipes.includes(inputId))
-                state.profile.likes.recipes = state.profile.likes.recipes.filter(id => id !== inputId)
+            if(state.likes.recipes.includes(inputId))
+                state.likes.recipes = state.likes.recipes.filter(id => id !== inputId)
             else
-                state.profile.likes.recipes.push(inputId)
+                state.likes.recipes.push(inputId)
             return {...state}
 
         }

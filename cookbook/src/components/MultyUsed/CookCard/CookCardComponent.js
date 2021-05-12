@@ -15,12 +15,12 @@ import { Container } from '../../common/StylesComponent';
 import { Views } from '../Views';
 import { Commented } from '../Commented';
 import { Liked } from '../Liked';
+import {useReduxState} from "../CustomHooks/useReduxState";
 
 export const CookCardComponent = ({
   views,
   likes,
   comments,
-  isLiked,
   isCommented,
   author,
   name,
@@ -73,7 +73,8 @@ export const CookCardComponent = ({
       break;
     }
   }
-
+  const {profile} = useReduxState();
+  const isLiked = profile && profile.likes.cookBooks.includes(id);
   const history = useHistory();
   return (
     <CookCardContainer
@@ -105,7 +106,7 @@ export const CookCardComponent = ({
       )}
       {showFooter && (
         <Container margin="8px 0 0 0" justifyContent="space-between">
-          <Liked count={likes || 0} liked={isLiked} />
+          <Liked count={likes || 0} isLiked={isLiked} />
           <Commented count={comments.length || 0} commented={isCommented} />
         </Container>
       )}

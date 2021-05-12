@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { PropTypes } from 'prop-types';
-import { fetchData } from '../../Connectors/dataProvider';
 import { ROUTES } from '../../constants';
 import { CookCard } from '../MultyUsed/CookCard';
 import { InputUniteContainer, SortContainer } from './style/CookBookSearchComponentStyle';
@@ -12,12 +11,10 @@ import {useFetch} from "../MultyUsed/CustomHooks/useFetch";
 export const CookBooks = ({ filters, sortBy }) => {
 
   const [items, setItems] = useState([]);
+  const [fetchBooks, hasNext, loading] = useFetch(ROUTES.COOKBOOKS, setItems,{ ...filters, sortBy })
 
-  const [fetchBooks, hasNext] = useFetch(ROUTES.COOKBOOKS, setItems,{ ...filters, sortBy })
-  useEffect(()=>{console.count("changed!")},[fetchBooks])
-  // firstLoad
   useEffect(() => {
-    fetchBooks();
+    fetchBooks(1);
   }, [sortBy, filters]);
 
   return (
@@ -29,8 +26,9 @@ export const CookBooks = ({ filters, sortBy }) => {
         next={fetchBooks}
         className="infinity-scroller"
       >
+        {loading && <Loading/>}
         {items && items.map((item) => <CookCard key={item._id} {...item} />)}
-        {items && items.length === 0 && (<h1>No cookbooks</h1>)}
+        {!loading && items && items.length === 0 && (<h1>No cookbooks</h1>)}
       </InfiniteScroll>
     </>
   );

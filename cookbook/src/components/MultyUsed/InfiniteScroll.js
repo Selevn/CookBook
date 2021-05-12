@@ -48,7 +48,6 @@ export const InfinityScrolls = function ({children, hasMore, loader, next, dataL
             }
         }
     }
-
     useEffect(() => {
         window.addEventListener('scroll', scrollHandler);
         return () => {

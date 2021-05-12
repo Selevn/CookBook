@@ -18,6 +18,7 @@ import {
   RecipeContainerWrapper,
   SaveContainer,
 } from './style/RecipeContainerStyle';
+import {useReduxState} from "../CustomHooks/useReduxState";
 
 RecipeContainerWrapper.propTypes = { children: PropTypes.node };
 
@@ -26,7 +27,6 @@ export const Recipe = ({
   views,
   likes,
   commentsIds: comments,
-  isLiked,
   isCommented,
   author,
   name,
@@ -40,6 +40,8 @@ export const Recipe = ({
   image,
   _id: id,
 }) => {
+  const {profile} = useReduxState();
+  const isLiked = profile && profile.likes.recipes.includes(id);
   const description = `${desc.slice(0, desc.indexOf(' ', 250))}...`;
   const history = useHistory();
   return (
@@ -58,7 +60,7 @@ export const Recipe = ({
           <Author>{`${author && author[0].name.first} ${author && author[0].name.last}`}</Author>
           <Description>{description}</Description>
           <Statistics>
-            <Liked liked={isLiked} count={likes} />
+            <Liked isLiked={isLiked} count={likes} />
             <Commented commented={isCommented} count={comments.length} />
             <Views count={views} />
           </Statistics>

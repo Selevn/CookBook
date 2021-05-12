@@ -49,7 +49,6 @@ export const Register = async (url, data) => {
   });
   if (response.status !== 200) throw Error(response);
   const answer = await response.json();
-  console.log(answer)
   return answer;
 };
 

@@ -22,6 +22,7 @@ import {ProfileCookBooks} from './CookBooks';
 import {ProfileRecipes} from './Recipes';
 import {Loading} from '../MultyUsed/Loading/Loading';
 import {useSelector} from "react-redux";
+import {useReduxState} from "../MultyUsed/CustomHooks/useReduxState";
 
 const ProfileComponent = ({match}) => {
     const myBooks = 'myBooks';
@@ -29,7 +30,7 @@ const ProfileComponent = ({match}) => {
     const myLikedRecipes = 'myLikedRecipes';
     const myLikedBooks = 'myLikedBooks';
     const settings = 'settings';
-    const {profile} = useSelector(state => state.profile);
+    const {profile} = useReduxState()//useSelector(state => state.profile);
     const [loading, setLoading] = useState(false);
     const [addMenu, setAddMenu] = useState(false);
     const [menu, setMenu] = useState(myBooks);

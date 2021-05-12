@@ -109,7 +109,6 @@ app.post(`${ROUTES.USER_LIKE_RECIPE}`, passport.authenticate('jwt', {session: fa
 app.post(`/api/login`, async (req, res) => {
     const {email, password} = req.body;
     const user = (await getUserForLogin(email))[0]
-    console.log(user)
     if (user) {
         if (checkPassword(password, user.password, user.salt)) {
             delete user.password

@@ -1,10 +1,9 @@
-import {useStore} from "react-redux";
+import {useSelector} from "react-redux";
 
 export function useReduxState()
 {
-    const state = useStore().getState();
     return({
-        profile: state.profile || null,
-        auth: state.auth || null
+        profile: useSelector(state=>state.profile),
+        auth: useSelector(state=>state.auth)
     })
 }

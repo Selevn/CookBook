@@ -99,7 +99,7 @@ exports.authorIdMatcher = (id) =>
     ({
         $match: {author: Number(id)}
     })
-exports.userLikedMatcher = (ids) =>
+exports.idInRangeMatcher = (ids) =>
     ({
         $match: {_id: {$in : ids}}
     })

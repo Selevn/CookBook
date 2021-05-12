@@ -6,19 +6,20 @@ const paginatorInitState = {nextPage: 1, hasNextPage: true};
 export function useFetch(url, setItems, settings, paginatorDefault = paginatorInitState) {
     const [paginator, setPaginator] = useState(paginatorDefault)
     const [loader, setLoader] = useState(false)
-    const fetch = useCallback((page = paginator.nextPage) => {
+    const fetch = useCallback(() => {
         (async () => {
-                if (page === 1)
+                if (paginator.nextPage === 1)
                 {
                     setItems([]);
                     setPaginator(paginatorDefault);
                 }
-                if (paginator.hasNextPage || page===1) {
+                if (paginator.hasNextPage || paginator.nextPage===1) {
                     setLoader(true)
                     const data = await fetchData(
                         url, () => {
-                        }, {...settings, page: page},
+                        }, {...settings, page: paginator.nextPage},
                     );
+                    console.log(data)
                     setLoader(false)
                     setPaginator({nextPage: data.nextPage, hasNextPage: data.hasNextPage});
                     setItems(s => [...s, ...data.docs]);

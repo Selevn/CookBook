@@ -23,7 +23,7 @@ const {_idMatcher} = require("../models/lookups");
 const {recipesLookUp, authorLookup, commentsLookup} = require("../models/lookups");
 
 const dotenv = require('dotenv');
-const {userLikedMatcher} = require("../models/lookups");
+const {idInRangeMatcher} = require("../models/lookups");
 dotenv.config({path: '../.env'});
 
 async function start() {
@@ -66,7 +66,7 @@ exports.getUserLikedCookBooks = async (id, filters) => {
     user.likes.cookBooks = user.likes.cookBooks || []
 
     const aggregate = CookBooks.aggregate([
-        userLikedMatcher(user.likes.cookBooks),
+        idInRangeMatcher(user.likes.cookBooks),
         authorLookup,
         commentsLookup,
     ])
@@ -86,7 +86,7 @@ exports.getUserLikedRecipes = async (id, filters) => {
     //TODO: убери потом
     user.likes.recipes = user.likes.recipes || []
     const aggregate = Recipes.aggregate([
-        userLikedMatcher(user.likes.recipes),
+        idInRangeMatcher(user.likes.recipes),
         authorLookup,
         commentsLookup
     ])
@@ -186,6 +186,14 @@ exports.getRecipes = async (filter) => {
         ])
     } else {
         aggregate = Recipes.aggregate([
+            authorLookup,
+            commentsLookup,
+        ]);
+    }
+    if(filter.cookbookId){
+        const cookbook = (await exports.getCookBook(filter.cookbookId))[0]
+        aggregate = Recipes.aggregate([
+            idInRangeMatcher(cookbook.recipesIds),
             authorLookup,
             commentsLookup,
         ]);

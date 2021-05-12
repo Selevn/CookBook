@@ -34,7 +34,7 @@ import {Loading} from '../MultyUsed/Loading/Loading';
 import {useReduxState} from "../MultyUsed/CustomHooks/useReduxState";
 import {useDispatch} from "react-redux";
 import {profileActions} from "../../Redux/Profile";
-import {useFetch} from "../MultyUsed/CustomHooks/useFetch";
+import Recipes from "./RecipeContainer";
 
 const ItemPageComponent = ({match}) => {
     const {profile, auth} = useReduxState();
@@ -46,7 +46,6 @@ const ItemPageComponent = ({match}) => {
     const [isLiked, setIsLiked] = useState(false);
     const isCommented = false;
     const [item, setItem] = useState(false);
-    const [recipes, setRecipes] = useState([]);
     const [comments, setComments] = useState([]);
 
     useEffect(() => {
@@ -65,7 +64,6 @@ const ItemPageComponent = ({match}) => {
             if (type === 'cookbook') {
                 const data = await fetchData(ROUTES.COOKBOOK_CLIENT(id), setLoading);
                 setItem(data[0]);
-                setRecipes(data[0].recipes);
                 setComments(data[0].comments);
             } else {
                 const data = await fetchData(ROUTES.RECIPE_CLIENT(id), setLoading);
@@ -191,13 +189,7 @@ const ItemPageComponent = ({match}) => {
             )}
             {type === 'cookbook' && (
                 <>
-                    <RecepiesContainer>
-                        <H1Styled>Recepies</H1Styled>
-                        <Container className="recipesContainer">
-                            {loading && <Loading/>}
-                            {recipes && recipes.map((i) => <Recipe key={`${i._id}recipe`} {...i} />)}
-                        </Container>
-                    </RecepiesContainer>
+                    <Recipes id={Number(id)}/>
                 </>
             )}
 

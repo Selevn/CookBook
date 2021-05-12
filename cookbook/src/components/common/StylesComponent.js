@@ -97,7 +97,7 @@ LinkWrapper.defaultProps = {
   to: '',
 };
 
-const ButtonWrapper = ({ className, children, onClick, href }) => {
+const ButtonWrapper = ({ className, children, onClick, href, disabled }) => {
   const history = useHistory();
   const redirector = (e) => {
     e.preventDefault();
@@ -109,7 +109,7 @@ const ButtonWrapper = ({ className, children, onClick, href }) => {
   };
 
   return (
-    <button className={`${className} clickable`} onClick={clickHandle}>
+    <button className={`${className} clickable`} onClick={clickHandle} disabled={disabled}>
       {children}
     </button>
   );
@@ -152,6 +152,14 @@ export const ButtonStyled = styled(ButtonWrapper)`
   border-radius: 8px;
   border: none;
 
+  ${(p)=>
+      p.disabled && css`
+      :hover{
+        cursor: auto;
+      }
+    opacity: 0.4;
+      `}
+  
   ${(p) =>
     p.secondary &&
     css`

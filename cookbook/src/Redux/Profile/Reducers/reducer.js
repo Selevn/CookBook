@@ -19,12 +19,19 @@ export const profileReducer = (state = initialState, action) => {
         case profileActionTypes.LIKE_RECIPE:
         {
             const inputId = Number(action.payload)
-            if(state.likes.recipes.includes(inputId))
-                state.likes.recipes = state.likes.recipes.filter(id => id !== inputId)
-            else
-                state.likes.recipes.push(inputId)
-            return {...state}
-
+            let changedArr = [...state.likes.recipes]
+            if(state)
+            {
+                if(state.likes.recipes.includes(inputId))
+                    changedArr = changedArr.filter(id => id !== inputId)
+                else
+                    changedArr.push(inputId)
+            }
+            else{
+                console.log("profileActionTypes.LIKE_COOKBOOK no person", state)
+            }
+            PutData(PROFILE, {...state, likes: {cookBooks: state.likes.cookBooks, recipes: changedArr}})
+            return {...state, likes: {cookBooks: state.likes.cookBooks, recipes: changedArr}}
         }
         case profileActionTypes.LIKE_COOKBOOK:
         {

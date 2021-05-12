@@ -11,9 +11,7 @@ const Recipes = (id) => {
     const [fetchBooks, hasNext, loading] = useFetch(ROUTES.RECIPES, setRecipes, {cookbookId: id.id} )
     // firstLoad
     useEffect(() => {
-        (async ()=>{
-            await fetchBooks()
-        })()
+        fetchBooks();
     }, [id.id]);
 
     return (<RecepiesContainer>
@@ -21,7 +19,7 @@ const Recipes = (id) => {
         <Container className="recipesContainer">
             {recipes && recipes.map((i) => <Recipe key={`${i._id}recipe`} {...i} />)}
             {loading && <Loading/>}
-            {hasNext && <ButtonStyled disabled={loading} onClick={fetchBooks} secondary light>Load more</ButtonStyled>}
+            {hasNext && <ButtonStyled disabled={loading} onClick={()=>{fetchBooks()}} secondary light>Load more</ButtonStyled>}
         </Container>
     </RecepiesContainer>)
 }

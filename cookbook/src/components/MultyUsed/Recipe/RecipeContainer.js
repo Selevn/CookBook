@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import { FaRegEdit, FaWindowClose } from 'react-icons/all';
 import { useHistory } from 'react-router-dom';
@@ -41,7 +41,7 @@ export const Recipe = ({
   _id: id,
 }) => {
   const {profile} = useReduxState();
-  const isLiked = profile && profile.likes.recipes.includes(id);
+  const [isLiked, setIsLiked] = useState(profile && profile.likes.recipes.includes(id) || false)
   const description = `${desc.slice(0, desc.indexOf(' ', 250))}...`;
   const history = useHistory();
   return (

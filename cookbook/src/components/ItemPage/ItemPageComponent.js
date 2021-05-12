@@ -41,7 +41,6 @@ const ItemPageComponent = ({match}) => {
     const dispatcher = useDispatch();
 
     const {id, type} = match.params;
-
     const [loading, setLoading] = useState(false);
     const [isLiked, setIsLiked] = useState(false);
     const isCommented = false;
@@ -53,11 +52,9 @@ const ItemPageComponent = ({match}) => {
             if (type === 'cookbook')
                 setIsLiked(profile.likes.cookBooks.includes(Number(id)))
             else
-            {
                 setIsLiked(profile.likes.recipes.includes(Number(id)))
-            }
         }
-    }, [profile])
+    }, [profile, id])
 
     useEffect(() => {
         (async () => {
@@ -85,7 +82,7 @@ const ItemPageComponent = ({match}) => {
             dispatcher(profileActions.likeCookbook(Number(id)))
         else
             dispatcher(profileActions.likeRecipe(Number(id)))
-    }, [])
+    }, [id, profile])
 
     const doLike = useCallback(() => {
         (async () => {
@@ -107,7 +104,7 @@ const ItemPageComponent = ({match}) => {
                     SendData(url, {from: profile._id, to: Number(id)}, auth)
                         .then(result => {
                             if (!result.success)
-                                doLocalLike(+1)
+                                doLocalLike(-1)
                         })
                 }
             }
@@ -206,7 +203,7 @@ const ItemPageComponent = ({match}) => {
             </CommentsContainer>
         </ItemContainer>
     );
-};
+}
 
 ItemPageComponent.propTypes = {
     views: PropTypes.number,
@@ -217,7 +214,6 @@ ItemPageComponent.propTypes = {
     author: PropTypes.array,
     name: PropTypes.string,
     desc: PropTypes.string,
-
     match: PropTypes.object,
 };
 ItemPageComponent.defaultProps = {};

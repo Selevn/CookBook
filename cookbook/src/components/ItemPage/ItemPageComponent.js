@@ -34,6 +34,7 @@ import {Loading} from '../MultyUsed/Loading/Loading';
 import {useReduxState} from "../MultyUsed/CustomHooks/useReduxState";
 import {useDispatch} from "react-redux";
 import {profileActions} from "../../Redux/Profile";
+import {useFetch} from "../MultyUsed/CustomHooks/useFetch";
 
 const ItemPageComponent = ({match}) => {
     const {profile, auth} = useReduxState();
@@ -115,6 +116,23 @@ const ItemPageComponent = ({match}) => {
         })()
     }, [id, type, isLiked, profile, auth])
 
+    const [post, setPost] = useState("")
+    const postLocalComment = useCallback((text) => {
+        comments.unshift({author: [{name:profile.name, image: profile.image}], text: text, date:Date.now()})
+        setComments([...comments])
+    },[profile, comments])
+    const postComment = useCallback(() => {
+        if(profile)
+        {
+            postLocalComment(post);
+        }
+        else{
+            alert("You shall be authrorized.")
+        }
+    },[id, type, profile, auth, post]);
+
+
+
     return (
         <ItemContainer>
             {loading && <Loading/>}
@@ -186,8 +204,8 @@ const ItemPageComponent = ({match}) => {
             <CommentsContainer>
                 <H1Styled>Comments ({item && item.commentsIds.length})</H1Styled>
                 <CreateComment>
-                    <InputStyled placeholder="Express yourself..."/>
-                    <ButtonStyled small>Post</ButtonStyled>
+                    <InputStyled placeholder="Express yourself..." value ={post} onChange={(e)=>setPost(e.target.value)}/>
+                    <ButtonStyled small onClick={postComment}>Post</ButtonStyled>
                 </CreateComment>
                 <Comments>
                     {loading && <Loading/>}

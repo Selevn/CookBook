@@ -79,4 +79,6 @@ export const MinimizedCardText = styled(Container)`
 
 export const CookCardImage = styled.img`
   margin: auto;
+  object-fit:cover;
+  object-position: center center;
 `;

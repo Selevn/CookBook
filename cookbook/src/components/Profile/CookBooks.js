@@ -18,14 +18,16 @@ export const ProfileCookBooks = ({id ,isLiked}) => {
   const [fetchBooks, hasNext, loading] = useFetch(fetchUrl, setItems )
   // firstLoad
   useEffect(() => {
-    fetchBooks();
+      (async ()=>{
+          await fetchBooks()
+      })()
   }, [id]);
 
   return (
     <>
       <InfiniteScroll
           dataLength={items.length}
-          hasMore={hasNext}
+          hasMore={hasNext && items.length!==0}
           loader={<Loading />}
           next={fetchBooks}
           className="infinity-scroller"

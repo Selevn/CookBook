@@ -243,7 +243,7 @@ export const TestContainer = styled.div`
 `;
 
 export const Image = ({ src, alt, width, height, radius }) => {
-  return <img src={src} alt={alt} width={width} height={height} style={{ borderRadius: radius }} />;
+  return <img src={src} alt={alt} width={width} height={height} style={{ borderRadius: radius, objectFit:"cover", objectPosition: "center center" }} />;
 };
 Image.propTypes = {
   src: PropTypes.string,

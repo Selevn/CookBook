@@ -21,7 +21,6 @@ export const Name = styled(LinkStyled)`
 export const Body = styled(Container)`
   font-size: 20px;
   padding-left: 20px;
-  margin: auto 0 0 auto;
 `;
 export const PersonImage = styled(Container)`
   height: 80px;

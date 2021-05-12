@@ -11,6 +11,7 @@ import {
 import { ParagraphStyled } from '../../common/StylesComponent';
 
 const CommentComponent = ({ author, text, date }) => {
+  console.log(author)
   return (
     <CommentContainer>
       <PersonImage src={author && author[0].image} />

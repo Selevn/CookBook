@@ -9,7 +9,7 @@ import {useFetch} from "../MultyUsed/CustomHooks/useFetch";
 export const ProfileRecipes = ({id, isLiked}) => {
     const [items, setItems] = useState([]);
     let fetchUrl;
-    if(isLiked)
+    if (isLiked)
         fetchUrl = ROUTES.USER_CLIENT_LIKED_RECIPES(id)
     else
         fetchUrl = ROUTES.USER_CLIENT_RECIPES(id)
@@ -19,14 +19,16 @@ export const ProfileRecipes = ({id, isLiked}) => {
 
     // firstLoad
     useEffect(() => {
-        fetchRecipes();
+        (async () => {
+            await fetchRecipes();
+        })()
     }, [id]);
 
     return (
         <>
             <InfiniteScroll
                 dataLength={items.length}
-                hasMore={hasNextPage}
+                hasMore={hasNextPage && items.length !== 0}
                 loader={<Loading/>}
                 next={fetchRecipes}
                 className="infinity-scroller"

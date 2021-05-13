@@ -17,6 +17,7 @@ const ItemCommentsContainer = ({id, type, profile, auth}) => {
         setTotal(count)
     }, [count])
 
+
     const [post, setPost] = useState("")
     const postLocalComment = useCallback((comment) => {
         comments.unshift(comment)
@@ -41,6 +42,11 @@ const ItemCommentsContainer = ({id, type, profile, auth}) => {
             alert("You shall be authrorized.")
         }
     }, [id, type, profile, auth, post]);
+
+    useEffect(() => {
+        fetchComments('start')
+    }, [id, type])
+
     return (
         <CommentsContainer>
             <H1Styled>Comments ({total})</H1Styled>

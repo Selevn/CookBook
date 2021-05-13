@@ -21,8 +21,9 @@ import {ROUTES} from '../../constants';
 import {ProfileCookBooks} from './CookBooks';
 import {ProfileRecipes} from './Recipes';
 import {Loading} from '../MultyUsed/Loading/Loading';
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useReduxState} from "../MultyUsed/CustomHooks/useReduxState";
+import {profileActions} from "../../Redux/Profile";
 
 const ProfileComponent = ({match}) => {
     const myBooks = 'myBooks';
@@ -37,12 +38,19 @@ const ProfileComponent = ({match}) => {
     const [user, setUser] = useState();
     const {id} = match.params;
 
+    const dispatcher = useDispatch()
     useEffect(() => {
         (async () => {
             const data = await fetchData(ROUTES.USER_CLIENT(id), setLoading);
             setUser(data[0]);
         })();
     }, [id]);
+
+    useEffect(() => {
+        dispatcher(profileActions.setProfile({...user}))
+    }, [user]);
+
+
     return (
         <>
             <UserInformation>
@@ -116,11 +124,12 @@ const ProfileComponent = ({match}) => {
                 {menu === myRecipes && <ProfileRecipes id={id}/>}
                 {menu === myLikedBooks && <ProfileCookBooks id={id} isLiked={true}/>}
                 {menu === myLikedRecipes && <ProfileRecipes id={id} isLiked={true}/>}
-                {menu === settings && <Settings/>}
+                {menu === settings && <Settings setUser={setUser}/>}
             </DataContainer>
         </>
     );
-};
+}
+
 ProfileComponent.propTypes = {
     match: PropTypes.any,
 };

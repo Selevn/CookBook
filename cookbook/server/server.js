@@ -23,14 +23,17 @@ const {getUserForLogin} = require("./Data/dataProvider");
 const {checkPassword} = require("./JWT/PasswordHasher");
 const {getPassword} = require("./JWT/PasswordHasher");
 const {issueJWT} = require("./JWT/PasswordHasher");
-
+const multer = require("multer")
+const fs = require("fs");
+const {UserProxy} = require("./Data/DataProxy/userProxy");
+const {updateUser} = require("./Data/dataProvider");
+const {FOLDERS} = require("../src/constants");
 const app = express();
-const port = process.env.PORT || 5000;
-
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
+app.use(express.static('public'));
 /*
 app.use((req,res,next)=>{
     setTimeout(next,500)
@@ -51,7 +54,7 @@ app.get(ROUTES.RECIPES, async (req, res) => {
 });
 
 app.get(ROUTES.COMMENTS, async (req, res) => {
-    console.log("getComments",req.query)
+    console.log("getComments", req.query)
     const data = await getComments(req.query);
     res.json(
         data
@@ -70,7 +73,7 @@ app.get(`${ROUTES.RECIPES}:id`, async (req, res) => {
     );
 });
 app.get(`${ROUTES.USERS}:id`, async (req, res) => {
-    const data = await getUser(req.params['id'], req.query);
+    const data = UserProxy(await getUser(req.params['id'], req.query));
     res.json(
         data
     );
@@ -101,17 +104,17 @@ app.get(`${ROUTES.USER_LIKED_RECIPES}:userId`, async (req, res) => {
     );
 });
 
-app.post(`${ROUTES.USER_LIKE_COOKBOOK}`, passport.authenticate('jwt', {session: false}),async (req, res) => {
+app.post(`${ROUTES.USER_LIKE_COOKBOOK}`, passport.authenticate('jwt', {session: false}), async (req, res) => {
     res.json(
         {success: await likeCookBook(req.body.from, req.body.to)}
     );
 });
-app.post(`${ROUTES.USER_LIKE_RECIPE}`, passport.authenticate('jwt', {session: false}),async (req, res) => {
+app.post(`${ROUTES.USER_LIKE_RECIPE}`, passport.authenticate('jwt', {session: false}), async (req, res) => {
     res.json(
-        {success:await likeRecipe(req.body.from, req.body.to)}
+        {success: await likeRecipe(req.body.from, req.body.to)}
     );
 });
-app.post(`${ROUTES.USER_COMMENT}`, passport.authenticate('jwt', {session: false}),async (req, res) => {
+app.post(`${ROUTES.USER_COMMENT}`, passport.authenticate('jwt', {session: false}), async (req, res) => {
     res.json(
         {success: await addComment({...req.body})}
     );
@@ -150,7 +153,7 @@ app.post(`/api/register`, async (req, res, next) => {
     const {email, password, repeatPassword} = req.body;
     if (password === repeatPassword && validateEmail(email) && validatePassword(password)) {
         const {hash, salt} = getPassword(password)
-        if((await getUserForLogin(email))[0]){
+        if ((await getUserForLogin(email))[0]) {
             res.json({
                 success: false,
                 message: "This email is already in use."
@@ -172,12 +175,51 @@ app.post(`/api/register`, async (req, res, next) => {
     }
 });
 
-app.get('/api/test', passport.authenticate('jwt', {session: false}), (req, res, next) => {
+
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, FOLDERS.USERS_AVATARS)
+    },
+    /*filename: function (req, file, cb) {
+        console.log("file",file)
+        cb(null, file.originalname.slice(2,8) + '-' + Date.now()+'.jpg')
+    }*/
+})
+const upload = multer({ storage: storage });
+app.post('/profile',
+    passport.authenticate('jwt', {session: false}),
+    upload.single('avatar'),
+    async function (req, res, next) {
+    console.log(req.body.id)
+    const newName = req.body.id+'__'+req.file.filename;
+    fs.readdir(FOLDERS.USERS_AVATARS, function (err, files) {
+        if (err) {
+            return console.log('Unable to scan directory: ' + err);
+        }
+        files.forEach(function (file) {
+            if(file.startsWith(req.body.id+'__')){
+                fs.unlinkSync(FOLDERS.USERS_AVATARS+file)
+            }
+        });
+    });
+    fs.renameSync(FOLDERS.USERS_AVATARS+req.file.filename, FOLDERS.USERS_AVATARS+newName);
+
+    await updateUser(req.body.id, 'image',`/img/profileImages/${newName}`)
+
+    res.json({
+        success: true,
+        img: `/img/profileImages/${newName}`,
+    })
+})
+
+app.post(ROUTES.CHANGE_ACC, passport.authenticate('jwt', {session: false}), async function (req, res, next) {
+
+    await updateUser(req.body.id, req.body.field,req.body.value)
     res.json({
         success: true,
     })
 })
-
 /*
 
 
@@ -196,4 +238,4 @@ app.get(`/api/recipes/:id`, async (req, res) => {
 });*/
 
 
-app.listen(port, () => console.log(`Listening on port ${port}`));
+app.listen(5000, process.env.IP, () => console.log(`Listening on ${process.env.IP}:${process.env.PORT}`));

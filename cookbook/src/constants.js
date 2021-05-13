@@ -32,6 +32,9 @@ exports.ROUTES = {
   USER_LIKE_RECIPE: `${__ROUTES__.RECIPES}like/`,
 
   USER_COMMENT: `${__ROUTES__.COMMENTS}comment/`,
+
+  CHANGE_ACC: `/api/changeAccount/`,
+  CHANGE_ACC_IMAGE: `/profile`,
 };
 
 exports.COMMON = {
@@ -45,3 +48,17 @@ exports.COMMON = {
   COOKBOOK: 'COOKBOOK',
   RECIPE: 'RECIPE',
 };
+
+exports.FOLDERS = {
+  USERS_AVATARS: "./public/img/profileImages/",
+}
+
+exports.USER_FIELDS = {
+  name:'name',
+  email:'email',
+  image: 'image',
+  password: 'password',
+  desc:'desc',
+  likes:'likes',
+  comments:'comments'
+}

@@ -17,8 +17,6 @@ const NavbarComponent = () => {
     const [menuOpen, setMenuOpen] = useState(true);
     const menuClick = () => setMenuOpen((s) => !s);
 
-    //const profile = useSelector(state=>state.profile);
-
     const {profile} = useReduxState();
     const dispatch = useDispatch();
 
@@ -56,7 +54,7 @@ const NavbarComponent = () => {
                     {profile &&
                     (<Container flex={4} className="mustBeHidden">
                         <Container padding="15px" justifyContent="flex-end" alignItems="center" flex={1}>
-                            <NavbarLink to={`/profile/${profile._id}`}>{`${profile.name.first} ${profile.name.last}`}</NavbarLink>
+                            <NavbarLink to={`/profile/${profile?._id}`}>{`${profile?.name?.first} ${profile?.name?.last}`}</NavbarLink>
                         </Container>
                         <Container padding="15px" justifyContent="flex-end" alignItems="center" flex={1}>
                             <ButtonStyled tiny light secondary onClick={()=>{Logout()}}>Logout</ButtonStyled>

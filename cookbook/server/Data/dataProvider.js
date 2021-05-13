@@ -23,6 +23,7 @@ const {_idMatcher} = require("../models/lookups");
 const {recipesLookUp, authorLookup, commentsLookup} = require("../models/lookups");
 
 const dotenv = require('dotenv');
+const {checkField} = require("./fieldChecker");
 const {idInRangeMatcher} = require("../models/lookups");
 dotenv.config({path: '../.env'});
 
@@ -206,6 +207,13 @@ exports.getCookBook = async (id) => {
         authorLookup
     ])
 }
+exports.updateUser = async (id, field, value) => {
+    await Users.updateOne(
+        {_id: Number(id)},
+        {[checkField(field)]: value}
+    )
+}
+
 
 //continue
 //filters & authors

@@ -39,6 +39,20 @@ export const SendData = async (url, data, authKey) => {
   return await response.json();
 };
 
+export const SendFile = async (url, formData, authKey) => {
+  const response = await fetch(url, {
+    method: 'POST',
+    body: formData,
+    headers: {
+      'Authorization': authKey
+    }
+  });
+  if (response.status !== 200 && response.status !== 401) throw Error(response);
+  if (response.status === 401) return {success:false};
+  return await response.json();
+};
+
+
 export const Register = async (url, data) => {
   const response = await fetch(url, {
     method: 'POST',

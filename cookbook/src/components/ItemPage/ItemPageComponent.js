@@ -29,18 +29,24 @@ import {Liked} from '../MultyUsed/Liked';
 import {Commented} from '../MultyUsed/Commented';
 import {Views} from '../MultyUsed/Views';
 import {fetchData, SendData} from '../../Connectors/dataProvider';
-import {ROUTES} from '../../constants';
+import {COMMON, ROUTES} from '../../constants';
 import {Loading} from '../MultyUsed/Loading/Loading';
 import {useReduxState} from "../MultyUsed/CustomHooks/useReduxState";
 import {useDispatch} from "react-redux";
 import {profileActions} from "../../Redux/Profile";
 import Recipes from "./RecipeContainer";
+import ItemCommentsContainer from "./Comments";
 
 const ItemPageComponent = ({match}) => {
     const {profile, auth} = useReduxState();
     const dispatcher = useDispatch();
 
-    const {id, type} = match.params;
+    let {id, type} = match.params;
+    if(type ==='cookbook')
+        type = COMMON.COOKBOOK
+    else
+        type = COMMON.RECIPE
+
     const [loading, setLoading] = useState(false);
     const [isLiked, setIsLiked] = useState(false);
     const isCommented = false;
@@ -49,7 +55,7 @@ const ItemPageComponent = ({match}) => {
 
     useEffect(() => {
         if (profile) {
-            if (type === 'cookbook')
+            if (type === COMMON.COOKBOOK)
                 setIsLiked(profile.likes.cookBooks.includes(Number(id)))
             else
                 setIsLiked(profile.likes.recipes.includes(Number(id)))
@@ -58,7 +64,7 @@ const ItemPageComponent = ({match}) => {
 
     useEffect(() => {
         (async () => {
-            if (type === 'cookbook') {
+            if (type === COMMON.COOKBOOK) {
                 const data = await fetchData(ROUTES.COOKBOOK_CLIENT(id), setLoading);
                 setItem(data[0]);
                 setComments(data[0].comments);
@@ -78,7 +84,7 @@ const ItemPageComponent = ({match}) => {
             setIsLiked(true);
             setItem(s => ({...s, likes: s.likes + 1}));
         }
-        if (type === 'cookbook')
+        if (type === COMMON.COOKBOOK)
             dispatcher(profileActions.likeCookbook(Number(id)))
         else
             dispatcher(profileActions.likeRecipe(Number(id)))
@@ -87,7 +93,7 @@ const ItemPageComponent = ({match}) => {
     const doLike = useCallback(() => {
         (async () => {
             let url;
-            if (type === 'cookbook')
+            if (type === COMMON.COOKBOOK)
                 url = ROUTES.USER_LIKE_COOKBOOK
             else
                 url = ROUTES.USER_LIKE_RECIPE
@@ -111,23 +117,6 @@ const ItemPageComponent = ({match}) => {
         })()
     }, [id, type, isLiked, profile, auth])
 
-    const [post, setPost] = useState("")
-    const postLocalComment = useCallback((text) => {
-        comments.unshift({author: [{name:profile.name, image: profile.image}], text: text, date:Date.now()})
-        setComments([...comments])
-    },[profile, comments])
-    const postComment = useCallback(() => {
-        if(profile)
-        {
-            postLocalComment(post);
-        }
-        else{
-            alert("You shall be authrorized.")
-        }
-    },[id, type, profile, auth, post]);
-
-
-
     return (
         <ItemContainer>
             {loading && <Loading/>}
@@ -144,7 +133,7 @@ const ItemPageComponent = ({match}) => {
                             <ParagraphStyled>{item && item.desc}</ParagraphStyled>
                         </Description>
                     </InfoContainer>
-                    {type === 'recipe' && (
+                    {type === COMMON.RECIPE && (
                         <>
                             <RecipeStatsContainer>
                                 <RecipeStats>
@@ -180,27 +169,15 @@ const ItemPageComponent = ({match}) => {
                             <Commented count={(item && item.commentsIds.length) || 0} isCommented={isCommented}/>
                             <Views count={(item && item.views) || 0}/>
                         </Statistics>
-
                     </StatisticsContainer>
                 </CookBookContainer>
             )}
-            {type === 'cookbook' && (
+            {type === COMMON.COOKBOOK && (
                 <>
                     <Recipes id={Number(id)}/>
                 </>
             )}
-
-            <CommentsContainer>
-                <H1Styled>Comments ({item && item.commentsIds.length})</H1Styled>
-                <CreateComment>
-                    <InputStyled placeholder="Express yourself..." value ={post} onChange={(e)=>setPost(e.target.value)}/>
-                    <ButtonStyled small onClick={postComment}>Post</ButtonStyled>
-                </CreateComment>
-                <Comments>
-                    {loading && <Loading/>}
-                    {comments && comments.map((i) => <Comment key={`${i._id}comment`} {...i} />)}
-                </Comments>
-            </CommentsContainer>
+            <ItemCommentsContainer id={Number(id)} type ={type} profile={profile} auth={auth} />
         </ItemContainer>
     );
 }

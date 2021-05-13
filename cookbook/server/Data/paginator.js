@@ -1,4 +1,5 @@
 exports.paginator = async (aggregate, options) => {
+    console.log("opts", options)
     const length = (await aggregate).length;
     if(options.sort)
         aggregate = aggregate.sort(options.sort)

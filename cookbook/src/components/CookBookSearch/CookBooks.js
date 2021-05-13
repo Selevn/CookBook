@@ -35,7 +35,7 @@ export const CookBooks = ({ filters, sortBy }) => {
       >
         {loading && <Loading/>}
         {items && items.map((item) => <CookCard key={item._id} {...item} />)}
-        {!loading && items && items.length === 0 && (<h1>No cookbooks</h1>)}
+        {!loading && items?.length === 0 && (<h1>No cookbooks</h1>)}
       </InfiniteScroll>
     </>
   );

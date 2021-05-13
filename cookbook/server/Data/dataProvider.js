@@ -42,7 +42,7 @@ async function start() {
 
 start().then(r => console.log('Connected to bd'))
 
-const aggregateOptions = (page = 1, sortBy = COMMON.NEWEST) => ({
+const aggregateOptions = (page = 1, sortBy = COMMON.ID) => ({
     page: Number(page),
     limit: 15,
     sort: dataSearchSorter(sortBy)
@@ -168,9 +168,7 @@ exports.getCookBooks = async (filters) => {
 exports.getCookBook = async (id) => {
     return CookBooks.aggregate([
         _idMatcher(id),
-        recipesLookUp,
-        authorLookup,
-        commentsLookup
+        authorLookup
     ])
 }
 
@@ -190,7 +188,7 @@ exports.getRecipes = async (filter) => {
             commentsLookup,
         ]);
     }
-    if(filter.cookbookId){
+    if (filter.cookbookId) {
         const cookbook = (await exports.getCookBook(filter.cookbookId))[0]
         aggregate = Recipes.aggregate([
             idInRangeMatcher(cookbook.recipesIds),
@@ -200,6 +198,26 @@ exports.getRecipes = async (filter) => {
     }
     return await paginator(aggregate, aggregateOptions(filter.page, filter.sortBy))//await Recipes.aggregatePaginate(aggregate, aggregateOptions(filter.page, filter.sortBy))
 }
+exports.getComments = async (filter) => {
+    let item, aggregate;
+    if (filter.type === COMMON.COOKBOOK) {
+        item = await exports.getCookBook(filter.itemId);
+        aggregate = Comments.aggregate([
+            idInRangeMatcher(item[0].commentsIds),
+            authorLookup,
+        ])
+    } else {
+        item = await exports.getRecipe(filter.itemId);
+        aggregate = Comments.aggregate([
+            idInRangeMatcher(item[0].commentsIds),
+            authorLookup,
+        ]);
+    }
+    return await paginator(aggregate, aggregateOptions(filter.page))//await Recipes.aggregatePaginate(aggregate, aggregateOptions(filter.page, filter.sortBy))
+
+
+}
+
 exports.getRecipe = async (id) => {
     return Recipes.aggregate([
         _idMatcher(id),

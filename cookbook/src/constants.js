@@ -2,11 +2,13 @@ const __ROUTES__ = {
   COOKBOOKS: '/api/cookbooks/',
   RECIPES: '/api/recipes/',
   USERS: '/api/users/',
+  COMMENTS: '/api/comments/',
 }
 exports.ROUTES = {
   COOKBOOKS:__ROUTES__.COOKBOOKS,
   RECIPES:__ROUTES__.RECIPES,
   USERS:__ROUTES__.USERS,
+  COMMENTS:__ROUTES__.COMMENTS,
 
   RECIPE_CLIENT: (id) => `${__ROUTES__.RECIPES}${id}`,
   COOKBOOK_CLIENT: (id) => `${__ROUTES__.COOKBOOKS}${id}`,
@@ -38,4 +40,8 @@ exports.COMMON = {
   LIKED: 'mostLiked',
   NEWEST: 'newest',
   OURCHOISE: 'ourChoise',
+  ID: 'id',
+
+  COOKBOOK: 'COOKBOOK',
+  RECIPE: 'RECIPE',
 };

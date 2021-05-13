@@ -13,6 +13,7 @@ const {
     getRecipes
 } = require("./Data/dataProvider");
 const passport = require('passport')
+const {getComments} = require("./Data/dataProvider");
 const {likeRecipe} = require("./Data/dataProvider");
 const {likeCookBook} = require("./Data/dataProvider");
 const {getUserLikedRecipes} = require("./Data/dataProvider");
@@ -43,6 +44,14 @@ app.get(ROUTES.COOKBOOKS, async (req, res) => {
 });
 app.get(ROUTES.RECIPES, async (req, res) => {
     const data = await getRecipes(req.query);
+    res.json(
+        data
+    );
+});
+
+app.get(ROUTES.COMMENTS, async (req, res) => {
+    console.log("getComments",req.query)
+    const data = await getComments(req.query);
     res.json(
         data
     );

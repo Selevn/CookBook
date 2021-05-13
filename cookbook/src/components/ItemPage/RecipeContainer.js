@@ -6,13 +6,13 @@ import React, {useEffect, useState} from "react";
 import {useFetch} from "../MultyUsed/CustomHooks/useFetch";
 import {ROUTES} from "../../constants";
 
-const Recipes = (id) => {
+const Recipes = ({id}) => {
     const [recipes, setRecipes] = useState([]);
-    const [fetchBooks, hasNext, loading] = useFetch(ROUTES.RECIPES, setRecipes, {cookbookId: id.id} )
+    const [fetchBooks, hasNext, loading] = useFetch(ROUTES.RECIPES, setRecipes, {cookbookId: id} )
     // firstLoad
     useEffect(() => {
         fetchBooks();
-    }, [id.id]);
+    }, [id]);
 
     return (<RecepiesContainer>
         <H1Styled>Recepies</H1Styled>

@@ -6,30 +6,41 @@ import React, {useCallback, useEffect, useState} from "react";
 import {useFetch} from "../MultyUsed/CustomHooks/useFetch";
 import {ROUTES} from "../../constants";
 import InfiniteScroll from "react-infinite-scroll-component";
+import {SendData} from "../../Connectors/dataProvider";
 
 const ItemCommentsContainer = ({id, type, profile, auth}) => {
     const [comments, setComments] = useState([]);
-    const [fetchComments, hasNext, loading, total] = useFetch(ROUTES.COMMENTS, setComments, {type: type, itemId: id})
-    // firstLoad
-    useEffect(() => {
-        fetchComments();
-    }, [id]);
+    const [fetchComments, hasNext, loading, count] = useFetch(ROUTES.COMMENTS, setComments, {type: type, itemId: id})
 
+    const [total, setTotal] = useState(count)
+    useEffect(() => {
+        setTotal(count)
+    }, [count])
 
     const [post, setPost] = useState("")
-    const postLocalComment = useCallback((text) => {
-        comments.unshift({author: [{name:profile.name, image: profile.image}], text: text, date:Date.now()})
+    const postLocalComment = useCallback((comment) => {
+        comments.unshift(comment)
         setComments([...comments])
-    },[profile, comments])
+        setTotal(s => s + 1)
+    }, [profile, comments])
+
+    const postServerComment = useCallback((comment) => {
+        (async () => {
+            const data = await SendData(ROUTES.USER_COMMENT, {type, itemId:id, comment, userId:profile._id}, auth)
+            console.log(data)
+        })()
+    }, [profile, comments])
+
+
     const postComment = useCallback(() => {
-        if(profile)
-        {
-            postLocalComment(post);
-        }
-        else{
+        const comment = {author: [{name: profile.name, image: profile.image}], text: post, date: Date.now()}
+        if (profile) {
+            postLocalComment(comment);
+            postServerComment(comment);
+        } else {
             alert("You shall be authrorized.")
         }
-    },[id, type, profile, auth, post]);
+    }, [id, type, profile, auth, post]);
     return (
         <CommentsContainer>
             <H1Styled>Comments ({total})</H1Styled>
@@ -40,7 +51,7 @@ const ItemCommentsContainer = ({id, type, profile, auth}) => {
             <InfiniteScroll
                 dataLength={comments?.length}
                 hasMore={hasNext}
-                loader={<Loading />}
+                loader={<Loading/>}
                 next={fetchComments}
                 className="infinity-scroller"
             >

@@ -31,7 +31,7 @@ exports.ROUTES = {
   USER_LIKE_COOKBOOK: `${__ROUTES__.COOKBOOKS}like/`,
   USER_LIKE_RECIPE: `${__ROUTES__.RECIPES}like/`,
 
-
+  USER_COMMENT: `${__ROUTES__.COMMENTS}comment/`,
 };
 
 exports.COMMON = {

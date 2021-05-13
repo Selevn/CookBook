@@ -14,9 +14,9 @@ exports.dataSearchSorter = (type) => {
         case COMMON.LIKED:
             return "-likes";
         case COMMON.OURCHOISE:
-            return "_id";
+            return "-_id";
         case COMMON.ID:
-            return "_id";
+            return "-_id";
         default:
             return () => {
                 throw new Error(

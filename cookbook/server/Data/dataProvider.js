@@ -141,7 +141,41 @@ exports.likeRecipe = async (userId, id) => {
         return false;
     }
 }
-
+exports.addComment = async (prop) => {
+    console.log("prop",prop)
+    const {userId, itemType, itemId, comment} = prop
+    try {
+        const commentId = (await Comments.countDocuments({})) + 1;
+        console.log("commentId",commentId)
+        const newComment = {
+            ...comment,
+            author: userId,
+            _id: commentId
+        }
+        const a = (new Comments(newComment)).save();
+        //(new Comments(newComment)).save();
+        await Users.updateOne(
+            {_id: Number(userId)},
+            {$push: {"comments": commentId}}
+        )
+        if(itemType === COMMON.RECIPE){
+            await Recipes.updateOne(
+                {_id: Number(itemId)},
+                {$push: {"commentsIds": commentId}}
+            )
+        }
+        else{
+            await CookBooks.updateOne(
+                {_id: Number(itemId)},
+                {$push: {"commentsIds": commentId}}
+            )
+        }
+        return true;
+    } catch (e) {
+        console.log(e)
+        return false;
+    }
+}
 exports.getCookBooks = async (filters) => {
     console.log(filters)
     let aggregate;

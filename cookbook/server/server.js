@@ -13,6 +13,7 @@ const {
     getRecipes
 } = require("./Data/dataProvider");
 const passport = require('passport')
+const {addComment} = require("./Data/dataProvider");
 const {getComments} = require("./Data/dataProvider");
 const {likeRecipe} = require("./Data/dataProvider");
 const {likeCookBook} = require("./Data/dataProvider");
@@ -110,6 +111,13 @@ app.post(`${ROUTES.USER_LIKE_RECIPE}`, passport.authenticate('jwt', {session: fa
         {success:await likeRecipe(req.body.from, req.body.to)}
     );
 });
+app.post(`${ROUTES.USER_COMMENT}`, passport.authenticate('jwt', {session: false}),async (req, res) => {
+    console.log("req.body",req.body)
+    res.json(
+        {success: await addComment({...req.body})}
+    );
+});
+
 
 
 

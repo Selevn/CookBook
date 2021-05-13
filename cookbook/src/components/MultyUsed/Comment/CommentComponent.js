@@ -9,17 +9,19 @@ import {
   TextDataContainer,
 } from './style/CommentComponentStyle';
 import { ParagraphStyled } from '../../common/StylesComponent';
+import moment from "moment/moment";
+
 
 const CommentComponent = ({ author, text, date }) => {
   return (
     <CommentContainer>
-      <PersonImage src={author && author[0].image} />
+      <PersonImage src={author[0]?.image} />
       <TextDataContainer>
         <Header>
-          <Name to={`/profile/${author && author[0]._id}`}>
-            {author && `${author[0].name.first} ${author[0].name.last}`}
+          <Name to={`/profile/${author[0]?._id}`}>
+            {`${author[0]?.name.first} ${author[0]?.name.last}`}
           </Name>
-          <ParagraphStyled>{date}</ParagraphStyled>
+          <ParagraphStyled>{moment(date).fromNow()}</ParagraphStyled>
         </Header>
         <Body>{text}</Body>
       </TextDataContainer>

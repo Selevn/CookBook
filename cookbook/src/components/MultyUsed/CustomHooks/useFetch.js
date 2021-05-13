@@ -7,7 +7,6 @@ export function useFetch(url, setItems, settings, paginatorDefault = paginatorIn
     const [paginator, setPaginator] = useState(paginatorDefault)
     const [loader, setLoader] = useState(false)
     const [total, setTotal] = useState(0)
-
     const fetch = useCallback((start) => {
         (async () => {
             if(start){

@@ -51,7 +51,6 @@ const ItemPageComponent = ({match}) => {
     const [isLiked, setIsLiked] = useState(false);
     const isCommented = false;
     const [item, setItem] = useState(false);
-    const [comments, setComments] = useState([]);
 
     useEffect(() => {
         if (profile) {
@@ -67,11 +66,9 @@ const ItemPageComponent = ({match}) => {
             if (type === COMMON.COOKBOOK) {
                 const data = await fetchData(ROUTES.COOKBOOK_CLIENT(id), setLoading);
                 setItem(data[0]);
-                setComments(data[0].comments);
             } else {
                 const data = await fetchData(ROUTES.RECIPE_CLIENT(id), setLoading);
                 setItem(data[0]);
-                setComments(data[0].comments);
             }
         })();
     }, [id, type]);

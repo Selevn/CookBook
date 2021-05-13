@@ -112,16 +112,10 @@ app.post(`${ROUTES.USER_LIKE_RECIPE}`, passport.authenticate('jwt', {session: fa
     );
 });
 app.post(`${ROUTES.USER_COMMENT}`, passport.authenticate('jwt', {session: false}),async (req, res) => {
-    console.log("req.body",req.body)
     res.json(
         {success: await addComment({...req.body})}
     );
 });
-
-
-
-
-
 
 app.post(`/api/login`, async (req, res) => {
     const {email, password} = req.body;

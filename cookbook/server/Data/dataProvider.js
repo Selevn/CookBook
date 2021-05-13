@@ -152,25 +152,26 @@ exports.addComment = async (prop) => {
             author: userId,
             _id: commentId
         }
-        const a = (new Comments(newComment)).save();
-        //(new Comments(newComment)).save();
-        await Users.updateOne(
+        const saveComment = (new Comments(newComment)).save();
+        const updateUser = Users.updateOne(
             {_id: Number(userId)},
             {$push: {"comments": commentId}}
         )
+        let updateItem;
         if(itemType === COMMON.RECIPE){
-            await Recipes.updateOne(
+            updateItem = Recipes.updateOne(
                 {_id: Number(itemId)},
                 {$push: {"commentsIds": commentId}}
             )
         }
         else{
-            await CookBooks.updateOne(
+            updateItem = CookBooks.updateOne(
                 {_id: Number(itemId)},
                 {$push: {"commentsIds": commentId}}
             )
         }
-        return true;
+        const result = await Promise.all([saveComment, updateUser, updateItem])
+        return Array.isArray(result);
     } catch (e) {
         console.log(e)
         return false;

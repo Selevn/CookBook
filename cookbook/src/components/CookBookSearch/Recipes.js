@@ -31,8 +31,8 @@ export const Recipes = ({ filters, sortBy }) => {
         className="infinity-scroller"
       >
         {loader && <Loading />}
-        {items && items.map((item) => <Recipe key={item._id} {...item} />)}
-        {!loader && items && items.length === 0 && (<h1>No recipes</h1>)}
+        {items?.map((item) => <Recipe key={item._id} {...item} />)}
+        {!loader && items?.length === 0 && (<h1>No recipes</h1>)}
       </InfinityScrolls>
     </>
   );

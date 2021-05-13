@@ -50,14 +50,14 @@ const ProfileComponent = ({match}) => {
                 {!loading && (
                     <>
                         <ProfileImageWrapper>
-                            <ProfileImage src={user && user.image}/>
+                            <ProfileImage src={user?.image}/>
                         </ProfileImageWrapper>
                         <UserTextContainer>
-                            <UserName>{`${user && user.name.first} ${user && user.name.last}`}</UserName>
-                            <UserDescription>{user && user.desc}</UserDescription>
+                            <UserName>{`${user?.name?.first} ${user?.name?.last}`}</UserName>
+                            <UserDescription>{user?.desc}</UserDescription>
                         </UserTextContainer>
                         <AddContainer>
-                            {profile && profile._id === Number(id) && (
+                            {profile?._id === Number(id) && (
                                 <>
                                     <AddButton
                                         onClick={() => {
@@ -84,24 +84,24 @@ const ProfileComponent = ({match}) => {
             <Container>
                 <LinksContainer>
                     <UserLinks className={menu === myBooks ? 'active' : ''} onClick={() => setMenu(myBooks)}>
-                        {profile && profile._id === Number(id) && `My`} CookBooks
+                        {profile?._id === Number(id) && `My`} CookBooks
                     </UserLinks>
                     <UserLinks
                         className={menu === myRecipes ? 'active' : ''}
                         onClick={() => setMenu(myRecipes)}
                     >
-                        {profile && profile._id === Number(id) && `My`} Recepies
+                        {profile?._id === Number(id) && `My`} Recepies
                     </UserLinks>
                     <UserLinks className={menu === myLikedBooks ? 'active' : ''} onClick={() => setMenu(myLikedBooks)}>
-                        {profile && profile._id === Number(id) && `My`} Liked CookBooks
+                        {profile?._id === Number(id) && `My`} Liked CookBooks
                     </UserLinks>
                     <UserLinks
                         className={menu === myLikedRecipes ? 'active' : ''}
                         onClick={() => setMenu(myLikedRecipes)}
                     >
-                        {profile && profile._id === Number(id) && `My`} Liked Recepies
+                        {profile?._id === Number(id) && `My`} Liked Recepies
                     </UserLinks>
-                    {profile && profile._id === Number(id) &&
+                    {profile?._id === Number(id) &&
                     (<UserLinks
                         className={menu === settings ? 'active' : ''}
                         onClick={() => setMenu(settings)}

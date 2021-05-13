@@ -33,8 +33,8 @@ export const ProfileCookBooks = ({id ,isLiked}) => {
           className="infinity-scroller"
       >
         {loading && <Loading />}
-        {!loading && items && items.map((item) => <CookCard type="normal" key={item._id} {...item} />)}
-        {!loading && items && items.length === 0 && (<h1>No cookbooks</h1>)}
+        {!loading && items?.map((item) => <CookCard type="normal" key={item._id} {...item} />)}
+        {!loading && items?.length === 0 && (<h1>No cookbooks</h1>)}
       </InfiniteScroll>
     </>
   );

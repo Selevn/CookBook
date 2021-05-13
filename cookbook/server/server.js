@@ -213,11 +213,13 @@ app.post('/profile',
     })
 })
 
-app.post(ROUTES.CHANGE_ACC, passport.authenticate('jwt', {session: false}), async function (req, res, next) {
-
+app.post(ROUTES.CHANGE_ACC,
+    passport.authenticate('jwt', {session: false}),
+    async function (req, res, next) {
     await updateUser(req.body.id, req.body.field,req.body.value)
     res.json({
         success: true,
+        value: req.body.value,
     })
 })
 /*

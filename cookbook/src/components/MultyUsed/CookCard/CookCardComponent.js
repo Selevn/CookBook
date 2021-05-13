@@ -74,7 +74,7 @@ export const CookCardComponent = ({
     }
   }
   const {profile} = useReduxState();
-  const isLiked = profile && profile.likes.cookBooks.includes(id);
+  const isLiked = profile?.likes?.cookBooks?.includes(id);
   const history = useHistory();
   return (
     <CookCardContainer

@@ -46,7 +46,8 @@ const Settings = ({ name, email, setUser }) => {
   },[file])
 
   const newPropertySend = async (fieldName, value) =>{
-    const response = await SendData(ROUTES.CHANGE_ACC, {id:profile._id, field:fieldName, value:value});
+    const response = await SendData(ROUTES.CHANGE_ACC, {id:profile._id, field:fieldName, value:value}, auth);
+    setUser(s=> ({...s, name: {first: response.first, last: response.last}}))
     if(!response.success){
       alert("Smth went wrong")
     }
@@ -57,12 +58,14 @@ const Settings = ({ name, email, setUser }) => {
         <SettingsContainer>
           <H1Styled>Personal information</H1Styled>
           <PropertiesContainer>
+            //TODO: NAME
             <Container>
               <PropName>Name</PropName>
               <PropChange>
                 {name}&nbsp;<LinkStyled onClick={()=>{
-                const name = prompt('Enter new value')
-                newPropertySend('name',name)
+                const name = prompt('Enter new name')
+                const sname = prompt('Enter new sname')
+                newPropertySend('name',`${name} ${sname}`)
               }}>change</LinkStyled>
               </PropChange>
             </Container>

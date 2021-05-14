@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Container, InputStyled, TextInputStyled } from '../../common/StylesComponent';
+import {Container, InputStyled, TextInputStyled} from '../../common/StylesComponent';
 
 export const ControllButtons = styled(Container)`
   justify-content: flex-end;
@@ -18,6 +18,25 @@ export const CreateCookBookPage = styled(Container)`
   flex-direction: column;
   margin: auto;
 `;
+export const AddContainer = styled(Container)`
+  flex-direction: row;
+  max-width: 920px;
+  gap: 20px;
+
+  @media (max-width: 375px) {
+    flex-direction: column;
+    align-items: center;
+  }
+  ${InputStyled} {
+    width: 90%;
+    height: 45px;
+    background: #ffffff;
+    border: 1px solid #e1e1e1;
+    box-sizing: border-box;
+    border-radius: 10px;
+  }
+`;
+
 export const TitleContainer = styled(Container)`
   gap: 20px;
 

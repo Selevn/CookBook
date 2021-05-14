@@ -224,7 +224,10 @@ export const InputStyled = styled.input`
 
   background: var(--pure-white);
   border: 1px solid var(--styled-gray);
+  
+  ${p => p.flex && `flex:${p.flex};`}
 `;
+
 
 export const TextInputStyled = styled.textarea`
   box-sizing: border-box;

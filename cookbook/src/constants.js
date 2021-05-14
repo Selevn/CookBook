@@ -64,3 +64,15 @@ exports.USER_FIELDS = {
   likes:'likes',
   comments:'comments'
 }
+exports.RECIPE_FIELDS = {
+  views:'views',
+  image:'image',
+  cookTime:'cookTime',
+  creationDate: 'creationDate',
+  author: 'author',
+  name:'name',
+  desc:'desc',
+  ingredients:'ingredients',
+  directions:'directions',
+  likes:'likes'
+}

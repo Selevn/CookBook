@@ -82,7 +82,6 @@ const Settings = ({setUser}) => {
 
     const fileChanges = (e) => {
         e.preventDefault();
-        console.log(e.target.files[0])
         setFile(e.target.files[0])
     }
 
@@ -103,7 +102,6 @@ const Settings = ({setUser}) => {
 
         SendFile('/profile', formData, auth)
             .then((response) => {
-                console.log(response)
                 setUser(s => ({...s, image: response.img}))
             }).catch((error) => {
             console.log("err", error)

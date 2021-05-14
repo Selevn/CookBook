@@ -25,6 +25,8 @@ const {getPassword} = require("./JWT/PasswordHasher");
 const {issueJWT} = require("./JWT/PasswordHasher");
 const multer = require("multer")
 const fs = require("fs");
+const {RECIPE_FIELDS} = require("../src/constants");
+const {createRecipe} = require("./Data/dataProvider");
 const {UserProxy} = require("./Data/DataProxy/userProxy");
 const {updateUser} = require("./Data/dataProvider");
 const {FOLDERS} = require("../src/constants");
@@ -45,6 +47,9 @@ const recipeStorage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, FOLDERS.RECIPES_IMAGES)
     },
+    filename: function (req, file, cb){
+        cb(null, file.originalname + '-' + Date.now() + '.jpg');
+    }
 })
 const recipeUpload = multer({ storage: recipeStorage });
 
@@ -193,11 +198,10 @@ app.post(`/api/register`, async (req, res, next) => {
 
 
 
-app.post('/profile',
+app.post(ROUTES.CHANGE_ACC_IMAGE,
     passport.authenticate('jwt', {session: false}),
     userUpload.single('avatar'),
     async function (req, res, next) {
-    console.log(req.body.id)
     const newName = req.body.id+'__'+req.file.filename;
     fs.readdir(FOLDERS.USERS_AVATARS, function (err, files) {
         if (err) {
@@ -233,9 +237,14 @@ app.post(ROUTES.NEW_RECIPE,
     passport.authenticate('jwt', {session: false}),
     recipeUpload.single("image"),
     async function (req, res, next) {
+        const newName = req.file.filename;
+        console.log({...req.body})
+    const recipe = {...req.body}
+        recipe[RECIPE_FIELDS.directions] = JSON.parse(recipe[RECIPE_FIELDS.directions])
+        recipe[RECIPE_FIELDS.ingredients] = JSON.parse(recipe[RECIPE_FIELDS.ingredients])
+        recipe[RECIPE_FIELDS.image] = `/img/recipeImages/${newName}`
     res.json({
-        success: true,
-        value: req.body,
+        success: await createRecipe(recipe),
     })
 })
 

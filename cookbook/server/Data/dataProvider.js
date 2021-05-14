@@ -208,6 +208,14 @@ exports.getCookBook = async (id) => {
         authorLookup
     ])
 }
+exports.createRecipe = async (inputRecipe) => {
+    const recipe = {
+        ...inputRecipe,
+        _id: (await Recipes.countDocuments({})) + 1
+    }
+    return (new Recipes(recipe)).save();
+}
+
 exports.updateUser = async (id, field, value) => {
     if(field === USER_FIELDS.password)
     {

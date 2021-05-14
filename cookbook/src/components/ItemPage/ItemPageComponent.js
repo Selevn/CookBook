@@ -55,9 +55,9 @@ const ItemPageComponent = ({match}) => {
     useEffect(() => {
         if (profile) {
             if (type === COMMON.COOKBOOK)
-                setIsLiked(profile.likes.cookBooks.includes(Number(id)))
+                setIsLiked(profile?.likes?.cookBooks?.includes(Number(id)))
             else
-                setIsLiked(profile.likes.recipes.includes(Number(id)))
+                setIsLiked(profile?.likes?.recipes?.includes(Number(id)))
         }
     }, [profile, id])
 

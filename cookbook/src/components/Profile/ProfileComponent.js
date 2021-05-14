@@ -37,12 +37,13 @@ const ProfileComponent = ({match}) => {
     const [menu, setMenu] = useState(myBooks);
     const [user, setUser] = useState();
     const {id} = match.params;
-
+    console.log(profile)
+    console.log(id)
 
     const dispatcher = useDispatch()
     useEffect(() => {
         (async () => {
-            if(Number(id) === profile._id)
+            if(Number(id) === profile?._id)
                 setUser(profile)
             else{
                 const data = await fetchData(ROUTES.USER_CLIENT(id), setLoading);
@@ -51,9 +52,7 @@ const ProfileComponent = ({match}) => {
         })();
     }, [id]);
 
-    useEffect(() => {
-        dispatcher(profileActions.setProfile({...user}))
-    }, [user]);
+
 
 
     return (

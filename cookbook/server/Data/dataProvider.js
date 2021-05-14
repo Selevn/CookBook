@@ -218,29 +218,13 @@ exports.updateUser = async (id, field, value) => {
         );
         return
     }
+
     if (checkField(field)) {
         await Users.updateOne(
             {_id: Number(id)},
-            {[checkField(field)]: value}
-        );
-        return;
-    }
-    if(field === USER_FIELDS.firstName)
-    {
-        await Users.updateOne(
-            {_id: Number(id)},
-            {name: {...name, first:value}}
-        );
-        return;
-    }
-    if(field === USER_FIELDS.lastName)
-    {
-        await Users.updateOne(
-            {_id: Number(id)},
-            {name: {...name, last:value}}
+            { $set: {[field]:value} }
         );
     }
-
 }
 
 

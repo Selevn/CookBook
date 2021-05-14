@@ -105,7 +105,6 @@ const Settings = ({setUser}) => {
             .then((response) => {
                 console.log(response)
                 setUser(s => ({...s, image: response.img}))
-                alert("The file is successfully uploaded");
             }).catch((error) => {
             console.log("err", error)
         });

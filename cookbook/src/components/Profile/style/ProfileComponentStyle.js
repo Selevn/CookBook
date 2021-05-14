@@ -39,6 +39,7 @@ export const UserDescription = styled(ParagraphStyled)`
   font-size: 20px;
   color: var(--text-gray);
   text-align: justify;
+  align-self: start;
 `;
 export const UserTextContainer = styled(Container)`
   justify-content: start;

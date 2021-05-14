@@ -23,6 +23,8 @@ const {_idMatcher} = require("../models/lookups");
 const {recipesLookUp, authorLookup, commentsLookup} = require("../models/lookups");
 
 const dotenv = require('dotenv');
+const {getPassword} = require("../JWT/PasswordHasher");
+const {USER_FIELDS} = require("../../src/constants");
 const {checkField} = require("./fieldChecker");
 const {idInRangeMatcher} = require("../models/lookups");
 dotenv.config({path: '../.env'});
@@ -143,11 +145,11 @@ exports.likeRecipe = async (userId, id) => {
     }
 }
 exports.addComment = async (prop) => {
-    console.log("prop",prop)
+    console.log("prop", prop)
     const {userId, itemType, itemId, comment} = prop
     try {
         const commentId = (await Comments.countDocuments({})) + 1;
-        console.log("commentId",commentId)
+        console.log("commentId", commentId)
         const newComment = {
             ...comment,
             author: userId,
@@ -159,13 +161,12 @@ exports.addComment = async (prop) => {
             {$push: {"comments": commentId}}
         )
         let updateItem;
-        if(itemType === COMMON.RECIPE){
+        if (itemType === COMMON.RECIPE) {
             updateItem = Recipes.updateOne(
                 {_id: Number(itemId)},
                 {$push: {"commentsIds": commentId}}
             )
-        }
-        else{
+        } else {
             updateItem = CookBooks.updateOne(
                 {_id: Number(itemId)},
                 {$push: {"commentsIds": commentId}}
@@ -208,10 +209,38 @@ exports.getCookBook = async (id) => {
     ])
 }
 exports.updateUser = async (id, field, value) => {
-    await Users.updateOne(
-        {_id: Number(id)},
-        {[checkField(field)]: value}
-    )
+    if(field === USER_FIELDS.password)
+    {
+        const {hash, salt} = getPassword(value)
+        await Users.updateOne(
+            {_id: Number(id)},
+            {password: hash, salt:salt}
+        );
+        return
+    }
+    if (checkField(field)) {
+        await Users.updateOne(
+            {_id: Number(id)},
+            {[checkField(field)]: value}
+        );
+        return;
+    }
+    if(field === USER_FIELDS.firstName)
+    {
+        await Users.updateOne(
+            {_id: Number(id)},
+            {name: {...name, first:value}}
+        );
+        return;
+    }
+    if(field === USER_FIELDS.lastName)
+    {
+        await Users.updateOne(
+            {_id: Number(id)},
+            {name: {...name, last:value}}
+        );
+    }
+
 }
 
 

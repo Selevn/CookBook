@@ -12,6 +12,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {profileActions} from "../../Redux/Profile";
 import {authActions} from "../../Redux/AuthKey";
 import {useReduxState} from "../MultyUsed/CustomHooks/useReduxState";
+import {useHistory} from "react-router-dom";
 
 const NavbarComponent = () => {
     const [menuOpen, setMenuOpen] = useState(true);
@@ -20,7 +21,9 @@ const NavbarComponent = () => {
     const {profile} = useReduxState();
     const dispatch = useDispatch();
 
+    const history = useHistory()
     const Logout = useCallback(()=>{
+        history.push('/')
         dispatch(profileActions.logOut());
         dispatch(authActions.logOut());
     },[])

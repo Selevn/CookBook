@@ -31,18 +31,23 @@ const ProfileComponent = ({match}) => {
     const myLikedRecipes = 'myLikedRecipes';
     const myLikedBooks = 'myLikedBooks';
     const settings = 'settings';
-    const {profile} = useReduxState()//useSelector(state => state.profile);
+    const {profile} = useReduxState();
     const [loading, setLoading] = useState(false);
     const [addMenu, setAddMenu] = useState(false);
     const [menu, setMenu] = useState(myBooks);
     const [user, setUser] = useState();
     const {id} = match.params;
 
+
     const dispatcher = useDispatch()
     useEffect(() => {
         (async () => {
-            const data = await fetchData(ROUTES.USER_CLIENT(id), setLoading);
-            setUser(data[0]);
+            if(Number(id) === profile._id)
+                setUser(profile)
+            else{
+                const data = await fetchData(ROUTES.USER_CLIENT(id), setLoading);
+                setUser(data[0]);
+            }
         })();
     }, [id]);
 

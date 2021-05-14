@@ -15,6 +15,8 @@ export const SettingsContainer = styled(Container)`
   border-radius: 10px;
 
   height: 100%;
+  
+  
 `;
 export const PropertiesContainer = styled(Container)`
   flex-direction: column;
@@ -27,7 +29,8 @@ export const PropName = styled(Container)`
 `;
 export const PropChange = styled(Container)`
   align-items: center;
-  width: 200px;
+  width: ${p=>p.wide?"400px":"200px"} ;
+  gap:5px;
   ${LinkStyled} {
     margin-left: 20px;
   }
@@ -38,6 +41,7 @@ export const PropChange = styled(Container)`
 
     @media (max-width: 375px) {
       font-size: 14px;
+      width:200px;
     }
   }
 `;

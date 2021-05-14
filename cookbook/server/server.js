@@ -240,4 +240,4 @@ app.get(`/api/recipes/:id`, async (req, res) => {
 });*/
 
 
-app.listen(5000, process.env.IP, () => console.log(`Listening on ${process.env.IP}:${process.env.PORT}`));
+app.listen(process.env.BACKEND_PORT, process.env.IP, () => console.log(`Listening on ${process.env.IP}:${process.env.BACKEND_PORT}`));

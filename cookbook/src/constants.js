@@ -55,6 +55,8 @@ exports.FOLDERS = {
 
 exports.USER_FIELDS = {
   name:'name',
+  firstName:'name.first',
+  lastName:'name.last',
   email:'email',
   image: 'image',
   password: 'password',

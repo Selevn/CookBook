@@ -7,7 +7,6 @@ import {
     PropName,
     SettingsContainer,
 } from './style/SettingsComponentStyle';
-import {FaImage} from "react-icons/all";
 import {SendData, SendFile} from "../../Connectors/dataProvider";
 import {useReduxState} from "../MultyUsed/CustomHooks/useReduxState";
 import {useDispatch} from "react-redux";

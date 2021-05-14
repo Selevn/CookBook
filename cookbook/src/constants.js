@@ -35,6 +35,8 @@ exports.ROUTES = {
 
   CHANGE_ACC: `/api/changeAccount/`,
   CHANGE_ACC_IMAGE: `/profile`,
+  NEW_RECIPE: `/newRecipe`,
+  NEW_COOKBOOK: `/newCookBook`,
 };
 
 exports.COMMON = {
@@ -51,6 +53,7 @@ exports.COMMON = {
 
 exports.FOLDERS = {
   USERS_AVATARS: "./public/img/profileImages/",
+  RECIPES_IMAGES: "./public/img/recipeImages/",
 }
 
 exports.USER_FIELDS = {

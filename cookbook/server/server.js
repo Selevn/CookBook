@@ -32,8 +32,23 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-
 app.use(express.static('public'));
+
+const userStorage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, FOLDERS.USERS_AVATARS)
+    },
+})
+const userUpload = multer({ storage: userStorage });
+
+const recipeStorage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, FOLDERS.RECIPES_IMAGES)
+    },
+})
+const recipeUpload = multer({ storage: recipeStorage });
+
+
 /*
 app.use((req,res,next)=>{
     setTimeout(next,500)
@@ -177,19 +192,10 @@ app.post(`/api/register`, async (req, res, next) => {
 
 
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, FOLDERS.USERS_AVATARS)
-    },
-    /*filename: function (req, file, cb) {
-        console.log("file",file)
-        cb(null, file.originalname.slice(2,8) + '-' + Date.now()+'.jpg')
-    }*/
-})
-const upload = multer({ storage: storage });
+
 app.post('/profile',
     passport.authenticate('jwt', {session: false}),
-    upload.single('avatar'),
+    userUpload.single('avatar'),
     async function (req, res, next) {
     console.log(req.body.id)
     const newName = req.body.id+'__'+req.file.filename;
@@ -222,6 +228,17 @@ app.post(ROUTES.CHANGE_ACC,
         value: req.body.value,
     })
 })
+
+app.post(ROUTES.NEW_RECIPE,
+    passport.authenticate('jwt', {session: false}),
+    recipeUpload.single("image"),
+    async function (req, res, next) {
+    res.json({
+        success: true,
+        value: req.body,
+    })
+})
+
 /*
 
 

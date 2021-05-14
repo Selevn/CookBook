@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {ButtonStyled, H1Styled, InputStyled} from '../common/StylesComponent';
 
 import {
@@ -13,18 +13,54 @@ import {
     TitleContainer,
 } from '../CreateCookBook/style/CreateCookBookComponentStyle';
 import Item from "./Item";
-import {RECIPE_FIELDS} from "../../constants";
+import {COMMON, RECIPE_FIELDS, ROUTES} from "../../constants";
+import {SendFile} from '../../Connectors/dataProvider'
+import {useReduxState} from "../MultyUsed/CustomHooks/useReduxState";
+import {RecipesMenu} from "../CookBookSearch/Recipes";
 
 const CreateRecepieComponent = () => {
     const [recipe, setRecipe] = useState({})
+    const [cookTime, setCookTime] = useState(COMMON.ALLCONSTANT)
     const [currIngredient, setCurrIngredient] = useState('')
     const [currDirection, setCurrDirection] = useState('')
-
     const [file, setFile] = useState();
     const fileChanges = (e) => {
         e.preventDefault();
         setFile(e.target.files[0])
     }
+
+    const {profile, auth} = useReduxState()
+
+
+    const onFileSubmit = useCallback((e) => {
+        e.preventDefault();
+        if (!auth) {
+            alert("You are not authorizated")
+            return;
+        }
+        if (!file) {
+            alert("You didn't select any file")
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('image', file);
+        formData.append(RECIPE_FIELDS.author, profile._id);
+        formData.append(RECIPE_FIELDS.name, recipe?.title);
+        formData.append(RECIPE_FIELDS.desc, recipe?.description);
+        formData.append(RECIPE_FIELDS.ingredients, JSON.stringify(recipe?.ingredients));
+        formData.append(RECIPE_FIELDS.directions, JSON.stringify(recipe?.directions));
+        formData.append(RECIPE_FIELDS.creationDate, Date.now());
+        formData.append(RECIPE_FIELDS.cookTime, cookTime);
+        SendFile(ROUTES.NEW_RECIPE, formData, auth)
+            .then(response =>{
+                console.log(response)
+            })
+            .catch((error) => {
+                console.log("err", error)
+            });
+    }, [file])
+
 
     return (
         <CreateCookBookPage>
@@ -75,13 +111,13 @@ const CreateRecepieComponent = () => {
                 </AddContainer>
             </TitleContainer>
             <IngredientsContainer>
-                {recipe.ingredients?.length>0 && recipe.ingredients.map((item, index) => {
+                {recipe.ingredients?.length > 0 && recipe.ingredients.map((item, index) => {
                         return (<Item key={`${index}ing`}
                                       value={item}
                                       index={index}
                                       recipe={recipe}
                                       type={RECIPE_FIELDS.ingredients}
-                                      setRecipe = {setRecipe}
+                                      setRecipe={setRecipe}
                         />)
                     }
                 )}
@@ -111,23 +147,26 @@ const CreateRecepieComponent = () => {
                 </AddContainer>
             </TitleContainer>
             <IngredientsContainer>
-                {recipe.directions?.length>0 && recipe.directions.map((item, index) => {
+                {recipe.directions?.length > 0 && recipe.directions.map((item, index) => {
                         return (<Item key={`${index}ing`}
                                       value={item}
                                       index={index}
                                       recipe={recipe}
                                       type={RECIPE_FIELDS.directions}
-                                      setRecipe = {setRecipe}
+                                      setRecipe={setRecipe}
                         />)
                     }
                 )}
             </IngredientsContainer>
 
+            <TitleContainer>
+                <RecipesMenu cookTime={cookTime} setCookTime={setCookTime}/>
+            </TitleContainer>
             <ControllButtons>
                 <ButtonStyled secondary small>
                     Cancel
                 </ButtonStyled>
-                <ButtonStyled small>Save</ButtonStyled>
+                <ButtonStyled small onClick={onFileSubmit}>Save</ButtonStyled>
             </ControllButtons>
         </CreateCookBookPage>
     );

@@ -254,10 +254,11 @@ exports.getRecipes = async (filter) => {
     }
     if (filter.cookbookId) {
         const cookbook = (await exports.getCookBook(filter.cookbookId))[0]
+        console.log(filter.cookbookId)
+        console.log(cookbook.recipesIds)
         aggregate = Recipes.aggregate([
             idInRangeMatcher(cookbook.recipesIds),
             authorLookup,
-            commentsLookup,
         ]);
     }
     return await paginator(aggregate, aggregateOptions(filter.page, filter.sortBy))//await Recipes.aggregatePaginate(aggregate, aggregateOptions(filter.page, filter.sortBy))

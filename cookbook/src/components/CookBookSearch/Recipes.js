@@ -12,8 +12,6 @@ import {useFetch} from "../MultyUsed/CustomHooks/useFetch";
 export const Recipes = ({ filters, sortBy }) => {
   const [items, setItems] = useState([]);
   const [fetchRecipes, hasNext, loader] = useFetch(ROUTES.RECIPES, setItems, { cookTime: filters, sortBy })
-  useEffect(()=>{console.count("changed!")},[fetchRecipes])
-
   // firstLoad
   useEffect(() => {
     fetchRecipes();

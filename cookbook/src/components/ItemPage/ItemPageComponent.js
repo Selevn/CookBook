@@ -116,7 +116,7 @@ const ItemPageComponent = ({match}) => {
                         {`${item?.author?.[0].name.first} ${item?.author?.[0].name.last}`}
                     </LinkStyled>
                     <InfoContainer>
-                        {item?.image &&<Slider mainImage={item.image} inputImagesArray={type===COMMON.COOKBOOK?[]:item.images}/>}
+                        {item?.image && <Slider mainImage={item.image} inputImagesArray={type===COMMON.COOKBOOK?[]:item.images}/>}
                         <Description>
                             <H1Styled>Description</H1Styled>
                             <ParagraphStyled>{item?.desc}</ParagraphStyled>

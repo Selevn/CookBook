@@ -11,6 +11,10 @@ const Slider = ({mainImage, inputImagesArray=[]}) => {
     const [haveSlides, setHaveSliders] = useState(inputImagesArray.length>1)
     const [imagesArr, setImagesArr] = useState([mainImage, ...inputImagesArray])
 
+    useEffect(() => {
+        setImagesArr([mainImage, ...inputImagesArray])
+    },[mainImage, inputImagesArray])
+
 const length = inputImagesArray.length;
 
     const scrollLeft = useCallback(() => {

@@ -44,6 +44,7 @@ const ItemPageComponent = ({match}) => {
     const [item, setItem] = useState(false);
 
     useEffect(() => {
+        console.log(item)
         if (profile) {
             if (type === COMMON.COOKBOOK)
                 setIsLiked(profile?.likes?.cookBooks?.includes(Number(id)))
@@ -115,7 +116,7 @@ const ItemPageComponent = ({match}) => {
                         {`${item?.author?.[0].name.first} ${item?.author?.[0].name.last}`}
                     </LinkStyled>
                     <InfoContainer>
-                        <Slider mainImage={item?.image} imagesArray={null}/>
+                        {item?.image &&<Slider mainImage={item.image} inputImagesArray={type===COMMON.COOKBOOK?[]:item.images}/>}
                         <Description>
                             <H1Styled>Description</H1Styled>
                             <ParagraphStyled>{item?.desc}</ParagraphStyled>
@@ -140,7 +141,7 @@ const ItemPageComponent = ({match}) => {
                                     <H1Styled>Ingredients</H1Styled>
                                     <ul>
                                         {
-                                        item && item.ingredients.map((i, index) => (
+                                        item?.ingredients && item.ingredients.map((i, index) => (
                                             <li key={`${index}ingredients`}>
                                                 <span>{i}</span>
                                             </li>

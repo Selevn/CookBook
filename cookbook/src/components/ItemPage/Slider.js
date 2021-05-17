@@ -2,41 +2,34 @@ import {ItemPageImageBook, SliderStyle} from "./style/ItemPageComponentStyle";
 import React, {useCallback, useEffect, useState} from "react";
 import {FaChevronLeft, FaChevronRight} from "react-icons/all";
 
-const Slider = ({mainImage, imagesArray}) => {
-
+const Slider = ({mainImage, inputImagesArray=[]}) => {
+    if(typeof(inputImagesArray) !== typeof([]))
+        throw new Error("Invalid inputImagesArray type!!")
+    if(!mainImage)
+        throw new Error("Invalid mainImage type!!")
     const [current, setCurrent] = useState(0)
-    const [haveSlides, setHaveSliders] = useState(true)
-    let arr = [];
-    useEffect(()=>{
-        if (imagesArray === null) {
-            setHaveSliders(false)
-            arr = [
-                /*"https://image.shutterstock.com/image-photo/grilled-salmon-fish-fillet-fresh-600w-1912049980.jpg",
-                "https://image.shutterstock.com/image-photo/chicken-fillet-salad-healthy-food-600w-1721943142.jpg",
-                "https://image.shutterstock.com/image-photo/grilled-chicken-breast-fillet-fresh-600w-1713446386.jpg"*/
-            ];
-        }
-    },[])
+    const [haveSlides, setHaveSliders] = useState(inputImagesArray.length>1)
+    const [imagesArr, setImagesArr] = useState([mainImage, ...inputImagesArray])
 
-    arr.unshift(mainImage);
-    const length = arr.length-1;
+const length = inputImagesArray.length;
+
     const scrollLeft = useCallback(() => {
-        if(current > 0)
-            setCurrent(s=>s-1);
+        if (current > 0)
+            setCurrent(s => s - 1);
         else
             setCurrent(length);
-    },[length,current])
+    }, [length, current,inputImagesArray])
 
     const scrollRight = useCallback(() => {
-        if(current < length)
-            setCurrent(s=>s+1);
+        if (current < length)
+            setCurrent(s => s + 1);
         else
             setCurrent(0);
-    },[length,current])
+    }, [length, current])
     return (
         <SliderStyle>
             {haveSlides && <FaChevronLeft className={"chevronLeft"} onClick={scrollLeft}/>}
-                <ItemPageImageBook src={arr[current]}/>
+            <ItemPageImageBook src={imagesArr[current]}/>
             {haveSlides && <FaChevronRight className={"chevronRight"} onClick={scrollRight}/>}
         </SliderStyle>
     )

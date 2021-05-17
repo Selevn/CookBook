@@ -70,10 +70,9 @@ export const SliderStyle = styled.div`
     cursor: pointer;
     opacity: 0.4;
   }
-  .chevronRight{
+  .chevronRight {
     right: 0;
   }
-  
 `;
 export const Description = styled(Container)`
   max-width: 455px;

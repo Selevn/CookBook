@@ -1,30 +1,20 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {withRouter} from 'react-router-dom';
-import {Recipe} from '../MultyUsed/Recipe';
 import {
-    Comments,
-    CommentsContainer,
     CookBookContainer,
-    CreateComment,
     Description,
     InfoContainer,
     ItemContainer,
-    ItemPageImageBook,
-    RecepiesContainer,
     RecipeStats,
     RecipeStatsContainer,
 } from './style/ItemPageComponentStyle';
 import {
-    ButtonStyled,
-    Container,
     H1Styled,
-    InputStyled,
     LinkStyled,
     ParagraphStyled,
 } from '../common/StylesComponent';
 import {Statistics, StatisticsContainer} from '../MultyUsed/Recipe/style/RecipeContainerStyle';
-import {Comment} from '../MultyUsed/Comment';
 import {Liked} from '../MultyUsed/Liked';
 import {Commented} from '../MultyUsed/Commented';
 import {Views} from '../MultyUsed/Views';
@@ -36,6 +26,7 @@ import {useDispatch} from "react-redux";
 import {profileActions} from "../../Redux/Profile";
 import Recipes from "./RecipeContainer";
 import ItemCommentsContainer from "./Comments";
+import Slider from "./Slider";
 
 const ItemPageComponent = ({match}) => {
     const {profile, auth} = useReduxState();
@@ -119,15 +110,15 @@ const ItemPageComponent = ({match}) => {
             {loading && <Loading/>}
             {!loading && (
                 <CookBookContainer>
-                    <H1Styled size="56px">{item && item.name}</H1Styled>
-                    <LinkStyled to={`/profile/${item && item.author[0]._id}`}>
-                        {`${item && item.author[0].name.first} ${item && item.author[0].name.last}`}
+                    <H1Styled size="56px">{item?.name}</H1Styled>
+                    <LinkStyled to={`/profile/${item?.author?.[0]._id}`}>
+                        {`${item?.author?.[0].name.first} ${item?.author?.[0].name.last}`}
                     </LinkStyled>
                     <InfoContainer>
-                        <ItemPageImageBook src={(item && item.image) || ''}/>
+                        <Slider mainImage={item?.image} imagesArray={null}/>
                         <Description>
                             <H1Styled>Description</H1Styled>
-                            <ParagraphStyled>{item && item.desc}</ParagraphStyled>
+                            <ParagraphStyled>{item?.desc}</ParagraphStyled>
                         </Description>
                     </InfoContainer>
                     {type === COMMON.RECIPE && (
@@ -136,9 +127,9 @@ const ItemPageComponent = ({match}) => {
                                 <RecipeStats>
                                     <H1Styled>Directions</H1Styled>
                                     <ol>
-                                        {item &&
-                                        item.directions &&
-                                        item.directions.map((i, index) => (
+                                        {
+
+                                            item?.directions && item.directions.map((i, index) => (
                                             <li key={`${index}directions`}>
                                                 <span>{i}</span>
                                             </li>
@@ -148,9 +139,8 @@ const ItemPageComponent = ({match}) => {
                                 <RecipeStats>
                                     <H1Styled>Ingredients</H1Styled>
                                     <ul>
-                                        {item &&
-                                        item.ingredients &&
-                                        item.ingredients.map((i, index) => (
+                                        {
+                                        item && item.ingredients.map((i, index) => (
                                             <li key={`${index}ingredients`}>
                                                 <span>{i}</span>
                                             </li>
@@ -162,9 +152,9 @@ const ItemPageComponent = ({match}) => {
                     )}
                     <StatisticsContainer>
                         <Statistics>
-                            <Liked count={(item && item.likes) || 0} isLiked={isLiked} doLike={doLike}/>
-                            <Commented count={(item && item.commentsIds.length) || 0} isCommented={isCommented}/>
-                            <Views count={(item && item.views) || 0}/>
+                            <Liked count={(item?.likes) || 0} isLiked={isLiked} doLike={doLike}/>
+                            <Commented count={(item?.commentsIds?.length) || 0} isCommented={isCommented}/>
+                            <Views count={(item?.views) || 0}/>
                         </Statistics>
                     </StatisticsContainer>
                 </CookBookContainer>

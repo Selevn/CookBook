@@ -7,6 +7,8 @@ import {
   LinkStyled,
   TextInputStyled,
 } from '../../common/StylesComponent';
+import {Fragment} from "react";
+import {FaChevronLeft} from "react-icons/all";
 
 export const HeaderStyled = styled.h3`
   font-size: 24px;
@@ -36,8 +38,11 @@ export const CookBookContainer = styled(Container)`
   }
 `;
 
+
+
 export const ItemPageImageBook = styled(Container)`
   height: 304px;
+  position: relative;
   width: 455px;
   border-radius: 8px;
   background: url(${(p) => p.src}) no-repeat center;
@@ -49,7 +54,27 @@ export const ItemPageImageBook = styled(Container)`
     width: 300px;
   }
 `;
-
+export const SliderStyle = styled.div`
+  position: relative;
+  .chevronLeft, .chevronRight{
+    color:var(--styled-gray);
+    background-color: var(--search-gray);
+    opacity: 0.1;
+    font-size: 50px;
+    height:304px;
+    position: absolute;
+    z-index: 999;
+    top:0;
+  }
+  .chevronLeft:hover, .chevronRight:hover{
+    cursor: pointer;
+    opacity: 0.4;
+  }
+  .chevronRight{
+    right: 0;
+  }
+  
+`;
 export const Description = styled(Container)`
   max-width: 455px;
   flex-direction: column;
@@ -188,3 +213,5 @@ export const Comments = styled(Container)`
   flex-direction: column;
   gap: 50px;
 `;
+
+

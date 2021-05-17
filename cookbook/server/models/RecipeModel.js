@@ -11,6 +11,9 @@ const schema = new Schema({
     "image": {
         "type": "String"
     },
+    "image": {
+        "type": "String"
+    },
     "cookTime": {
         "type": "Number"
     },

@@ -235,35 +235,29 @@ app.post(ROUTES.CHANGE_ACC,
 
 app.post(ROUTES.NEW_RECIPE,
     passport.authenticate('jwt', {session: false}),
-    recipeUpload.single("image"),
+    recipeUpload.fields([{ name: 'image', maxCount: 1 }, {name:'gallery', maxCount: 8}]),
     async function (req, res, next) {
-        const newName = req.file.filename;
-        console.log({...req.body})
-    const recipe = {...req.body}
+    let createRecipe = false;
+    try{
+        const newName = req.files['image'][0].filename;
+        const secondaryFilesNames = []
+        for (const file of req.files['gallery']) {
+            secondaryFilesNames.push(file.filename)
+        }
+        const recipe = {...req.body}
         recipe[RECIPE_FIELDS.directions] = JSON.parse(recipe[RECIPE_FIELDS.directions])
         recipe[RECIPE_FIELDS.ingredients] = JSON.parse(recipe[RECIPE_FIELDS.ingredients])
         recipe[RECIPE_FIELDS.image] = `/img/recipeImages/${newName}`
-    res.json({
-        success: await createRecipe(recipe),
-    })
+        recipe[RECIPE_FIELDS.images] = secondaryFilesNames.map(item=>`/img/recipeImages/${item}`)
+        createRecipe = await createRecipe(recipe);
+    }
+        catch(e){
+        console.log(e)
+            createRecipe = false;
+        }
+        res.json({
+            success: createRecipe,
+        })
 })
-
-/*
-
-
-
-app.get('/api/recipes/', async (req, res) => {
-    const data = normalizeRecipes(await getRecipes(req.query));
-    res.json(
-        JSON.stringify(data)
-    );
-});
-app.get(`/api/recipes/:id`, async (req, res) => {
-    const data = normalizeRecipes(await getRecipe(req.params['id']));
-    res.json(
-        JSON.stringify(data)
-    );
-});*/
-
 
 app.listen(process.env.BACKEND_PORT, process.env.IP, () => console.log(`Listening on ${process.env.IP}:${process.env.BACKEND_PORT}`));

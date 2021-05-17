@@ -80,7 +80,7 @@ export const RecipeContainer = styled(Container)`
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: center;
-    width: auto;
+    //width: auto;
     ${ImageContainer} {
       margin-bottom: 15px;
     }
@@ -106,7 +106,7 @@ export const RecipeContainer = styled(Container)`
 `;
 
 export const RecipeContainerWrapper = styled(Container)`
-  
+  width:100%;
   @media (min-width: 768px) {
     max-height: 318px;
   }

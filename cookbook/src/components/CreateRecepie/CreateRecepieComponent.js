@@ -24,10 +24,17 @@ const CreateRecepieComponent = () => {
     const [currIngredient, setCurrIngredient] = useState('')
     const [currDirection, setCurrDirection] = useState('')
     const [file, setFile] = useState();
+    const [secondaryFiles, setSecondaryFiles] = useState();
+    const secondaryFilesChange = (e) => {
+        e.preventDefault();
+        setSecondaryFiles(e.target.files)
+    }
+
     const fileChanges = (e) => {
         e.preventDefault();
         setFile(e.target.files[0])
     }
+
 
     const {profile, auth} = useReduxState()
 
@@ -45,6 +52,9 @@ const CreateRecepieComponent = () => {
 
         const formData = new FormData();
         formData.append('image', file);
+        for (const _file of secondaryFiles) {
+            formData.append('gallery', _file)
+        }
         formData.append(RECIPE_FIELDS.author, profile._id);
         formData.append(RECIPE_FIELDS.name, recipe.title);
         formData.append(RECIPE_FIELDS.desc, recipe.description);
@@ -59,7 +69,7 @@ const CreateRecepieComponent = () => {
             .catch((error) => {
                 console.log("err", error)
             });
-    }, [file])
+    }, [file, secondaryFiles, recipe.title, recipe.description, recipe.ingredients, recipe.directions, cookTime])
 
 
     return (
@@ -72,11 +82,15 @@ const CreateRecepieComponent = () => {
                 }}/>
             </TitleContainer>
             <TitleContainer>
-                <HeaderStyled>Recepie picture</HeaderStyled>
+                <HeaderStyled>Recepie primary picture</HeaderStyled>
                 {/*<ButtonStyled small light>
                     Upload
                 </ButtonStyled>*/}
                 <InputStyled type="file" name="image" onChange={fileChanges}/>
+            </TitleContainer>
+            <TitleContainer>
+                <HeaderStyled>Recepie secondary pictures (8 max)</HeaderStyled>
+                <InputStyled type="file" name="gallery" onChange={secondaryFilesChange} multiple/>
             </TitleContainer>
             <TitleContainer>
                 <HeaderStyled>Description</HeaderStyled>
@@ -160,7 +174,7 @@ const CreateRecepieComponent = () => {
             </IngredientsContainer>
 
             <TitleContainer>
-                <RecipesMenu cookTime={cookTime} setCookTime={setCookTime}/>
+                <RecipesMenu cookTime={cookTime} setCookTime={setCookTime} isAllAvailible={false}/>
             </TitleContainer>
             <ControllButtons>
                 <ButtonStyled secondary small>

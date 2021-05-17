@@ -70,6 +70,7 @@ exports.USER_FIELDS = {
 exports.RECIPE_FIELDS = {
   views:'views',
   image:'image',
+  images:'images',
   cookTime:'cookTime',
   creationDate: 'creationDate',
   author: 'author',

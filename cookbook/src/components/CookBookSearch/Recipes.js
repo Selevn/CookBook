@@ -41,13 +41,13 @@ Recipes.propTypes = {
   sortBy: PropTypes.string,
 };
 
-export const RecipesMenu = ({ cookTime, setCookTime }) => {
+export const RecipesMenu = ({ cookTime, setCookTime, isAllAvailible = true }) => {
   return (
     <>
       <SortContainer>
         <H1Styled>Cooking time</H1Styled>
         <select value={cookTime} onChange={(e) => setCookTime(e.target.value)}>
-          <option value={COMMON.ALLCONSTANT}>All</option>
+          {isAllAvailible && <option value={COMMON.ALLCONSTANT}>All</option>}
           <option value="20">&#60;20 min</option>
           <option value="40">20 min - 40 min</option>
           <option value="60">40 min - 1 hour</option>

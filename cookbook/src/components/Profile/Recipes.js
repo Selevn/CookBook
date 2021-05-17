@@ -15,7 +15,7 @@ export const ProfileRecipes = ({id, isLiked}) => {
         fetchUrl = ROUTES.USER_CLIENT_RECIPES(id)
 
 
-    const [fetchRecipes, hasNextPage, loader] = useFetch(fetchUrl, setItems)
+    const [fetchRecipes, hasNext, loader] = useFetch(ROUTES.RECIPES, setItems)
 
     // firstLoad
     useEffect(() => {
@@ -28,7 +28,7 @@ export const ProfileRecipes = ({id, isLiked}) => {
         <>
             <InfiniteScroll
                 dataLength={items.length}
-                hasMore={hasNextPage && items.length !== 0}
+                hasMore={hasNext && items.length !== 0}
                 loader={<Loading/>}
                 next={fetchRecipes}
                 className="infinity-scroller"

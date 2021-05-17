@@ -23,6 +23,7 @@ const {_idMatcher} = require("../models/lookups");
 const {recipesLookUp, authorLookup, commentsLookup} = require("../models/lookups");
 
 const dotenv = require('dotenv');
+const {nameLkeMatcher} = require("../models/lookups");
 const {getPassword} = require("../JWT/PasswordHasher");
 const {USER_FIELDS} = require("../../src/constants");
 const {checkField} = require("./fieldChecker");
@@ -260,6 +261,15 @@ exports.getRecipes = async (filter) => {
             authorLookup,
         ]);
     }
+    if (filter.searchString) {
+        console.log(nameLkeMatcher(filter.searchString))
+        console.log(filter.searchString)
+        aggregate = Recipes.aggregate([
+            nameLkeMatcher(filter.searchString),
+            authorLookup,
+        ]);
+    }
+
     return await paginator(aggregate, aggregateOptions(filter.page, filter.sortBy))//await Recipes.aggregatePaginate(aggregate, aggregateOptions(filter.page, filter.sortBy))
 }
 exports.getComments = async (filter) => {

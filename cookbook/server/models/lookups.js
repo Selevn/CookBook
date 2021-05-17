@@ -103,6 +103,10 @@ exports.idInRangeMatcher = (ids) =>
     ({
         $match: {_id: {$in : ids}}
     })
+exports.nameLkeMatcher = (like) =>
+    ({
+        $match: {name: { $regex: like, $options: 'ig'}}
+    })
 
 exports.filtersMatcher = (filters) =>
     ({

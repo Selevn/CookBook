@@ -146,10 +146,9 @@ exports.likeRecipe = async (userId, id) => {
 }
 exports.addComment = async (prop) => {
     console.log("prop", prop)
-    const {userId, itemType, itemId, comment} = prop
+    const {userId, type, itemId, comment} = prop
     try {
         const commentId = (await Comments.countDocuments({})) + 1;
-        console.log("commentId", commentId)
         const newComment = {
             ...comment,
             author: userId,
@@ -161,7 +160,7 @@ exports.addComment = async (prop) => {
             {$push: {"comments": commentId}}
         )
         let updateItem;
-        if (itemType === COMMON.RECIPE) {
+        if (type === COMMON.RECIPE) {
             updateItem = Recipes.updateOne(
                 {_id: Number(itemId)},
                 {$push: {"commentsIds": commentId}}

@@ -166,6 +166,10 @@ export const ButtonStyled = styled(ButtonWrapper)`
       background: var(--pure-white);
       border-radius: 8px;
       border: 2px solid var(--primary-color);
+
+      :hover{
+        background: var(--primary-color);
+      }
     `}
   ${(p) =>
     p.thick &&

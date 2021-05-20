@@ -25,6 +25,8 @@ const {getPassword} = require("./JWT/PasswordHasher");
 const {issueJWT} = require("./JWT/PasswordHasher");
 const multer = require("multer")
 const fs = require("fs");
+const {createCookBook} = require("./Data/dataProvider");
+const {COOKBOOK_FIELDS} = require("../src/constants");
 const {RECIPE_FIELDS} = require("../src/constants");
 const {createRecipe} = require("./Data/dataProvider");
 const {UserProxy} = require("./Data/DataProxy/userProxy");
@@ -237,7 +239,7 @@ app.post(ROUTES.NEW_RECIPE,
     passport.authenticate('jwt', {session: false}),
     recipeUpload.fields([{ name: 'image', maxCount: 1 }, {name:'gallery', maxCount: 8}]),
     async function (req, res, next) {
-    let createRecipe = false;
+    let createRecipeFlag = false;
     try{
         const newName = req.files['image'][0].filename;
         const secondaryFilesNames = []
@@ -249,15 +251,38 @@ app.post(ROUTES.NEW_RECIPE,
         recipe[RECIPE_FIELDS.ingredients] = JSON.parse(recipe[RECIPE_FIELDS.ingredients])
         recipe[RECIPE_FIELDS.image] = `/img/recipeImages/${newName}`
         recipe[RECIPE_FIELDS.images] = secondaryFilesNames.map(item=>`/img/recipeImages/${item}`)
-        createRecipe = await createRecipe(recipe);
+        createRecipeFlag = await createRecipe(recipe);
     }
         catch(e){
         console.log(e)
-            createRecipe = false;
+            createRecipeFlag = false;
         }
         res.json({
-            success: createRecipe,
+            success: createRecipeFlag,
         })
 })
+app.post(ROUTES.NEW_COOKBOOK,
+    passport.authenticate('jwt', {session: false}),
+    recipeUpload.single('image'),
+    async function (req, res, next) {
+        let createCookBookFlag = false;
+        try{
+            console.log(req.body)
+            const newName = req.file.filename;
+            const cookBook = {...req.body}
+            cookBook[COOKBOOK_FIELDS.image] = `/img/recipeImages/${newName}`
+            cookBook[COOKBOOK_FIELDS.recipesIds] = JSON.parse(req.body.recipesIds)
+
+            cookBook[COOKBOOK_FIELDS.filters] = JSON.parse(req.body.filters)
+            createCookBookFlag = await createCookBook(cookBook);
+        }
+        catch(e){
+            console.log(e)
+            createCookBookFlag = false;
+        }
+        res.json({
+            success: createCookBookFlag,
+        })
+    })
 
 app.listen(process.env.BACKEND_PORT, process.env.IP, () => console.log(`Listening on ${process.env.IP}:${process.env.BACKEND_PORT}`));

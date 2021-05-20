@@ -78,5 +78,19 @@ exports.RECIPE_FIELDS = {
   desc:'desc',
   ingredients:'ingredients',
   directions:'directions',
+  commentsIds:'commentsIds',
   likes:'likes'
 }
+exports.COOKBOOK_FIELDS = {
+  views:'views',
+  author: 'author',
+  name:'name',
+  desc:'desc',
+  creationDate: 'creationDate',
+  filters: 'filters',
+  image:'image',
+  commentsIds:'commentsIds',
+  recipesIds:'recipesIds',
+  likes:'likes'
+}
+

@@ -23,6 +23,7 @@ const {_idMatcher} = require("../models/lookups");
 const {recipesLookUp, authorLookup, commentsLookup} = require("../models/lookups");
 
 const dotenv = require('dotenv');
+const {hideMyFilter} = require("../models/lookups");
 const {RECIPE_FIELDS} = require("../../src/constants");
 const {COOKBOOK_FIELDS} = require("../../src/constants");
 const {nameLkeMatcher} = require("../models/lookups");
@@ -195,26 +196,23 @@ exports.addComment = async (prop) => {
     }
 }
 exports.getCookBooks = async (filters) => {
-    console.log(filters)
+    const pipe = [
+        recipesLookUp,
+        authorLookup,
+        commentsLookup,
+    ]
     let aggregate;
     const filterArr = []
     for (const filter in filters) {
         if (filters[filter] == 'true')
             filterArr.push(filter)
     }
-    if (filterArr.length === 0)
-        aggregate = CookBooks.aggregate([
-            recipesLookUp,
-            authorLookup,
-            commentsLookup,
-        ])
-    else
-        aggregate = CookBooks.aggregate([
-            filtersMatcher(filterArr),
-            recipesLookUp,
-            authorLookup,
-            commentsLookup,
-        ])
+    if(filters.hideMy){
+        pipe.unshift(hideMyFilter(filters.hideMy))
+    }
+    if (filterArr.length !== 0)
+        pipe.unshift(filtersMatcher(filterArr))
+    aggregate = CookBooks.aggregate(pipe)
     return await paginator(aggregate, aggregateOptions(filters.page, filters.sortBy))
 }
 exports.getCookBook = async (id) => {
@@ -262,37 +260,24 @@ exports.updateUser = async (id, field, value) => {
 //continue
 //filters & authors
 exports.getRecipes = async (filter) => {
+    let pipe = [authorLookup]
     let aggregate;
-    if (filter.cookTime !== '1000') {
-        aggregate = Recipes.aggregate([
-            cookTimeFilter(filter.cookTime),
-            authorLookup,
-            commentsLookup,
-        ])
-    } else {
-        aggregate = Recipes.aggregate([
-            authorLookup,
-            commentsLookup,
-        ]);
+
+    console.log("filter",filter)
+    if (filter.cookTime && filter.cookTime !== '1000') {
+        pipe.unshift(cookTimeFilter(filter.cookTime))
+    }
+    if (filter.hideMy) {
+        pipe.unshift(hideMyFilter(filter.hideMy))
     }
     if (filter.cookbookId) {
         const cookbook = (await exports.getCookBook(filter.cookbookId))[0]
-        console.log(filter.cookbookId)
-        console.log(cookbook.recipesIds)
-        aggregate = Recipes.aggregate([
-            idInRangeMatcher(cookbook.recipesIds),
-            authorLookup,
-        ]);
+        pipe.unshift(idInRangeMatcher(cookbook.recipesIds))
     }
     if (filter.searchString) {
-        console.log(nameLkeMatcher(filter.searchString))
-        console.log(filter.searchString)
-        aggregate = Recipes.aggregate([
-            nameLkeMatcher(filter.searchString),
-            authorLookup,
-        ]);
+        pipe.unshift(nameLkeMatcher(filter.searchString))
     }
-
+    aggregate = Recipes.aggregate(pipe)
     return await paginator(aggregate, aggregateOptions(filter.page, filter.sortBy))//await Recipes.aggregatePaginate(aggregate, aggregateOptions(filter.page, filter.sortBy))
 }
 exports.getComments = async (filter) => {

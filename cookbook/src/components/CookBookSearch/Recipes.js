@@ -11,10 +11,11 @@ import {useFetch} from "../MultyUsed/CustomHooks/useFetch";
 
 export const Recipes = ({ filters, sortBy }) => {
   const [items, setItems] = useState([]);
-  const [fetchRecipes, hasNext, loader] = useFetch(ROUTES.RECIPES, setItems, { cookTime: filters, sortBy })
+  console.log(filters)
+  const [fetchRecipes, hasNext, loader] = useFetch(ROUTES.RECIPES, setItems, { ...filters, sortBy })
   // firstLoad
   useEffect(() => {
-    fetchRecipes();
+    fetchRecipes('start');
   }, [sortBy, filters]);
 
   return (
@@ -28,9 +29,10 @@ export const Recipes = ({ filters, sortBy }) => {
 
         className="infinity-scroller"
       >
-        {loader && <Loading />}
+
         {items?.map((item) => <Recipe key={item._id} {...item} />)}
         {!loader && items?.length === 0 && (<h1>No recipes</h1>)}
+        {loader && <Loading />}
       </InfinityScrolls>
     </>
   );

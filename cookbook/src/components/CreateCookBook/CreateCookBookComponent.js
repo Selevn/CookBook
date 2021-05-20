@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {ButtonStyled, Container, H1Styled, InputStyled} from '../common/StylesComponent';
+import { useHistory } from "react-router-dom";
 
 import {Recipe} from '../MultyUsed/Recipe';
 import {
@@ -24,7 +25,7 @@ import {RecepiesContainer} from "../ItemPage/style/ItemPageComponentStyle";
 const CreateCookBookComponent = () => {
 
     const {profile, auth} = useReduxState();
-
+    const history = useHistory();
     const [title, setTitle] = useState("")
     const [desc, setDesc] = useState("")
     const [foodPref, setFoodPref] = useState("")
@@ -166,7 +167,7 @@ const CreateCookBookComponent = () => {
 
             </TitleContainer>
             <ControllButtons>
-                <ButtonStyled secondary small>
+                <ButtonStyled secondary small onClick={()=>{history.goBack()}}>
                     Cancel
                 </ButtonStyled>
                 <ButtonStyled small onClick={save}>Save</ButtonStyled>

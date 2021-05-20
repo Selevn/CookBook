@@ -123,4 +123,9 @@ exports.cookTimeFilter = (filter) =>
     ({
         $match: {cookTime: Number(filter)}
     })
+exports.hideMyFilter = (id) =>
+    ({
+        $match: {author: {$ne: Number(id)}}
+    })
+
 

@@ -17,8 +17,10 @@ import {COMMON, RECIPE_FIELDS, ROUTES} from "../../constants";
 import {SendFile} from '../../Connectors/dataProvider'
 import {useReduxState} from "../MultyUsed/CustomHooks/useReduxState";
 import {RecipesMenu} from "../CookBookSearch/Recipes";
+import {useHistory} from "react-router-dom";
 
 const CreateRecepieComponent = () => {
+    const history = useHistory();
     const [recipe, setRecipe] = useState({})
     const [cookTime, setCookTime] = useState(COMMON.ALLCONSTANT)
     const [currIngredient, setCurrIngredient] = useState('')
@@ -177,7 +179,7 @@ const CreateRecepieComponent = () => {
                 <RecipesMenu cookTime={cookTime} setCookTime={setCookTime} isAllAvailible={false}/>
             </TitleContainer>
             <ControllButtons>
-                <ButtonStyled secondary small>
+                <ButtonStyled secondary small onClick={history.goBack}>
                     Cancel
                 </ButtonStyled>
                 <ButtonStyled small onClick={onFileSubmit}>Save</ButtonStyled>

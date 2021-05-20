@@ -15,6 +15,7 @@ import Checkbox from '../MultyUsed/CheckBox/CheckBox';
 import { Recipes, RecipesMenu } from './Recipes';
 import { CookBooks, CookBooksMenu } from './CookBooks';
 import { COMMON } from '../../constants';
+import {useReduxState} from "../MultyUsed/CustomHooks/useReduxState";
 
 const SearchComponent = ({ match }) => {
   const foodPrefInitialValue = {
@@ -24,6 +25,8 @@ const SearchComponent = ({ match }) => {
   };
 
   const type = match.params.type;
+
+  const {profile, auth} = useReduxState();
 
   const cookbooks = 'cookbooks';
   const recipes = 'recipes';
@@ -101,8 +104,8 @@ const SearchComponent = ({ match }) => {
           </UserLinks>
         </LinksContainer>
         <ResultCardsContainer>
-          {menu === cookbooks && <CookBooks filters={foodPref} sortBy={sort} />}
-          {menu === recipes && <Recipes filters={cookTime} sortBy={sort} />}
+          {menu === cookbooks && <CookBooks filters={({...foodPref, hideMy:hideMy && profile._id})} sortBy={sort} />}
+          {menu === recipes && <Recipes filters={({cookTime:cookTime, hideMy:hideMy && profile._id})} sortBy={sort} />}
         </ResultCardsContainer>
       </ResultsContainer>
     </SearchMainComponent>

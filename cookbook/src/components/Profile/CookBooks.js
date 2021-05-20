@@ -19,7 +19,7 @@ export const ProfileCookBooks = ({id ,isLiked}) => {
   // firstLoad
   useEffect(() => {
       (async ()=>{
-          await fetchBooks()
+          await fetchBooks('start')
       })()
   }, [id]);
 
@@ -32,7 +32,7 @@ export const ProfileCookBooks = ({id ,isLiked}) => {
           next={fetchBooks}
           className="infinity-scroller"
       >
-        {loading && <Loading />}
+        {/*{loading && <Loading />}*/}
         {!loading && items?.map((item) => <CookCard type="normal" key={item._id} {...item} />)}
         {!loading && items?.length === 0 && (<h1>No cookbooks</h1>)}
       </InfiniteScroll>

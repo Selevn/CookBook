@@ -88,7 +88,7 @@ export const CookCardComponent = ({
     >
       <Views count={views} />
       <CookCardImage
-        src={`${image}`}
+        src={image}
         width={imgWidth}
         height={imgHeight}
         alt="CookBook front image"
@@ -105,7 +105,7 @@ export const CookCardComponent = ({
         </>
       )}
       {showFooter && (
-        <Container margin="8px 0 0 0" justifyContent="space-between">
+        <Container margin="auto 0 0 0" justifyContent="space-between">
           <Liked count={likes || 0} isLiked={isLiked} />
           <Commented count={comments.length || 0} commented={isCommented} />
         </Container>

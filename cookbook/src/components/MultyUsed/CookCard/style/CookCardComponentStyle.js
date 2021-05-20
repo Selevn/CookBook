@@ -8,7 +8,6 @@ export const CookCardContainer = styled(Container)`
       height: ${p.containerHeight};
     `;
   }}
-
   border-radius: 10px;
   padding: var(--padding-card);
   gap: 5px;
@@ -78,7 +77,7 @@ export const MinimizedCardText = styled(Container)`
 `;
 
 export const CookCardImage = styled.img`
-  margin: auto;
+  //margin: auto;
   object-fit:cover;
   object-position: center center;
 `;

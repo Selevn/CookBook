@@ -15,12 +15,12 @@ export const ProfileRecipes = ({id, isLiked}) => {
         fetchUrl = ROUTES.USER_CLIENT_RECIPES(id)
 
 
-    const [fetchRecipes, hasNext, loader] = useFetch(ROUTES.RECIPES, setItems)
+    const [fetchRecipes, hasNext, loader] = useFetch(fetchUrl, setItems)
 
     // firstLoad
     useEffect(() => {
         (async () => {
-            await fetchRecipes();
+            await fetchRecipes('start');
         })()
     }, [id]);
 

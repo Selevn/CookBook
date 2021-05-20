@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {ButtonStyled, H1Styled, InputStyled} from '../common/StylesComponent';
+import {ButtonStyled, Container, H1Styled, InputStyled} from '../common/StylesComponent';
 
 import {Recipe} from '../MultyUsed/Recipe';
 import {
@@ -19,6 +19,7 @@ import {SendData, SendFile} from "../../Connectors/dataProvider";
 import {useReduxState} from "../MultyUsed/CustomHooks/useReduxState";
 import {RecipesMenu} from "../CookBookSearch/Recipes";
 import {CookBooksMenu} from "../CookBookSearch/CookBooks";
+import {RecepiesContainer} from "../ItemPage/style/ItemPageComponentStyle";
 
 const CreateCookBookComponent = () => {
 
@@ -38,14 +39,14 @@ const CreateCookBookComponent = () => {
     }
 
     const removeSaved = useCallback((item, saved) => {
-        setRecipesSelected(s=>s.filter(recipe => saved !== recipe));
-        setRecipesSelectedIds(s=>s.filter(recipeId => item._id !== recipeId));
-    },[])
+        setRecipesSelected(s => s.filter(recipe => saved !== recipe));
+        setRecipesSelectedIds(s => s.filter(recipeId => item._id !== recipeId));
+    }, [])
 
     const addSaved = useCallback((item, saved) => {
         setRecipesSelected(s => [...s, saved])
         setRecipesSelectedIds(s => [...s, item._id])
-    },[])
+    }, [])
 
     const save = async (e) => {
         e.preventDefault();
@@ -74,7 +75,7 @@ const CreateCookBookComponent = () => {
         formData.append(COOKBOOK_FIELDS.filters, JSON.stringify(filtersNormalized));
 
         SendFile(ROUTES.NEW_COOKBOOK, formData, auth)
-            .then(response =>{
+            .then(response => {
                 console.log(response)
             })
             .catch((error) => {
@@ -135,39 +136,40 @@ const CreateCookBookComponent = () => {
                 }}/>
             </TitleContainer>
             <TitleContainer>
-                <InfiniteScroll
-                    dataLength={recipes.length}
-                    hasMore={hasNextPage && recipes.length !== 0}/*hasNextPage && recipes.length !== 0*/
-                    loader={<Loading/>}
-                    next={fetchRecipes}
-                    className="infinity-scroller"
+                <RecepiesContainer noTopPadding
                 >
-                    {recipes && recipes.map((item) => {
-                        const savedRecipe = <Recipe removable onRemovable={
-                            () => {
-                                removeSaved(item, savedRecipe)
-                            }
-                        } key={item._id} {...item} />;
+                    <Container padding={"0"} className="recipesContainer">
 
-                        if (!recipesSelectedIds.includes(item._id)) {
-                            return (<Recipe savable onSavable={
+
+                        {recipes && recipes.map((item) => {
+                            const savedRecipe = <Recipe removable onRemovable={
                                 () => {
-                                    addSaved(item, savedRecipe)
+                                    removeSaved(item, savedRecipe)
                                 }
-                            } key={item._id} {...item} />)
-                        }
-                    })}
-                    {!loader && recipes.length === 0 && (<h1>No recipes</h1>)}
-                    {loader && <Loading/>}
+                            } key={item._id} {...item} />;
 
-                </InfiniteScroll>
+                            if (!recipesSelectedIds.includes(item._id)) {
+                                return (<Recipe savable onSavable={
+                                    () => {
+                                        addSaved(item, savedRecipe)
+                                    }
+                                } key={item._id} {...item} />)
+                            }
+                        })}
+                        {loader && <Loading/>}
+                        {hasNextPage && recipes.length !== 0 && <ButtonStyled disabled={loader} onClick={() => {
+                            fetchRecipes()
+                        }} secondary light>Load more</ButtonStyled>}
+                    </Container>
+
+                </RecepiesContainer>
 
             </TitleContainer>
             <ControllButtons>
                 <ButtonStyled secondary small>
                     Cancel
                 </ButtonStyled>
-                <ButtonStyled small onClick = {save}>Save</ButtonStyled>
+                <ButtonStyled small onClick={save}>Save</ButtonStyled>
             </ControllButtons>
         </CreateCookBookPage>
     );

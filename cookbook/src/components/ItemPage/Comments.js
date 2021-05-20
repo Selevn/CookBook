@@ -45,8 +45,8 @@ const ItemCommentsContainer = ({id, type, profile, auth}) => {
 
 
     const postComment = useCallback(() => {
-        const comment = {author: [{name: profile.name, image: profile.image}], text: post, date: Date.now()}
         if (profile) {
+            const comment = {author: [{name: profile.name, image: profile.image}], text: post, date: Date.now()}
             postLocalComment(comment);
             postServerComment(comment);
         } else {

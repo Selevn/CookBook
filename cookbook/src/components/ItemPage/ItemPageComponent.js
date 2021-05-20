@@ -33,10 +33,24 @@ const ItemPageComponent = ({match}) => {
     const dispatcher = useDispatch();
 
     let {id, type} = match.params;
-    if(type ==='cookbook')
+    if (type === 'cookbook')
         type = COMMON.COOKBOOK
     else
         type = COMMON.RECIPE
+
+    useEffect(() => {
+        const timerId = setTimeout(
+            async () => {
+                await SendData(ROUTES.USER_VISIT_ITEM, {
+                    to: id,
+                    type: type
+                })
+            }, 7000
+        )
+        return () => {
+            clearInterval(timerId)
+        }
+    }, [])
 
     const [loading, setLoading] = useState(false);
     const [isLiked, setIsLiked] = useState(false);
@@ -116,7 +130,8 @@ const ItemPageComponent = ({match}) => {
                         {`${item?.author?.[0].name.first} ${item?.author?.[0].name.last}`}
                     </LinkStyled>
                     <InfoContainer>
-                        {item?.image && <Slider mainImage={item.image} inputImagesArray={type===COMMON.COOKBOOK?[]:item.images}/>}
+                        {item?.image &&
+                        <Slider mainImage={item.image} inputImagesArray={type === COMMON.COOKBOOK ? [] : item.images}/>}
                         <Description>
                             <H1Styled>Description</H1Styled>
                             <ParagraphStyled>{item?.desc}</ParagraphStyled>
@@ -131,21 +146,21 @@ const ItemPageComponent = ({match}) => {
                                         {
 
                                             item?.directions && item.directions.map((i, index) => (
-                                            <li key={`${index}directions`}>
-                                                <span>{i}</span>
-                                            </li>
-                                        ))}
+                                                <li key={`${index}directions`}>
+                                                    <span>{i}</span>
+                                                </li>
+                                            ))}
                                     </ol>
                                 </RecipeStats>
                                 <RecipeStats>
                                     <H1Styled>Ingredients</H1Styled>
                                     <ul>
                                         {
-                                        item?.ingredients && item.ingredients.map((i, index) => (
-                                            <li key={`${index}ingredients`}>
-                                                <span>{i}</span>
-                                            </li>
-                                        ))}
+                                            item?.ingredients && item.ingredients.map((i, index) => (
+                                                <li key={`${index}ingredients`}>
+                                                    <span>{i}</span>
+                                                </li>
+                                            ))}
                                     </ul>
                                 </RecipeStats>
                             </RecipeStatsContainer>
@@ -165,7 +180,7 @@ const ItemPageComponent = ({match}) => {
                     <Recipes id={Number(id)}/>
                 </>
             )}
-            <ItemCommentsContainer id={Number(id)} type ={type} profile={profile} auth={auth} />
+            <ItemCommentsContainer id={Number(id)} type={type} profile={profile} auth={auth}/>
         </ItemContainer>
     );
 }

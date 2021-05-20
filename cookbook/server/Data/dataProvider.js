@@ -23,6 +23,8 @@ const {_idMatcher} = require("../models/lookups");
 const {recipesLookUp, authorLookup, commentsLookup} = require("../models/lookups");
 
 const dotenv = require('dotenv');
+const {RECIPE_FIELDS} = require("../../src/constants");
+const {COOKBOOK_FIELDS} = require("../../src/constants");
 const {nameLkeMatcher} = require("../models/lookups");
 const {getPassword} = require("../JWT/PasswordHasher");
 const {USER_FIELDS} = require("../../src/constants");
@@ -145,6 +147,19 @@ exports.likeRecipe = async (userId, id) => {
         return false;
     }
 }
+
+exports.visitItem = async (id, type) => {
+    try {
+        if (type === COMMON.COOKBOOK)
+            await CookBooks.updateOne({_id: Number(id)}, {$inc: {[COOKBOOK_FIELDS.views]: 1}})
+        if (type === COMMON.RECIPE)
+            await Recipes.updateOne({_id: Number(id)}, {$inc: {[RECIPE_FIELDS.views]: 1}})
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
 exports.addComment = async (prop) => {
     console.log("prop", prop)
     const {userId, type, itemId, comment} = prop
@@ -226,12 +241,11 @@ exports.createCookBook = async (inputCookBook) => {
 
 
 exports.updateUser = async (id, field, value) => {
-    if(field === USER_FIELDS.password)
-    {
+    if (field === USER_FIELDS.password) {
         const {hash, salt} = getPassword(value)
         await Users.updateOne(
             {_id: Number(id)},
-            {password: hash, salt:salt}
+            {password: hash, salt: salt}
         );
         return
     }
@@ -239,7 +253,7 @@ exports.updateUser = async (id, field, value) => {
     if (checkField(field)) {
         await Users.updateOne(
             {_id: Number(id)},
-            { $set: {[field]:value} }
+            {$set: {[field]: value}}
         );
     }
 }

@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import {
-  ButtonStyled,
-  Container,
-  H1Styled,
-  InputStyled,
-  LinkStyled,
-  TextInputStyled,
+    ButtonStyled,
+    Container,
+    H1Styled,
+    InputStyled,
+    LinkStyled,
+    TextInputStyled,
 } from '../../common/StylesComponent';
 import {Fragment} from "react";
 import {FaChevronLeft} from "react-icons/all";
@@ -32,12 +32,12 @@ export const ItemContainer = styled(Container)`
 `;
 export const CookBookContainer = styled(Container)`
   flex-direction: column;
+
   ${LinkStyled} {
     font-size: 24px;
     font-weight: normal;
   }
 `;
-
 
 
 export const ItemPageImageBook = styled(Container)`
@@ -56,20 +56,23 @@ export const ItemPageImageBook = styled(Container)`
 `;
 export const SliderStyle = styled.div`
   position: relative;
-  .chevronLeft, .chevronRight{
-    color:var(--styled-gray);
+
+  .chevronLeft, .chevronRight {
+    color: var(--styled-gray);
     background-color: var(--search-gray);
     opacity: 0.1;
     font-size: 50px;
-    height:304px;
+    height: 304px;
     position: absolute;
     z-index: 999;
-    top:0;
+    top: 0;
   }
-  .chevronLeft:hover, .chevronRight:hover{
+
+  .chevronLeft:hover, .chevronRight:hover {
     cursor: pointer;
     opacity: 0.4;
   }
+
   .chevronRight {
     right: 0;
   }
@@ -78,6 +81,7 @@ export const Description = styled(Container)`
   max-width: 455px;
   flex-direction: column;
   padding-left: 20px;
+
   ${H1Styled} {
     padding-bottom: 20px;
   }
@@ -95,6 +99,7 @@ export const RecipeStats = styled(Container)`
   align-items: center;
   padding: 15px;
   flex-direction: column;
+
   ${H1Styled} {
     font-size: 28px;
     padding-bottom: 15px;
@@ -106,6 +111,7 @@ export const RecipeStats = styled(Container)`
     ul,
     ol {
       font-size: 18px;
+
       li {
         span {
           max-width: 400px;
@@ -125,16 +131,19 @@ export const RecipeStats = styled(Container)`
     font-size: 20px;
     list-style-type: none;
     counter-reset: elementcounter;
+
     li {
       margin: 5px 0;
       font-weight: bold;
       overflow-x: auto;
       break-inside: auto;
+
       span {
         font-weight: normal;
         break-inside: auto;
       }
     }
+
     li:before {
       content: 'Step ' counter(elementcounter) '. ';
       counter-increment: elementcounter;
@@ -143,10 +152,12 @@ export const RecipeStats = styled(Container)`
 
   ul {
     font-size: 20px;
+
     li {
       margin: 5px 0;
       color: var(--primary-color);
       break-inside: auto;
+
       span {
         color: black;
         break-inside: auto;
@@ -174,15 +185,16 @@ export const InfoContainer = styled(Container)`
 `;
 
 export const RecepiesContainer = styled(Container)`
-  padding-top: 100px;
+  ${p => p.noTopPadding ? '' : `padding-top: 100px;`}
   flex-direction: column;
 
   ${H1Styled} {
     font-size: 40px;
   }
+
   .recipesContainer {
     flex-direction: column;
-    margin-top: 30px;
+    ${p => p.noTopPadding ? '' : `margin-top: 30px;`}
     gap: 20px;
   }
 `;
@@ -192,16 +204,19 @@ export const CreateComment = styled(Container)`
   gap: 16px;
   width: 100%;
   justify-content: center;
+
   ${InputStyled} {
     font-weight: normal;
     width: 80%;
   }
+
   @media (max-width: 500px) {
     padding: 8px;
     ${InputStyled} {
       font-size: 18px;
       width: 90%;
     }
+
     ${ButtonStyled} {
       width: 120px;
     }

@@ -31,6 +31,8 @@ exports.ROUTES = {
   USER_LIKE_COOKBOOK: `${__ROUTES__.COOKBOOKS}like/`,
   USER_LIKE_RECIPE: `${__ROUTES__.RECIPES}like/`,
 
+  USER_VISIT_ITEM: `/api/items/visit/`,
+
   USER_COMMENT: `${__ROUTES__.COMMENTS}comment/`,
 
   CHANGE_ACC: `/api/changeAccount/`,

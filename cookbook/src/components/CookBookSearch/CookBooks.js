@@ -34,8 +34,8 @@ export const CookBooks = ({ filters, sortBy }) => {
         className="infinity-scroller"
       >
         {items && items.map((item) => <CookCard key={item._id} {...item} />)}
-        {loading && <Loading/>}
         {!loading && items?.length === 0 && (<h1>No cookbooks</h1>)}
+        
       </InfiniteScroll>
     </>
   );

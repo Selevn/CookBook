@@ -25,6 +25,7 @@ const {getPassword} = require("./JWT/PasswordHasher");
 const {issueJWT} = require("./JWT/PasswordHasher");
 const multer = require("multer")
 const fs = require("fs");
+const {visitItem} = require("./Data/dataProvider");
 const {createCookBook} = require("./Data/dataProvider");
 const {COOKBOOK_FIELDS} = require("../src/constants");
 const {RECIPE_FIELDS} = require("../src/constants");
@@ -136,6 +137,12 @@ app.post(`${ROUTES.USER_LIKE_RECIPE}`, passport.authenticate('jwt', {session: fa
         {success: await likeRecipe(req.body.from, req.body.to)}
     );
 });
+app.post(`${ROUTES.USER_VISIT_ITEM}`, async (req, res) => {
+    res.json(
+        {success: await visitItem(req.body.to, req.body.type)}
+    );
+});
+
 app.post(`${ROUTES.USER_COMMENT}`, passport.authenticate('jwt', {session: false}), async (req, res) => {
     res.json(
         {success: await addComment({...req.body})}

@@ -360,7 +360,7 @@ app.post(ROUTES.NEW_COOKBOOK,
     passport.authenticate('jwt', {session: false}),
     cookBookUpload.single('image'),
     async function (req, res, next) {
-        let createCookBookFlag = false;
+        let createCookBookFlag;
         try{
             const cookBook = {...req.body}
             const newId = (await createCookBook({}))._id;
@@ -391,7 +391,12 @@ app.post(ROUTES.EDIT_COOKBOOK,
         try{
             const cookBook = {...req.body}
             if(req.file){
-                cookBook[COOKBOOK_FIELDS.image] = `/img/recipeImages/${req.file.filename}`
+                const newId = req.body._id;
+                const oldName = req.file.filename;
+                const newName = `${newId}__${oldName}`;
+                if(!renameFile(FOLDERS.COOKBOOK_IMAGES, oldName, newName, `${newId}__`))
+                    throw new Error("Can not rename file")
+                cookBook[COOKBOOK_FIELDS.image] = `/img/cookBookImages/${newName}`
             }
             cookBook[COOKBOOK_FIELDS.recipesIds] = JSON.parse(req.body.recipesIds)
             cookBook[COOKBOOK_FIELDS.filters] = JSON.parse(req.body.filters)

@@ -5,6 +5,7 @@ import {Navbar} from './components/Navbar';
 import {Footer} from './components/Footer';
 import {Loading} from './components/MultyUsed/Loading/Loading';
 import ScrollToTop from "./components/common/Scroller";
+import {EditCookBook} from "./components/EditCookBook";
 
 const Login = React.lazy(() => import('./components/Login/LoginComponent.js'));
 const Register = React.lazy(() => import('./components/Register/RegisterComponent.js'));
@@ -48,6 +49,11 @@ function App() {
                             <Route path="/newCookBook">
                                 <Navbar/>
                                 <CreateCookBook/>
+                                <Footer/>
+                            </Route>
+                            <Route path="/editCookBook">
+                                <Navbar/>
+                                <EditCookBook/>
                                 <Footer/>
                             </Route>
                             <Route path="/search/:type">

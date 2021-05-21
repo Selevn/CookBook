@@ -25,6 +25,7 @@ const {getPassword} = require("./JWT/PasswordHasher");
 const {issueJWT} = require("./JWT/PasswordHasher");
 const multer = require("multer")
 const fs = require("fs");
+const {updateCookBook} = require("./Data/dataProvider");
 const {visitItem} = require("./Data/dataProvider");
 const {createCookBook} = require("./Data/dataProvider");
 const {COOKBOOK_FIELDS} = require("../src/constants");
@@ -71,7 +72,6 @@ app.get(ROUTES.COOKBOOKS, async (req, res) => {
 });
 app.get(ROUTES.RECIPES, async (req, res) => {
     const data = await getRecipes(req.query);
-    console.log(data)
     res.json(
         data
     );
@@ -176,9 +176,9 @@ app.post(`/api/login`, async (req, res) => {
             success: false
         })
     }
-
-
 });
+
+
 app.post(`/api/register`, async (req, res, next) => {
     const {email, password, repeatPassword} = req.body;
     if (password === repeatPassword && validateEmail(email) && validatePassword(password)) {
@@ -280,9 +280,34 @@ app.post(ROUTES.NEW_COOKBOOK,
             const cookBook = {...req.body}
             cookBook[COOKBOOK_FIELDS.image] = `/img/recipeImages/${newName}`
             cookBook[COOKBOOK_FIELDS.recipesIds] = JSON.parse(req.body.recipesIds)
-
             cookBook[COOKBOOK_FIELDS.filters] = JSON.parse(req.body.filters)
             createCookBookFlag = await createCookBook(cookBook);
+        }
+        catch(e){
+            console.log(e)
+            createCookBookFlag = false;
+        }
+        res.json({
+            success: createCookBookFlag,
+        })
+    })
+
+app.post(ROUTES.EDIT_COOKBOOK,
+    passport.authenticate('jwt', {session: false}),
+    recipeUpload.single('image'),
+    async function (req, res, next) {
+        let createCookBookFlag = false;
+        try{
+            const cookBook = {...req.body}
+            if(req.file){
+                cookBook[COOKBOOK_FIELDS.image] = `/img/recipeImages/${req.file.filename}`
+            }
+            cookBook[COOKBOOK_FIELDS.recipesIds] = JSON.parse(req.body.recipesIds)
+            cookBook[COOKBOOK_FIELDS.filters] = JSON.parse(req.body.filters)
+            createCookBookFlag = await updateCookBook(cookBook);
+
+            console.log(cookBook)
+            //createCookBookFlag = await createCookBook(cookBook);
         }
         catch(e){
             console.log(e)

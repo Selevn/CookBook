@@ -236,6 +236,15 @@ exports.createCookBook = async (inputCookBook) => {
     }
     return (new CookBooks(cookBook)).save();
 }
+exports.updateCookBook = async (inputCookBook) => {
+    console.log(inputCookBook)
+    await CookBooks.updateOne(
+        {_id: Number(inputCookBook._id)},
+        inputCookBook
+    );
+    return true
+}
+
 
 
 exports.updateUser = async (id, field, value) => {
@@ -263,12 +272,15 @@ exports.getRecipes = async (filter) => {
     let pipe = [authorLookup]
     let aggregate;
 
-    console.log("filter",filter)
+    console.log("filter",filter.ids)
     if (filter.cookTime && filter.cookTime !== '1000') {
         pipe.unshift(cookTimeFilter(filter.cookTime))
     }
     if (filter.hideMy == 'true') {
         pipe.unshift(hideMyFilter(filter.hideMy))
+    }
+    if (filter.ids) {
+        pipe.unshift(idInRangeMatcher(JSON.parse(filter.ids)))
     }
     if (filter.cookbookId) {
         const cookbook = (await exports.getCookBook(filter.cookbookId))[0]

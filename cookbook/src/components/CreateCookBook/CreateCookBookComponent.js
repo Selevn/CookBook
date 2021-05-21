@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {ButtonStyled, Container, H1Styled, InputStyled} from '../common/StylesComponent';
-import { useHistory } from "react-router-dom";
+import {useHistory} from "react-router-dom";
 
 import {Recipe} from '../MultyUsed/Recipe';
 import {
@@ -10,20 +10,16 @@ import {
     HeaderStyled,
     TitleContainer,
 } from './style/CreateCookBookComponentStyle';
-import debouncer from "../common/Debouncer";
 import {Loading} from "../MultyUsed/Loading/Loading";
-import InfiniteScroll from "react-infinite-scroll-component";
 import {useFetch} from "../MultyUsed/CustomHooks/useFetch";
-import {COOKBOOK_FIELDS, RECIPE_FIELDS, ROUTES} from "../../constants";
+import {COOKBOOK_FIELDS, ROUTES} from "../../constants";
 import useDebounce from "../MultyUsed/CustomHooks/useDebouncer";
-import {SendData, SendFile} from "../../Connectors/dataProvider";
+import {fetchData, SendFile} from "../../Connectors/dataProvider";
 import {useReduxState} from "../MultyUsed/CustomHooks/useReduxState";
-import {RecipesMenu} from "../CookBookSearch/Recipes";
 import {CookBooksMenu} from "../CookBookSearch/CookBooks";
 import {RecepiesContainer} from "../ItemPage/style/ItemPageComponentStyle";
 
-const CreateCookBookComponent = () => {
-
+const CreateCookBookComponent = ({isEdit, item}) => {
     const {profile, auth} = useReduxState();
     const history = useHistory();
     const [title, setTitle] = useState("")
@@ -34,6 +30,9 @@ const CreateCookBookComponent = () => {
     const [recipesSelectedIds, setRecipesSelectedIds] = useState([])
     const [recipes, setRecipes] = useState([])
     const [file, setFile] = useState();
+
+
+
     const fileChanges = (e) => {
         e.preventDefault();
         setFile(e.target.files[0])
@@ -49,6 +48,31 @@ const CreateCookBookComponent = () => {
         setRecipesSelectedIds(s => [...s, item._id])
     }, [])
 
+    useEffect(()=>{
+        (async () => {
+            if(isEdit && item.recipesIds)
+            {
+                console.log(item)
+                const recipes = await fetchData(ROUTES.RECIPES,null,{ids:JSON.stringify(item.recipesIds)})
+                recipes.docs.forEach((recipeItem) => {
+                    const savedRecipe = <Recipe removable onRemovable={
+                        () => {
+                            removeSaved(recipeItem, savedRecipe)
+                        }
+                    } key={recipeItem._id} {...recipeItem} />
+                    addSaved(recipeItem, savedRecipe)
+                })
+                setTitle(item.name)
+                setDesc(item.desc)
+                const filters = {}
+                item.filters.forEach((filterItem) => {
+                    filters[filterItem] = true;
+                })
+                setFoodPref(filters)
+            }
+        })()
+    },[isEdit, item])
+
     const save = async (e) => {
         e.preventDefault();
 
@@ -60,13 +84,19 @@ const CreateCookBookComponent = () => {
             alert("You are not authorizated")
             return;
         }
-        if (!file) {
+        if (!file && !isEdit) {
             alert("You didn't select any file")
             return;
         }
 
         const formData = new FormData();
-        formData.append('image', file);
+        if(file)
+            formData.append('image', file);
+        if(!file && isEdit)
+            formData.append(COOKBOOK_FIELDS.image, item.image);
+        if(isEdit){
+            formData.append(COOKBOOK_FIELDS.ID, item._id);
+        }
         formData.append(COOKBOOK_FIELDS.author, profile._id);
         formData.append(COOKBOOK_FIELDS.name, title);
         formData.append(COOKBOOK_FIELDS.desc, desc);
@@ -75,7 +105,7 @@ const CreateCookBookComponent = () => {
 
         formData.append(COOKBOOK_FIELDS.filters, JSON.stringify(filtersNormalized));
 
-        SendFile(ROUTES.NEW_COOKBOOK, formData, auth)
+        SendFile(isEdit?ROUTES.EDIT_COOKBOOK:ROUTES.NEW_COOKBOOK, formData, auth)
             .then(response => {
                 console.log(response)
             })
@@ -99,7 +129,7 @@ const CreateCookBookComponent = () => {
 
     return (
         <CreateCookBookPage>
-            <H1Styled size="56px">Create a new cookbook</H1Styled>
+            <H1Styled size="56px">{isEdit ? `Edit cookbook`:`Create a new cookbook`}</H1Styled>
             <TitleContainer>
                 <HeaderStyled>Cookbook title</HeaderStyled>
                 <InputStyled placeholder="Title" value={title} onChange={(e) => {
@@ -140,8 +170,6 @@ const CreateCookBookComponent = () => {
                 <RecepiesContainer noTopPadding
                 >
                     <Container padding={"0"} className="recipesContainer">
-
-
                         {recipes && recipes.map((item) => {
                             const savedRecipe = <Recipe removable onRemovable={
                                 () => {
@@ -162,12 +190,12 @@ const CreateCookBookComponent = () => {
                             fetchRecipes()
                         }} secondary light>Load more</ButtonStyled>}
                     </Container>
-
                 </RecepiesContainer>
-
             </TitleContainer>
             <ControllButtons>
-                <ButtonStyled secondary small onClick={()=>{history.goBack()}}>
+                <ButtonStyled secondary small onClick={() => {
+                    history.goBack()
+                }}>
                     Cancel
                 </ButtonStyled>
                 <ButtonStyled small onClick={save}>Save</ButtonStyled>

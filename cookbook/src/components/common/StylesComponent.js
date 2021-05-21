@@ -81,7 +81,7 @@ const LinkWrapper = ({ className, children, id, onClick, to }) => {
     to = () => {};
   }
   return (
-    <Link to={to} className={className} id={id} onClick={onClick}>
+    <Link to={to} className={className} id={id} onClick={onClick || ((e) => {e.stopPropagation()})}>
       {children}
     </Link>
   );

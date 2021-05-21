@@ -11,7 +11,7 @@ import {
   MinimizedCardText,
   Name,
 } from './style/CookCardComponentStyle';
-import { Container } from '../../common/StylesComponent';
+import {Container, LinkStyled} from '../../common/StylesComponent';
 import { Views } from '../Views';
 import { Commented } from '../Commented';
 import { Liked } from '../Liked';
@@ -27,6 +27,7 @@ export const CookCardComponent = ({
   desc,
   type,
   image,
+  isEditable,
   _id: id,
 }) => {
   let width;
@@ -86,7 +87,10 @@ export const CookCardComponent = ({
       containerWidth={width}
       containerHeight={height}
     >
-      <Views count={views} />
+      <Container justifyContent="space-between">
+        <Views count={views} />
+        {isEditable && <LinkStyled to={`/editCookBook?id=${id}`}>Edit</LinkStyled>}
+      </Container>
       <CookCardImage
         src={image}
         width={imgWidth}

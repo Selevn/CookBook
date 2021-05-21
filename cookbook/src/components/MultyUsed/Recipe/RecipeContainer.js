@@ -42,7 +42,6 @@ export const Recipe = ({
                            image,
                            _id: id,
                        }) => {
-    console.log(name)
     const {profile} = useReduxState();
     const [isLiked, setIsLiked] = useState(profile && profile.likes.recipes.includes(id) || false)
     const description = `${desc.slice(0, desc.indexOf(' ', 250))}...`;

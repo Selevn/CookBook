@@ -39,6 +39,7 @@ exports.ROUTES = {
   CHANGE_ACC_IMAGE: `/profile`,
   NEW_RECIPE: `/newRecipe`,
   NEW_COOKBOOK: `/newCookBook`,
+  EDIT_COOKBOOK: `/editCookBook`,
 };
 
 exports.COMMON = {
@@ -93,6 +94,7 @@ exports.COOKBOOK_FIELDS = {
   image:'image',
   commentsIds:'commentsIds',
   recipesIds:'recipesIds',
-  likes:'likes'
+  likes:'likes',
+  ID:'_id'
 }
 

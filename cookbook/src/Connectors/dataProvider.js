@@ -1,4 +1,6 @@
 export const fetchData = async (url, setLoader, settings) => {
+  if(typeof setLoader !== typeof (()=>{}))
+    setLoader = ()=>{}
   setLoader(true);
   let localurl = url;
   if (settings) {

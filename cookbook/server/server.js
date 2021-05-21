@@ -56,7 +56,17 @@ const recipeStorage = multer.diskStorage({
         cb(null, file.originalname + '-' + Date.now() + '.jpg');
     }
 })
+const cookBookStorage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, FOLDERS.COOKBOOK_IMAGES)
+    },
+    filename: function (req, file, cb){
+        cb(null, file.originalname + '-' + Date.now() + '.jpg');
+    }
+})
+
 const recipeUpload = multer({ storage: recipeStorage });
+const cookBookUpload = multer({ storage: cookBookStorage });
 
 
 /*
@@ -207,29 +217,39 @@ app.post(`/api/register`, async (req, res, next) => {
 });
 
 
-
+const renameFile = (folder, oldName, newName, oldStartsWith) => {
+    try {
+        fs.readdir(folder, function (err, files) {
+            if (err) {
+                return console.log('Unable to scan directory: ' + err);
+            }
+            files.forEach(function (file) {
+                if(file.startsWith(oldStartsWith)){
+                    fs.unlinkSync(folder+file)
+                }
+            });
+        });
+        fs.renameSync(folder+oldName, folder+newName);
+    }
+    catch (e){
+        return false;
+    }
+    return true;
+}
 
 app.post(ROUTES.CHANGE_ACC_IMAGE,
     passport.authenticate('jwt', {session: false}),
     userUpload.single('avatar'),
     async function (req, res, next) {
     const newName = req.body.id+'__'+req.file.filename;
-    fs.readdir(FOLDERS.USERS_AVATARS, function (err, files) {
-        if (err) {
-            return console.log('Unable to scan directory: ' + err);
-        }
-        files.forEach(function (file) {
-            if(file.startsWith(req.body.id+'__')){
-                fs.unlinkSync(FOLDERS.USERS_AVATARS+file)
-            }
-        });
-    });
-    fs.renameSync(FOLDERS.USERS_AVATARS+req.file.filename, FOLDERS.USERS_AVATARS+newName);
-
-    await updateUser(req.body.id, 'image',`/img/profileImages/${newName}`)
+    if (!renameFile(FOLDERS.USERS_AVATARS, req.file.filename, newName, req.body.id+'__'))
+        res.json({
+            success: false,
+        })
+    const result = await updateUser(req.body.id, 'image',`/img/profileImages/${newName}`)
 
     res.json({
-        success: true,
+        success: result,
         img: `/img/profileImages/${newName}`,
     })
 })
@@ -311,7 +331,7 @@ app.post(ROUTES.EDIT_RECIPE,
 
 app.post(ROUTES.NEW_COOKBOOK,
     passport.authenticate('jwt', {session: false}),
-    recipeUpload.single('image'),
+    cookBookUpload.single('image'),
     async function (req, res, next) {
         let createCookBookFlag = false;
         try{
@@ -334,7 +354,7 @@ app.post(ROUTES.NEW_COOKBOOK,
 
 app.post(ROUTES.EDIT_COOKBOOK,
     passport.authenticate('jwt', {session: false}),
-    recipeUpload.single('image'),
+    cookBookUpload.single('image'),
     async function (req, res, next) {
         let createCookBookFlag = false;
         try{

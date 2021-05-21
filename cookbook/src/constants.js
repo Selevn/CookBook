@@ -58,6 +58,7 @@ exports.COMMON = {
 exports.FOLDERS = {
   USERS_AVATARS: "./public/img/profileImages/",
   RECIPES_IMAGES: "./public/img/recipeImages/",
+  COOKBOOK_IMAGES: "./public/img/cookBookImages/",
 }
 
 exports.USER_FIELDS = {

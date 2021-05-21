@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {ButtonStyled, H1Styled, InputStyled} from '../common/StylesComponent';
 
 import {
@@ -19,7 +19,7 @@ import {useReduxState} from "../MultyUsed/CustomHooks/useReduxState";
 import {RecipesMenu} from "../CookBookSearch/Recipes";
 import {useHistory} from "react-router-dom";
 
-const CreateRecepieComponent = () => {
+const CreateRecepieComponent = ({edit}) => {
     const history = useHistory();
     const [recipe, setRecipe] = useState({})
     const [cookTime, setCookTime] = useState(COMMON.ALLCONSTANT)
@@ -41,22 +41,32 @@ const CreateRecepieComponent = () => {
     const {profile, auth} = useReduxState()
 
 
-    const onFileSubmit = useCallback((e) => {
+    const send = useCallback((e) => {
         e.preventDefault();
         if (!auth) {
             alert("You are not authorizated")
             return;
         }
-        if (!file) {
+        if (!file && !edit) {
             alert("You didn't select any file")
             return;
         }
 
         const formData = new FormData();
-        formData.append('image', file);
-        for (const _file of secondaryFiles) {
-            formData.append('gallery', _file)
-        }
+        if(file)
+            formData.append('image', file);
+        if(!file && edit)
+            formData.append(RECIPE_FIELDS.image, edit.image);
+
+        if(secondaryFiles)
+            for (const _file of secondaryFiles) {
+                formData.append('gallery', _file)
+            }
+        if(!secondaryFiles && edit)
+            formData.append(RECIPE_FIELDS.images, JSON.stringify(edit.images));
+
+        if(edit)
+            formData.append(RECIPE_FIELDS.ID, edit._id);
         formData.append(RECIPE_FIELDS.author, profile._id);
         formData.append(RECIPE_FIELDS.name, recipe.title);
         formData.append(RECIPE_FIELDS.desc, recipe.description);
@@ -64,8 +74,8 @@ const CreateRecepieComponent = () => {
         formData.append(RECIPE_FIELDS.directions, JSON.stringify(recipe.directions));
         formData.append(RECIPE_FIELDS.creationDate, Date.now());
         formData.append(RECIPE_FIELDS.cookTime, cookTime);
-        SendFile(ROUTES.NEW_RECIPE, formData, auth)
-            .then(response =>{
+        SendFile(edit?ROUTES.EDIT_RECIPE:ROUTES.NEW_RECIPE, formData, auth)
+            .then(response => {
                 console.log(response)
             })
             .catch((error) => {
@@ -73,6 +83,17 @@ const CreateRecepieComponent = () => {
             });
     }, [file, secondaryFiles, recipe.title, recipe.description, recipe.ingredients, recipe.directions, cookTime])
 
+    useEffect(() => {
+        (async () => {
+            if(edit){
+                setCookTime(edit.cookTime)
+                setRecipe(edit)
+                setRecipe(s => ({...s, title: edit.name}))
+                setRecipe(s => ({...s, description: edit.desc}))
+                console.log(edit)
+            }
+        })()
+    }, [])
 
     return (
         <CreateCookBookPage>
@@ -182,7 +203,7 @@ const CreateRecepieComponent = () => {
                 <ButtonStyled secondary small onClick={history.goBack}>
                     Cancel
                 </ButtonStyled>
-                <ButtonStyled small onClick={onFileSubmit}>Save</ButtonStyled>
+                <ButtonStyled small onClick={send}>Save</ButtonStyled>
             </ControllButtons>
         </CreateCookBookPage>
     );

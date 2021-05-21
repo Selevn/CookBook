@@ -34,7 +34,7 @@ export const ProfileRecipes = ({id, isLiked}) => {
                 className="infinity-scroller"
             >
                 {loader && <Loading/>}
-                {!loader && items?.map((item) => <Recipe key={item._id} {...item} />)}
+                {!loader && items?.map((item) => <Recipe editable={!isLiked} key={item._id} {...item} />)}
                 {!loader && items?.length === 0 && (<h1>No recipes</h1>)}
             </InfiniteScroll>
         </>

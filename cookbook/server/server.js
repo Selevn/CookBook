@@ -25,6 +25,7 @@ const {getPassword} = require("./JWT/PasswordHasher");
 const {issueJWT} = require("./JWT/PasswordHasher");
 const multer = require("multer")
 const fs = require("fs");
+const {updateRecipe} = require("./Data/dataProvider");
 const {updateCookBook} = require("./Data/dataProvider");
 const {visitItem} = require("./Data/dataProvider");
 const {createCookBook} = require("./Data/dataProvider");
@@ -269,6 +270,45 @@ app.post(ROUTES.NEW_RECIPE,
             success: createRecipeFlag,
         })
 })
+app.post(ROUTES.EDIT_RECIPE,
+    passport.authenticate('jwt', {session: false}),
+    recipeUpload.fields([{ name: 'image', maxCount: 1 }, {name:'gallery', maxCount: 8}]),
+    async function (req, res, next) {
+    let createRecipeFlag = false;
+    try{
+        const recipe = {...req.body}
+
+        if(req.files['image'][0])
+        {
+            const newName = req.files['image'][0].filename;
+            recipe[RECIPE_FIELDS.image] = `/img/recipeImages/${newName}`
+        }
+
+
+        if(req.files['gallery']){
+            const secondaryFilesNames = []
+            for (const file of req.files['gallery']) {
+                secondaryFilesNames.push(file.filename)
+            }
+            recipe[RECIPE_FIELDS.images] = secondaryFilesNames.map(item=>`/img/recipeImages/${item}`)
+        }
+        if(!req.files['gallery'])
+        {
+            recipe[RECIPE_FIELDS.images] = JSON.parse(req.body.images)
+        }
+        recipe[RECIPE_FIELDS.directions] = JSON.parse(recipe[RECIPE_FIELDS.directions])
+        recipe[RECIPE_FIELDS.ingredients] = JSON.parse(recipe[RECIPE_FIELDS.ingredients])
+        createRecipeFlag = await updateRecipe(recipe);
+    }
+        catch(e){
+        console.log(e)
+            createRecipeFlag = false;
+        }
+        res.json({
+            success: createRecipeFlag,
+        })
+})
+
 app.post(ROUTES.NEW_COOKBOOK,
     passport.authenticate('jwt', {session: false}),
     recipeUpload.single('image'),

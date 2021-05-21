@@ -34,9 +34,11 @@ export const Recipe = ({
                            // eslint-disable-next-line
                            type,
                            isMy,
-                           removable,
                            savable,
                            onSavable,
+                           editable,
+                           onEditable,
+                           removable,
                            onRemovable,
                            handleRemove,
                            image,
@@ -65,6 +67,7 @@ export const Recipe = ({
                         <Liked isLiked={isLiked} count={likes}/>
                         <Commented commented={isCommented} count={comments.length}/>
                         <Views count={views}/>
+                        {editable && <LinkStyled to={`/editRecipe?id=${id}`}>Edit</LinkStyled>}
                     </Statistics>
                 </DataContainer>
                 {isMy && (

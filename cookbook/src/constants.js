@@ -40,6 +40,7 @@ exports.ROUTES = {
   NEW_RECIPE: `/newRecipe`,
   NEW_COOKBOOK: `/newCookBook`,
   EDIT_COOKBOOK: `/editCookBook`,
+  EDIT_RECIPE: `/editRecipe`,
 };
 
 exports.COMMON = {
@@ -82,7 +83,8 @@ exports.RECIPE_FIELDS = {
   ingredients:'ingredients',
   directions:'directions',
   commentsIds:'commentsIds',
-  likes:'likes'
+  likes:'likes',
+  ID:'_id'
 }
 exports.COOKBOOK_FIELDS = {
   views:'views',

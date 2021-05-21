@@ -228,6 +228,14 @@ exports.createRecipe = async (inputRecipe) => {
     }
     return (new Recipes(recipe)).save();
 }
+exports.updateRecipe = async (inputRecipe) => {
+    await Recipes.updateOne(
+        {_id: Number(inputRecipe._id)},
+        inputRecipe
+    );
+    return true
+}
+
 
 exports.createCookBook = async (inputCookBook) => {
     const cookBook = {
@@ -237,7 +245,6 @@ exports.createCookBook = async (inputCookBook) => {
     return (new CookBooks(cookBook)).save();
 }
 exports.updateCookBook = async (inputCookBook) => {
-    console.log(inputCookBook)
     await CookBooks.updateOne(
         {_id: Number(inputCookBook._id)},
         inputCookBook

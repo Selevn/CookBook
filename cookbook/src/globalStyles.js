@@ -26,7 +26,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   .infinity-scroller {
-    padding: 15px 15px;
+    padding: 27px;
     gap: 30px;
     display: flex;
     flex-direction: row;

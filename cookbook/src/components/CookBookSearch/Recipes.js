@@ -8,34 +8,44 @@ import { H1Styled } from '../common/StylesComponent';
 import { Loading } from '../MultyUsed/Loading/Loading';
 import { InfinityScrolls } from '../MultyUsed/InfiniteScroll';
 import {useFetch} from "../MultyUsed/CustomHooks/useFetch";
+import {CookCard} from "../MultyUsed/CookCard";
 
+
+function InfinityScroll(props) {
+  return null;
+}
+
+InfinityScroll.propTypes = {
+  hasMore: PropTypes.any,
+  loader: PropTypes.element,
+  dataLength: PropTypes.number,
+  next: PropTypes.func,
+  className: PropTypes.string,
+  children: PropTypes.node
+};
 export const Recipes = ({ filters, sortBy }) => {
   const [items, setItems] = useState([]);
-  console.log(filters)
   const [fetchRecipes, hasNext, loader] = useFetch(ROUTES.RECIPES, setItems, { ...filters, sortBy })
   // firstLoad
   useEffect(() => {
     fetchRecipes('start');
   }, [sortBy, filters]);
 
-  return (
-    <>
-      {/*<InfinityScroll/>*/}
-      <InfinityScrolls
-        dataLength={items.length}
-        hasMore={hasNext}
-        loader={<Loading />}
-        next={fetchRecipes}
-
-        className="infinity-scroller"
-      >
-
-        {items?.map((item) => <Recipe key={item._id} {...item} />)}
-        {!loader && items?.length === 0 && (<h1>No recipes</h1>)}
-        {loader && <Loading />}
-      </InfinityScrolls>
-    </>
-  );
+  return(
+      <>
+        <InfiniteScroll
+            dataLength={items.length}
+            hasMore={hasNext}
+            loader={<Loading />}
+            next={fetchRecipes}
+            className="infinity-scroller"
+        >
+          {items && items.map((item) => <Recipe key={item._id} {...item} />)}
+          {!loader && items?.length === 0 && (<h1>No recipes</h1>)}
+          {loader && <Loading />}
+        </InfiniteScroll>
+      </>
+  )
 };
 
 Recipes.propTypes = {

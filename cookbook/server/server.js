@@ -71,6 +71,7 @@ app.get(ROUTES.COOKBOOKS, async (req, res) => {
 });
 app.get(ROUTES.RECIPES, async (req, res) => {
     const data = await getRecipes(req.query);
+    console.log(data)
     res.json(
         data
     );

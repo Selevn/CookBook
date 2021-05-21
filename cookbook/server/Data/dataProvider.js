@@ -267,7 +267,7 @@ exports.getRecipes = async (filter) => {
     if (filter.cookTime && filter.cookTime !== '1000') {
         pipe.unshift(cookTimeFilter(filter.cookTime))
     }
-    if (filter.hideMy) {
+    if (filter.hideMy == 'true') {
         pipe.unshift(hideMyFilter(filter.hideMy))
     }
     if (filter.cookbookId) {
@@ -277,6 +277,7 @@ exports.getRecipes = async (filter) => {
     if (filter.searchString) {
         pipe.unshift(nameLkeMatcher(filter.searchString))
     }
+    console.log(pipe)
     aggregate = Recipes.aggregate(pipe)
     return await paginator(aggregate, aggregateOptions(filter.page, filter.sortBy))//await Recipes.aggregatePaginate(aggregate, aggregateOptions(filter.page, filter.sortBy))
 }

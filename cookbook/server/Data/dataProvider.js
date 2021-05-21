@@ -212,6 +212,9 @@ exports.getCookBooks = async (filters) => {
     }
     if (filterArr.length !== 0)
         pipe.unshift(filtersMatcher(filterArr))
+    if (filters.searchString) {
+        pipe.unshift(nameLkeMatcher(filters.searchString))
+    }
     aggregate = CookBooks.aggregate(pipe)
     return await paginator(aggregate, aggregateOptions(filters.page, filters.sortBy))
 }
@@ -278,8 +281,6 @@ exports.updateUser = async (id, field, value) => {
 exports.getRecipes = async (filter) => {
     let pipe = [authorLookup]
     let aggregate;
-
-    console.log("filter",filter.ids)
     if (filter.cookTime && filter.cookTime !== '1000') {
         pipe.unshift(cookTimeFilter(filter.cookTime))
     }

@@ -9,6 +9,7 @@ import { Loading } from '../MultyUsed/Loading/Loading';
 import { InfinityScrolls } from '../MultyUsed/InfiniteScroll';
 import {useFetch} from "../MultyUsed/CustomHooks/useFetch";
 import {CookCard} from "../MultyUsed/CookCard";
+import useDebounce from "../MultyUsed/CustomHooks/useDebouncer";
 
 
 function InfinityScroll(props) {
@@ -23,14 +24,16 @@ InfinityScroll.propTypes = {
   className: PropTypes.string,
   children: PropTypes.node
 };
-export const Recipes = ({ filters, sortBy }) => {
+export const Recipes = ({ filters, sortBy, searchValue }) => {
   const [items, setItems] = useState([]);
-  const [fetchRecipes, hasNext, loader] = useFetch(ROUTES.RECIPES, setItems, { ...filters, sortBy })
+  const debouncedValue = useDebounce(searchValue, 500)
+  const [fetchRecipes, hasNext, loader] = useFetch(ROUTES.RECIPES, setItems, { ...filters, sortBy, searchString:debouncedValue })
   // firstLoad
+
   useEffect(() => {
     fetchRecipes('start');
-  }, [sortBy, filters]);
-
+  }, [sortBy,filters, debouncedValue]);
+//sortBy, filters, debouncedValue
   return(
       <>
         <InfiniteScroll

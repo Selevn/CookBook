@@ -28,8 +28,9 @@ export const ResultsContainer = styled(Container)`
   flex-direction: column;
   ${LinksContainer} {
     width: inherit;
-    margin: 0;
+    margin: 0 0 20px 0;
   }
+  
 `;
 export const SearchMainComponent = styled(Container)`
   max-width: 1400px;

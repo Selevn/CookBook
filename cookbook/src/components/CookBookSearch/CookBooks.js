@@ -8,10 +8,14 @@ import { H1Styled, LabelStyled } from '../common/StylesComponent';
 import Checkbox from '../MultyUsed/CheckBox/CheckBox';
 import { Loading } from '../MultyUsed/Loading/Loading';
 import {useFetch} from "../MultyUsed/CustomHooks/useFetch";
-export const CookBooks = ({ filters, sortBy }) => {
+import useDebounce from "../MultyUsed/CustomHooks/useDebouncer";
+export const CookBooks = ({ filters, sortBy, searchValue }) => {
 
   const [items, setItems] = useState([]);
-  const [fetchBooks, hasNext, loading] = useFetch(ROUTES.COOKBOOKS, setItems,{ ...filters, sortBy })
+
+  const debouncedValue = useDebounce(searchValue, 500)
+
+  const [fetchBooks, hasNext, loading] = useFetch(ROUTES.COOKBOOKS, setItems,{ ...filters, sortBy, searchString:debouncedValue })
 
   useEffect(() => {
     console.log("changed")
@@ -22,7 +26,7 @@ export const CookBooks = ({ filters, sortBy }) => {
 
   useEffect(() => {
     fetchBooks('start');
-  }, [sortBy, filters]);
+  }, [sortBy, filters, debouncedValue]);
 
   return (
     <>
@@ -46,13 +50,14 @@ CookBooks.propTypes = {
   sortBy: PropTypes.string,
 };
 
-export const CookBooksMenu = ({ foodPref, setFoodPref }) => {
+export const CookBooksMenu = ({ foodPref, setFoodPref, stateChanged }) => {
   const vegeterianConst = 'vegeterian';
   const noMilkConst = 'noMilk';
   const noEggsConst = 'noEggs';
 
   const handleCheckboxReducer = useCallback((name) => {
     setFoodPref((s) => ({ ...s, [name]: !s[name] }));
+    stateChanged(s=>!s)
   }, []);
 
   return (

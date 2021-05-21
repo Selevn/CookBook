@@ -137,9 +137,7 @@ const CreateCookBookComponent = ({isEdit, item}) => {
             <TitleContainer>
                 <HeaderStyled>Cookbook picture</HeaderStyled>
                     <LabelAsButton htmlFor={"image"} small light>
-
                         {file?`Uploaded!`:`Upload`}
-
                     </LabelAsButton>
                 <InputStyled hide type={"file"} id="image" name="image" onChange={fileChanges}/>
             </TitleContainer>

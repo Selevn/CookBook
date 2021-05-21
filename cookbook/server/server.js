@@ -270,17 +270,34 @@ app.post(ROUTES.NEW_RECIPE,
     async function (req, res, next) {
     let createRecipeFlag = false;
     try{
-        const newName = req.files['image'][0].filename;
-        const secondaryFilesNames = []
-        for (const file of req.files['gallery']) {
-            secondaryFilesNames.push(file.filename)
-        }
         const recipe = {...req.body}
+
+        const newId = (await createRecipe({}))._id;
+        const oldName = req.files['image'][0].filename;
+        const newName = `${newId}__${oldName}`;
+        if(!renameFile(FOLDERS.RECIPES_IMAGES,oldName,newName))
+        {
+            res.send({
+                success:false
+            })
+            return
+        }
+        const secondaryFilesNames = []
+        if(req.files['gallery']){
+            req.files['gallery'].forEach((file, position) => {
+                const oldName = file.filename;
+                const newName = `${newId}_${position}_${oldName}`;
+                if(!renameFile(FOLDERS.RECIPES_IMAGES,oldName,newName,`${newId}_${position}_`))
+                    throw new Error("Can't rename file")
+                secondaryFilesNames.push(newName)
+            })
+            recipe[RECIPE_FIELDS.images] = secondaryFilesNames.map(item=>`/img/recipeImages/${item}`)
+        }
+        recipe[RECIPE_FIELDS.ID] = newId;
         recipe[RECIPE_FIELDS.directions] = JSON.parse(recipe[RECIPE_FIELDS.directions])
         recipe[RECIPE_FIELDS.ingredients] = JSON.parse(recipe[RECIPE_FIELDS.ingredients])
         recipe[RECIPE_FIELDS.image] = `/img/recipeImages/${newName}`
-        recipe[RECIPE_FIELDS.images] = secondaryFilesNames.map(item=>`/img/recipeImages/${item}`)
-        createRecipeFlag = await createRecipe(recipe);
+        createRecipeFlag = await updateRecipe(recipe);
     }
         catch(e){
         console.log(e)
@@ -297,19 +314,29 @@ app.post(ROUTES.EDIT_RECIPE,
     let createRecipeFlag = false;
     try{
         const recipe = {...req.body}
-
-        if(req.files['image'][0])
+        const newId = req.body._id;
+        if(req.files['image'])
         {
-            const newName = req.files['image'][0].filename;
+            const oldName = req.files['image'][0].filename;
+            const newName = `${newId}__${oldName}`;
+            if(!renameFile(FOLDERS.RECIPES_IMAGES,oldName,newName,`${newId}__`))
+                throw new Error("File was not renamed")
             recipe[RECIPE_FIELDS.image] = `/img/recipeImages/${newName}`
         }
 
-
         if(req.files['gallery']){
             const secondaryFilesNames = []
-            for (const file of req.files['gallery']) {
-                secondaryFilesNames.push(file.filename)
-            }
+            req.files['gallery'].forEach((file, position) => {
+                const oldName = file.filename;
+                const newName = `${newId}_${position}_${oldName}`;
+                renameFile(FOLDERS.RECIPES_IMAGES,oldName,newName,`${newId}_${position}_`)
+                secondaryFilesNames.push(newName)
+            })
+            /*for (const file of req.files['gallery']) {
+                const oldName = file.filename;
+                const newName = `${newId}__${oldName}`;
+
+            }*/
             recipe[RECIPE_FIELDS.images] = secondaryFilesNames.map(item=>`/img/recipeImages/${item}`)
         }
         if(!req.files['gallery'])
@@ -335,13 +362,17 @@ app.post(ROUTES.NEW_COOKBOOK,
     async function (req, res, next) {
         let createCookBookFlag = false;
         try{
-            console.log(req.body)
-            const newName = req.file.filename;
             const cookBook = {...req.body}
-            cookBook[COOKBOOK_FIELDS.image] = `/img/recipeImages/${newName}`
+            const newId = (await createCookBook({}))._id;
+            const oldName = req.file.filename;
+            const newName = `${newId}__${oldName}`;
+            if(!renameFile(FOLDERS.COOKBOOK_IMAGES, oldName, newName))
+                throw new Error("Can not rename file")
+            cookBook[COOKBOOK_FIELDS.ID] = newId
+            cookBook[COOKBOOK_FIELDS.image] = `/img/cookBookImages/${newName}`
             cookBook[COOKBOOK_FIELDS.recipesIds] = JSON.parse(req.body.recipesIds)
             cookBook[COOKBOOK_FIELDS.filters] = JSON.parse(req.body.filters)
-            createCookBookFlag = await createCookBook(cookBook);
+            createCookBookFlag = await updateCookBook(cookBook);
         }
         catch(e){
             console.log(e)

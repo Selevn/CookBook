@@ -46,7 +46,7 @@ export const Recipe = ({
                        }) => {
     const {profile} = useReduxState();
     const [isLiked, setIsLiked] = useState(profile && profile.likes.recipes.includes(id) || false)
-    const description = `${desc.slice(0, desc.indexOf(' ', 250))}...`;
+    const description = `${desc?.slice(0, desc?.indexOf(' ', 250))}...`;
     const history = useHistory();
     return (
         <RecipeContainerWrapper
@@ -61,7 +61,7 @@ export const Recipe = ({
                 </ImageContainer>
                 <DataContainer>
                     <Name>{name}</Name>
-                    <Author>{`${author && author[0].name.first} ${author && author[0].name.last}`}</Author>
+                    <Author>{`${author && author[0]?.name.first} ${author && author[0]?.name.last}`}</Author>
                     <Description>{description}</Description>
                     <Statistics>
                         <Liked isLiked={isLiked} count={likes}/>

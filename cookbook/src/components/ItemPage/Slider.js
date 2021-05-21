@@ -9,7 +9,7 @@ const Slider = ({mainImage, inputImagesArray=[]}) => {
         throw new Error("Invalid mainImage type!!")
     const [current, setCurrent] = useState(0)
     const [length, setLength] = useState(1)
-    const [haveSlides, setHaveSliders] = useState(inputImagesArray.length>1)
+    const [haveSlides, setHaveSliders] = useState(inputImagesArray.length>0)
     const [imagesArr, setImagesArr] = useState([mainImage, ...inputImagesArray])
 
     useEffect(() => {

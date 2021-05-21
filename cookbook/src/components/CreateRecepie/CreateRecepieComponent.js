@@ -70,8 +70,8 @@ const CreateRecepieComponent = ({edit}) => {
         formData.append(RECIPE_FIELDS.author, profile._id);
         formData.append(RECIPE_FIELDS.name, recipe.title);
         formData.append(RECIPE_FIELDS.desc, recipe.description);
-        formData.append(RECIPE_FIELDS.ingredients, JSON.stringify(recipe.ingredients));
-        formData.append(RECIPE_FIELDS.directions, JSON.stringify(recipe.directions));
+        formData.append(RECIPE_FIELDS.ingredients, JSON.stringify(recipe.ingredients || []));
+        formData.append(RECIPE_FIELDS.directions, JSON.stringify(recipe.directions || []));
         formData.append(RECIPE_FIELDS.creationDate, Date.now());
         formData.append(RECIPE_FIELDS.cookTime, cookTime);
         SendFile(edit?ROUTES.EDIT_RECIPE:ROUTES.NEW_RECIPE, formData, auth)

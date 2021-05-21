@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {ButtonStyled, H1Styled, InputStyled} from '../common/StylesComponent';
+import {ButtonStyled, H1Styled, InputStyled, LabelAsButton} from '../common/StylesComponent';
 
 import {
     DescriptionInput,
@@ -106,14 +106,17 @@ const CreateRecepieComponent = ({edit}) => {
             </TitleContainer>
             <TitleContainer>
                 <HeaderStyled>Recepie primary picture</HeaderStyled>
-                {/*<ButtonStyled small light>
-                    Upload
-                </ButtonStyled>*/}
-                <InputStyled type="file" name="image" onChange={fileChanges}/>
+                <LabelAsButton htmlFor={"image"} small light>
+                    {file?`Uploaded!`:`Upload`}
+                </LabelAsButton>
+                <InputStyled hide type="file" id={"image"} name="image" onChange={fileChanges}/>
             </TitleContainer>
             <TitleContainer>
                 <HeaderStyled>Recepie secondary pictures (8 max)</HeaderStyled>
-                <InputStyled type="file" name="gallery" onChange={secondaryFilesChange} multiple/>
+                <LabelAsButton htmlFor={"galley"} small light>
+                    {secondaryFiles?`Uploaded!`:`Upload many`}
+                </LabelAsButton>
+                <InputStyled hide type="file" id={"galley"} name="gallery" onChange={secondaryFilesChange} multiple/>
             </TitleContainer>
             <TitleContainer>
                 <HeaderStyled>Description</HeaderStyled>

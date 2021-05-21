@@ -14,6 +14,7 @@ export const Container = styled.div`
   ${(p) => (p.wrap ? 'flex-wrap: wrap' : '')};
   ${(p) => (p.flex ? `flex: ${p.flex}` : '')};
   ${(p) => (p.margin ? `margin: ${p.margin}` : '')};
+  ${(p) => (p.gap ? `margin: ${p.gap}` : '')};
   ${(p) => (p.padding ? `padding: ${p.padding}` : '')};
   ${(p) => (p.justifyContent ? `justify-content: ${p.justifyContent}` : '')};
   ${(p) => (p.alignItems ? `align-items: ${p.alignItems}` : '')};
@@ -143,14 +144,101 @@ export const LabelStyled = styled.label`
   line-height: 22px;
   color: var(--styled-gray);
 `;
+export const LabelAsButton = styled.label`
+  :hover{
+    cursor:pointer;
+    background: var(--pure-white);
+  }
+  
+  display: flex;
+  justify-content: center;
+  height: 48px;
+  background: var(--primary-color);
+  border: 2px solid var(--primary-color);
+  border-radius: 8px;
+
+
+  ${(p)=>
+      p.disabled && css`
+      :hover{
+        cursor: auto;
+      }
+    opacity: 0.4;
+      `}
+
+  ${(p) =>
+      p.secondary &&
+      css`
+      background: var(--pure-white);
+      border-radius: 8px;
+      border: 2px solid var(--primary-color);
+
+      :hover{
+        background: var(--primary-color);
+      }
+    `}
+  ${(p) =>
+      p.thick &&
+      css`
+      border: 1px solid var(--primary-color);
+    `}
+
+  ${(p) =>
+      p.medium &&
+      css`
+        min-width: 100px;
+      max-width: 220px;
+      max-height: 45px;
+      font-size: 18px;
+    `}
+
+
+  ${(p) =>
+      p.small &&
+      css`
+      max-width: 120px;
+      max-height: 45px;
+      font-size: 18px;
+    `}
+
+  ${(p) =>
+      p.tiny &&
+      css`
+      max-width: 90px;
+      max-height: 40px;
+      font-size: 14px;
+    `}
+
+  font-family: var(--nunito-font);
+  font-style: normal;
+  font-weight: 600;
+  ${(p) =>
+      p.light &&
+      css`
+      font-weight: 400;
+    `}
+  font-size: 18px;
+  line-height: 27px;
+
+  align-items: center;
+  text-align: center;
+
+  color: var(--pure-black);
+`;
+
 
 export const ButtonStyled = styled(ButtonWrapper)`
   width: 100%;
   height: 48px;
 
+  
   background: var(--primary-color);
+  border: 2px solid var(--primary-color);
+  :hover{
+    cursor: pointer;
+    background: var(--pure-white);
+  }
   border-radius: 8px;
-  border: none;
 
   ${(p)=>
       p.disabled && css`
@@ -176,7 +264,7 @@ export const ButtonStyled = styled(ButtonWrapper)`
     css`
       border: 1px solid var(--primary-color);
     `}
-
+  
   ${(p) =>
     p.medium &&
     css`
@@ -230,6 +318,7 @@ export const InputStyled = styled.input`
   border: 1px solid var(--styled-gray);
   
   ${p => p.flex && `flex:${p.flex};`}
+  ${p => p.hide && `display:none;`}
 `;
 
 

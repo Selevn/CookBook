@@ -1,11 +1,12 @@
 import React, {useCallback, useState} from 'react';
 import PropTypes from 'prop-types';
-import {ButtonStyled, Container, H1Styled, InputStyled, LinkStyled} from '../common/StylesComponent';
+import {ButtonStyled, Container, H1Styled, InputStyled, LabelAsButton, LinkStyled} from '../common/StylesComponent';
 import {
     PropChange,
     PropertiesContainer,
     PropName,
     SettingsContainer,
+    ButtonsContainer
 } from './style/SettingsComponentStyle';
 import {SendData, SendFile} from "../../Connectors/dataProvider";
 import {useReduxState} from "../MultyUsed/CustomHooks/useReduxState";
@@ -71,6 +72,8 @@ const ChangeComponent = ({value, valueName, setChangeField, area = false}) => {
     </>)
 }
 
+
+ChangeComponent.propTypes = {children: PropTypes.node};
 const Settings = ({setUser}) => {
     const {auth, profile} = useReduxState()
     const [file, setFile] = useState();
@@ -105,6 +108,7 @@ const Settings = ({setUser}) => {
             }).catch((error) => {
             console.log("err", error)
         });
+        setFile(null)
     }, [file])
 
     return (
@@ -183,10 +187,24 @@ const Settings = ({setUser}) => {
                     </Container>
                     <Container>
                         <PropName>Image</PropName>
-                        <form onSubmit={onFileSubmit}>
-                            <input type="file" name="avatar" onChange={fileChanges}/>
-                            <InputStyled type={"submit"}/>
-                        </form>
+                        {!file &&
+                        <>
+                            <LabelAsButton htmlFor={"image"} medium light>
+                                Upload
+                            </LabelAsButton>
+                            <InputStyled hide type="file" id={"image"} name="avatar" onChange={fileChanges}/>
+                        </>}
+                        {file &&
+<ButtonsContainer>
+                            <ButtonStyled small light onClick={onFileSubmit}>
+                                Send
+                            </ButtonStyled>
+                            <ButtonStyled small light onClick={()=>{setFile(null)}}>
+                                Clear
+                            </ButtonStyled>
+</ButtonsContainer>
+                        }
+
                     </Container>
                 </PropertiesContainer>
             </SettingsContainer>

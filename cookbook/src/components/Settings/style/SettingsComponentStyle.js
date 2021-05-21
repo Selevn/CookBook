@@ -20,6 +20,7 @@ export const SettingsContainer = styled(Container)`
 `;
 export const PropertiesContainer = styled(Container)`
   flex-direction: column;
+  gap:5px;
 `;
 export const PropName = styled(Container)`
   width: 200px;
@@ -44,4 +45,9 @@ export const PropChange = styled(Container)`
       width:200px;
     }
   }
+`;
+
+export const ButtonsContainer = styled(Container)`
+    width:80%;
+    gap:5px;
 `;

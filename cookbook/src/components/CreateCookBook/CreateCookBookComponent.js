@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {ButtonStyled, Container, H1Styled, InputStyled} from '../common/StylesComponent';
+import {ButtonStyled, Container, H1Styled, InputStyled, LabelAsButton, LabelStyled} from '../common/StylesComponent';
 import {useHistory} from "react-router-dom";
 
 import {Recipe} from '../MultyUsed/Recipe';
@@ -32,7 +32,6 @@ const CreateCookBookComponent = ({isEdit, item}) => {
     const [file, setFile] = useState();
 
 
-
     const fileChanges = (e) => {
         e.preventDefault();
         setFile(e.target.files[0])
@@ -48,12 +47,11 @@ const CreateCookBookComponent = ({isEdit, item}) => {
         setRecipesSelectedIds(s => [...s, item._id])
     }, [])
 
-    useEffect(()=>{
+    useEffect(() => {
         (async () => {
-            if(isEdit && item.recipesIds)
-            {
+            if (isEdit && item.recipesIds) {
                 console.log(item)
-                const recipes = await fetchData(ROUTES.RECIPES,null,{ids:JSON.stringify(item.recipesIds)})
+                const recipes = await fetchData(ROUTES.RECIPES, null, {ids: JSON.stringify(item.recipesIds)})
                 recipes.docs.forEach((recipeItem) => {
                     const savedRecipe = <Recipe removable onRemovable={
                         () => {
@@ -71,7 +69,7 @@ const CreateCookBookComponent = ({isEdit, item}) => {
                 setFoodPref(filters)
             }
         })()
-    },[isEdit, item])
+    }, [isEdit, item])
 
     const save = async (e) => {
         e.preventDefault();
@@ -90,11 +88,11 @@ const CreateCookBookComponent = ({isEdit, item}) => {
         }
 
         const formData = new FormData();
-        if(file)
+        if (file)
             formData.append('image', file);
-        if(!file && isEdit)
+        if (!file && isEdit)
             formData.append(COOKBOOK_FIELDS.image, item.image);
-        if(isEdit){
+        if (isEdit) {
             formData.append(COOKBOOK_FIELDS.ID, item._id);
         }
         formData.append(COOKBOOK_FIELDS.author, profile._id);
@@ -105,7 +103,7 @@ const CreateCookBookComponent = ({isEdit, item}) => {
 
         formData.append(COOKBOOK_FIELDS.filters, JSON.stringify(filtersNormalized));
 
-        SendFile(isEdit?ROUTES.EDIT_COOKBOOK:ROUTES.NEW_COOKBOOK, formData, auth)
+        SendFile(isEdit ? ROUTES.EDIT_COOKBOOK : ROUTES.NEW_COOKBOOK, formData, auth)
             .then(response => {
                 console.log(response)
             })
@@ -129,7 +127,7 @@ const CreateCookBookComponent = ({isEdit, item}) => {
 
     return (
         <CreateCookBookPage>
-            <H1Styled size="56px">{isEdit ? `Edit cookbook`:`Create a new cookbook`}</H1Styled>
+            <H1Styled size="56px">{isEdit ? `Edit cookbook` : `Create a new cookbook`}</H1Styled>
             <TitleContainer>
                 <HeaderStyled>Cookbook title</HeaderStyled>
                 <InputStyled placeholder="Title" value={title} onChange={(e) => {
@@ -138,10 +136,12 @@ const CreateCookBookComponent = ({isEdit, item}) => {
             </TitleContainer>
             <TitleContainer>
                 <HeaderStyled>Cookbook picture</HeaderStyled>
-                {/*<ButtonStyled small light>
-          Upload
-        </ButtonStyled>*/}
-                <InputStyled type={"file"} name="image" onChange={fileChanges}/>
+                    <LabelAsButton htmlFor={"image"} small light>
+
+                        {file?`Uploaded!`:`Upload`}
+
+                    </LabelAsButton>
+                <InputStyled hide type={"file"} id="image" name="image" onChange={fileChanges}/>
             </TitleContainer>
             <TitleContainer>
                 <HeaderStyled>Description</HeaderStyled>

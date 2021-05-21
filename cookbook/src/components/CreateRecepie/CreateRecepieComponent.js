@@ -97,7 +97,7 @@ const CreateRecepieComponent = ({edit}) => {
 
     return (
         <CreateCookBookPage>
-            <H1Styled size="56px">Create a new recepie</H1Styled>
+            <H1Styled size="56px">{edit?`Edit recipe`:`Create a new recipe`}</H1Styled>
             <TitleContainer>
                 <HeaderStyled>Recepie title</HeaderStyled>
                 <InputStyled placeholder="Title" value={recipe.title} onChange={(e) => {

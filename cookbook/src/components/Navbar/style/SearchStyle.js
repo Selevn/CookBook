@@ -14,6 +14,7 @@ export const SearchStyled = styled(InputStyled)`
   color: var(--light-black);
 `;
 export const Results = styled(Container)`
+  overflow:auto;
   padding: 5px;
   border-radius: 5px;
   flex-direction: column;
@@ -25,6 +26,13 @@ export const Results = styled(Container)`
     font-weight: lighter;
     font-size: 26px;
     text-align: center;
+  }
+  max-width: 100vw;
+  max-height: calc(100vh - 60px);
+  @media (max-width: 1023px) {
+    top:200px;
+    max-height: calc(100vh - 200px);
+
   }
   
 `;

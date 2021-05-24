@@ -117,7 +117,7 @@ export const RecipeContainerWrapper = styled(Container)`
     height:80px;
   }
     @media (max-width: 425px) {
-      flex-direction: column;
+      flex-direction: row !important;
       align-items: normal !important;
 
       ${RemoveContainer} {
@@ -127,6 +127,9 @@ export const RecipeContainerWrapper = styled(Container)`
         height: 10px;
         margin: 0 auto;
       }
+    }
+    @media (min-width: 425px) {
+      flex-direction: row !important;
     }
   `}
   

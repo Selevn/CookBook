@@ -42,6 +42,7 @@ export const Recipe = ({
                            onRemovable,
                            handleRemove,
                            image,
+                           small,
                            _id: id,
                        }) => {
     const {profile} = useReduxState();
@@ -50,6 +51,7 @@ export const Recipe = ({
     const history = useHistory();
     return (
         <RecipeContainerWrapper
+            small={small}
             onClick={() => {
                 history.push(`/info/recipe/${id}`);
             }}
@@ -62,47 +64,50 @@ export const Recipe = ({
                 <DataContainer>
                     <Name>{name}</Name>
                     <Author>{`${author && author[0]?.name.first} ${author && author[0]?.name.last}`}</Author>
-                    <Description>{description}</Description>
+
+                    {!small &&
+
+                    <Description>{description}</Description>}
                     <Statistics>
                         <Liked isLiked={isLiked} count={likes}/>
-                        <Commented commented={isCommented} count={comments.length}/>
-                        <Views count={views}/>
+                        {!small &&<Commented commented={isCommented} count={comments.length}/>}
+                        {!small &&<Views count={views}/>}
                         {editable && <LinkStyled to={`/editRecipe?id=${id}`}>Edit</LinkStyled>}
                     </Statistics>
-                </DataContainer>
-                {isMy && (
-                    <>
-                        <ToolsContainer>
-                            <FaRegEdit size="30px" color="var(--text-gray)" className="tool"/>
-                            <FaWindowClose size="30px" color="var(--text-gray)" className="tool"/>
-                        </ToolsContainer>
-                    </>
-                )}
-                {savable && (
-                    <>
-                        <SaveContainer>
-                            <ButtonStyled secondary light thick onClick={(e) => {
-                                e.stopPropagation()
-                                onSavable()
-                            }}>
-                                Add
-                            </ButtonStyled>
-                        </SaveContainer>
-                    </>
-                )}
-                {removable && (
+            </DataContainer>
+            {isMy && (
+                <>
+                    <ToolsContainer>
+                        <FaRegEdit size="30px" color="var(--text-gray)" className="tool"/>
+                        <FaWindowClose size="30px" color="var(--text-gray)" className="tool"/>
+                    </ToolsContainer>
+                </>
+            )}
+            {savable && (
+                <>
                     <SaveContainer>
                         <ButtonStyled secondary light thick onClick={(e) => {
                             e.stopPropagation()
-                            onRemovable()
+                            onSavable()
                         }}>
-                            Remove
+                            Add
                         </ButtonStyled>
                     </SaveContainer>
-                )}
-            </RecipeContainer>
-        </RecipeContainerWrapper>
-    );
+                </>
+            )}
+            {removable && (
+                <SaveContainer>
+                    <ButtonStyled secondary light thick onClick={(e) => {
+                        e.stopPropagation()
+                        onRemovable()
+                    }}>
+                        Remove
+                    </ButtonStyled>
+                </SaveContainer>
+            )}
+        </RecipeContainer>
+</RecipeContainerWrapper>
+);
 };
 
 Recipe.propTypes = {

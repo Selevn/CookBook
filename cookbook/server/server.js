@@ -44,7 +44,7 @@ app.use(express.static('public'));
 const userStorage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, FOLDERS.USERS_AVATARS)
-    },
+    }
 })
 const userUpload = multer({ storage: userStorage });
 
@@ -236,6 +236,7 @@ const renameFile = (folder, oldName, newName, oldStartsWith) => {
     }
     return true;
 }
+
 
 app.post(ROUTES.CHANGE_ACC_IMAGE,
     passport.authenticate('jwt', {session: false}),

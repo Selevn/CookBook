@@ -37,8 +37,7 @@ const ProfileComponent = ({match}) => {
     const [menu, setMenu] = useState(myBooks);
     const [user, setUser] = useState();
     const {id} = match.params;
-    console.log(profile)
-    console.log(id)
+
 
     const dispatcher = useDispatch()
     useEffect(() => {
@@ -51,6 +50,11 @@ const ProfileComponent = ({match}) => {
             }
         })();
     }, [id]);
+
+    useEffect(() => {
+        if(user)
+            dispatcher(profileActions.setProfile(user))
+    }, [user]);
 
 
 

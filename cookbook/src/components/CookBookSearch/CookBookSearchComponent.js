@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {withRouter} from 'react-router-dom';
+import {useLocation, withRouter} from 'react-router-dom';
 import {PropTypes} from 'prop-types';
 import {
     FilterContainer,
@@ -16,9 +16,13 @@ import {Recipes, RecipesMenu} from './Recipes';
 import {CookBooks, CookBooksMenu} from './CookBooks';
 import {COMMON} from '../../constants';
 import {useReduxState} from "../MultyUsed/CustomHooks/useReduxState";
-import useDebounce from "../MultyUsed/CustomHooks/useDebouncer";
+import queryString from "query-string";
 
 const SearchComponent = ({match}) => {
+
+    const { search:searchValue } = useLocation()
+    const values = queryString.parse(searchValue)
+
     const foodPrefInitialValue = {
         vegeterian: false,
         noMilk: false,
@@ -55,15 +59,15 @@ const SearchComponent = ({match}) => {
     const [recipeFilters, setRecipeFilters] = useState();
     useEffect(() => {
         setRecipeFilters({cookTime: cookTime, hideMy: hideMy && profile._id})
-    }, [cookTime, profile?._id])
+    }, [cookTime, hideMy, profile?._id])
 
     const [cookBooksFilters, setCookBooksFilters] = useState();
     const [statechanged, setStateChanged] = useState();
     useEffect(() => {
         setCookBooksFilters({...foodPref, hideMy: hideMy && profile._id})
-    }, [statechanged, profile?._id])
+    }, [statechanged, hideMy, profile?._id])
 
-    const [search, setSearch] = useState("");
+    const [search, setSearch] = useState(values.searchString || "");
 
     return (
         <SearchMainComponent>

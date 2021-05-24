@@ -37,18 +37,6 @@ export const NavbarStyle = styled(Container)`
     }
   }
 `;
-export const SearchStyled = styled(InputStyled)`
-  height: 35px;
-  max-width: 481px;
-  min-width: 284px;
-  background: var(--search-gray);
-  border-radius: 37px;
-  border: none;
-  outline: none;
-  font-size: 20px;
-  padding: 3px 8px;
-  color: var(--light-black);
-`;
 
 export const NavbarLink = styled(LinkStyled)`
   color: var(--light-black);

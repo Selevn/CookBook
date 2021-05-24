@@ -5,14 +5,14 @@ import {
     NavbarLogo,
     NavbarMain,
     NavbarStyle,
-    SearchStyled,
 } from './style/NavbarComponentStyle';
-import {ButtonStyled, Container} from '../common/StylesComponent';
+import {ButtonStyled, Container, InputStyled} from '../common/StylesComponent';
 import {useDispatch, useSelector} from "react-redux";
 import {profileActions} from "../../Redux/Profile";
 import {authActions} from "../../Redux/AuthKey";
 import {useReduxState} from "../MultyUsed/CustomHooks/useReduxState";
 import {useHistory} from "react-router-dom";
+import SearchBlock from "./NavbarSearch";
 
 const NavbarComponent = () => {
     const [menuOpen, setMenuOpen] = useState(true);
@@ -27,6 +27,7 @@ const NavbarComponent = () => {
         dispatch(profileActions.logOut());
         dispatch(authActions.logOut());
     },[])
+
 
     return (
         <>
@@ -43,7 +44,7 @@ const NavbarComponent = () => {
                         </Container>
                     </Container>
                     <Container flex={5} justifyContent="center" alignItems="center" className="mustBeHidden">
-                        <SearchStyled/>
+                        <SearchBlock/>
                     </Container>
                     {!profile &&
                     (<Container flex={4} className="mustBeHidden">

@@ -137,6 +137,10 @@ export const LinkStyled = styled(LinkWrapper)`
   font-family: var(--nunito-font);
   font-weight: bold;
   text-decoration: none;
+  
+  :hover{
+    color:var(--styled-gray)
+  }
 `;
 
 export const LabelStyled = styled.label`

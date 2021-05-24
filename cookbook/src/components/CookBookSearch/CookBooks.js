@@ -18,13 +18,6 @@ export const CookBooks = ({ filters, sortBy, searchValue }) => {
   const [fetchBooks, hasNext, loading] = useFetch(ROUTES.COOKBOOKS, setItems,{ ...filters, sortBy, searchString:debouncedValue })
 
   useEffect(() => {
-    console.log("changed")
-    console.log(sortBy)
-    console.log(filters)
-  }, [sortBy, filters]);
-
-
-  useEffect(() => {
     fetchBooks('start');
   }, [sortBy, filters, debouncedValue]);
 

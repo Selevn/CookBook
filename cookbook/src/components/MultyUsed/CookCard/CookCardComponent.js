@@ -44,6 +44,14 @@ export const CookCardComponent = ({
       imgWidth = '215px';
       break;
     }
+    case 'tiny': {
+      width = '225px-(var(--padding-card)*2)';
+      height = '360px-(var(--padding-card)*2)';
+      imgHeight = '215px';
+      imgWidth = '215px';
+      break;
+    }
+
     case 'normal': {
       width = 'calc(350px - (var(--padding-card)*2))';
       height = 'calc(455px - (var(--padding-card)*2))';
@@ -86,11 +94,14 @@ export const CookCardComponent = ({
       vertical
       containerWidth={width}
       containerHeight={height}
+      type={type}
     >
+      {type !== 'tiny' &&
       <Container justifyContent="space-between">
-        <Views count={views} />
+        <Views count={views}/>
         {isEditable && <LinkStyled to={`/editCookBook?id=${id}`}>Edit</LinkStyled>}
       </Container>
+      }
       <CookCardImage
         src={image}
         width={imgWidth}
@@ -100,6 +111,7 @@ export const CookCardComponent = ({
       <Container vertical>
         <Name>{name}</Name>
         <Author>{`${author[0].name.first} ${author[0].name.last}`}</Author>
+        {type === 'tiny' && <Liked count={likes || 0} isLiked={isLiked} />}
       </Container>
       {showDesc && (
         <>
@@ -108,11 +120,11 @@ export const CookCardComponent = ({
           </Description>
         </>
       )}
-      {showFooter && (
-        <Container margin="auto 0 0 0" justifyContent="space-between">
-          <Liked count={likes || 0} isLiked={isLiked} />
-          <Commented count={comments.length || 0} commented={isCommented} />
-        </Container>
+      {showFooter && type !== 'tiny' && (
+          <Container margin="auto 0 0 0" justifyContent="space-between">
+            <Liked count={likes || 0} isLiked={isLiked} />
+            <Commented count={comments.length || 0} commented={isCommented} />
+          </Container>
       )}
     </CookCardContainer>
   );

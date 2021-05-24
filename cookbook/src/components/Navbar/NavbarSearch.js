@@ -45,7 +45,7 @@ const SearchBlock = () => {
                               }, 500)
                           }}
                           onFocus={() => {
-                              clearTimeout(timeOutRef)
+                              clearTimeout(timeOutRef.current)
                           }}
 
             />

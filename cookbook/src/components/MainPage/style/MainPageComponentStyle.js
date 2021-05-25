@@ -1,12 +1,12 @@
 import styled, { css } from 'styled-components';
-import { ButtonStyled, Container, H1Styled, ParagraphStyled } from '../../common/StylesComponent';
+import {ButtonStyled, Container, H1Styled, LinkAsButton, ParagraphStyled} from '../../common/StylesComponent';
 
 export const WelcomeDiv = styled(Container)`
   flex-direction: column;
   max-width: 800px;
   padding: 0 15px 0 15px;
 
-  ${ButtonStyled} {
+  ${LinkAsButton} {
     margin: 25px auto auto 0;
     border-radius: 38px;
     font-size: 20px;

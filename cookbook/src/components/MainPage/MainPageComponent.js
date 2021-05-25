@@ -3,7 +3,7 @@ import {
     ButtonStyled,
     Container,
     H1Styled,
-    ImageStyled,
+    ImageStyled, LinkAsButton,
     ParagraphStyled,
 } from '../common/StylesComponent';
 
@@ -71,7 +71,7 @@ const MainComponent = () => {
                 >
                     <WelcomeDiv>
                         <ParagraphStyled>Find and create your favourite cookbooks And Recipies</ParagraphStyled>
-                        <ButtonStyled href="/login">Create Account</ButtonStyled>
+                        <LinkAsButton to="/login">Create Account</LinkAsButton>
                     </WelcomeDiv>
                 </Container>
                 <WelcomeFoodDiv>

@@ -1,10 +1,10 @@
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
   ButtonStyled,
   Container,
-  Image,
+  Image, LinkAsButton,
   LinkStyled,
   ParagraphStyled,
 } from '../../common/StylesComponent';
@@ -117,13 +117,21 @@ export const DataContainer = styled(Container)`
     margin: auto;
   }
 `;
-export const AddButton = styled(ButtonStyled)`
+
+const addCss = css`
   width: 212px;
   font-family: 'Roboto Light', sans-serif;
   font-size: 18px;
   text-align: center;
   font-weight: normal;
+`
+export const AddLink = styled(LinkAsButton)`
+  ${addCss}
 `;
+export const AddButton = styled(ButtonStyled)`
+  ${addCss}
+`;
+
 export const ProfileImageWrapper = styled(Container)`
   width: 300px;
 `;

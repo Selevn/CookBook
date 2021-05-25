@@ -3,7 +3,7 @@ import {withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {Container} from '../common/StylesComponent';
 import {
-    AddButton,
+    AddLink,
     AddContainer,
     DataContainer,
     ProfileImage,
@@ -13,7 +13,7 @@ import {
     UserName,
     UserTextContainer,
     LinksContainer,
-    UserLinks,
+    UserLinks, AddButton,
 } from './style/ProfileComponentStyle';
 import {Settings} from '../Settings';
 import {fetchData} from '../../Connectors/dataProvider';
@@ -84,12 +84,12 @@ const ProfileComponent = ({match}) => {
                                     </AddButton>
                                     {addMenu && (
                                         <>
-                                            <AddButton href="/newCookBook" secondary>
+                                            <AddLink to="/newCookBook" secondary>
                                                 Add New CookBook
-                                            </AddButton>
-                                            <AddButton href="/newRecipe" secondary>
+                                            </AddLink>
+                                            <AddLink to="/newRecipe" secondary>
                                                 Add New Reciept
-                                            </AddButton>
+                                            </AddLink>
                                         </>
                                     )}
                                 </>)}

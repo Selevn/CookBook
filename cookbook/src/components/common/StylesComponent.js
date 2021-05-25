@@ -25,6 +25,7 @@ export const Container = styled.div`
   ${(p) => (p.containerWidth ? `width: ${p.containerWidth}` : '')};
   ${(p) => (p.color ? `background: ${p.color}` : '')};
   ${(p) => (p.width ? `width: ${p.width}` : '')};
+  ${(p) => (p.gap ? `gap: ${p.gap}` : '')};
 `;
 
 const LogoImage = () => <img src={logo} alt="Logo" />;
@@ -142,100 +143,30 @@ export const LinkStyled = styled(LinkWrapper)`
     color:var(--styled-gray)
   }
 `;
+export const ButtonAsLinkStyled = styled.button`
+  color: var(--primary-color);
+  font-family: var(--nunito-font);
+  font-weight: bold;
+  font-size: 16px;
+  text-decoration: none;
+  background-color: #00000000;
+  border:none;
+  outline:none;
+  
+  :hover{
+    color:var(--styled-gray);
+    cursor:pointer;
+  }
+`;
 
 export const LabelStyled = styled.label`
   font-size: 16px;
   line-height: 22px;
   color: var(--styled-gray);
 `;
-export const LabelAsButton = styled.label`
-  :hover{
-    cursor:pointer;
-    background: var(--pure-white);
-  }
-  
-  display: flex;
-  justify-content: center;
+const asButtonCss = css`
+width: 100%;
   height: 48px;
-  background: var(--primary-color);
-  border: 2px solid var(--primary-color);
-  border-radius: 8px;
-
-
-  ${(p)=>
-      p.disabled && css`
-      :hover{
-        cursor: auto;
-      }
-    opacity: 0.4;
-      `}
-
-  ${(p) =>
-      p.secondary &&
-      css`
-      background: var(--pure-white);
-      border-radius: 8px;
-      border: 2px solid var(--primary-color);
-
-      :hover{
-        background: var(--primary-color);
-      }
-    `}
-  ${(p) =>
-      p.thick &&
-      css`
-      border: 1px solid var(--primary-color);
-    `}
-
-  ${(p) =>
-      p.medium &&
-      css`
-        min-width: 100px;
-      max-width: 220px;
-      max-height: 45px;
-      font-size: 18px;
-    `}
-
-
-  ${(p) =>
-      p.small &&
-      css`
-      max-width: 120px;
-      max-height: 45px;
-      font-size: 18px;
-    `}
-
-  ${(p) =>
-      p.tiny &&
-      css`
-      max-width: 90px;
-      max-height: 40px;
-      font-size: 14px;
-    `}
-
-  font-family: var(--nunito-font);
-  font-style: normal;
-  font-weight: 600;
-  ${(p) =>
-      p.light &&
-      css`
-      font-weight: 400;
-    `}
-  font-size: 18px;
-  line-height: 27px;
-
-  align-items: center;
-  text-align: center;
-
-  color: var(--pure-black);
-`;
-
-
-export const ButtonStyled = styled(ButtonWrapper)`
-  width: 100%;
-  height: 48px;
-
-  
   background: var(--primary-color);
   border: 2px solid var(--primary-color);
   :hover{
@@ -243,15 +174,13 @@ export const ButtonStyled = styled(ButtonWrapper)`
     background: var(--pure-white);
   }
   border-radius: 8px;
-
   ${(p)=>
-      p.disabled && css`
+    p.disabled && css`
       :hover{
         cursor: auto;
       }
     opacity: 0.4;
       `}
-  
   ${(p) =>
     p.secondary &&
     css`
@@ -276,8 +205,6 @@ export const ButtonStyled = styled(ButtonWrapper)`
       max-height: 45px;
       font-size: 18px;
     `}
-
-
   ${(p) =>
     p.small &&
     css`
@@ -285,7 +212,6 @@ export const ButtonStyled = styled(ButtonWrapper)`
       max-height: 45px;
       font-size: 18px;
     `}
-  
   ${(p) =>
     p.tiny &&
     css`
@@ -293,7 +219,6 @@ export const ButtonStyled = styled(ButtonWrapper)`
       max-height: 40px;
       font-size: 14px;
     `}
-  
   font-family: var(--nunito-font);
   font-style: normal;
   font-weight: 600;
@@ -304,23 +229,37 @@ export const ButtonStyled = styled(ButtonWrapper)`
     `}
   font-size: 18px;
   line-height: 27px;
-
   align-items: center;
   text-align: center;
-
   color: var(--pure-black);
+`
+
+export const LabelAsButton = styled.label`
+  display: flex;
+  justify-content: center;
+  ${asButtonCss}
+`;
+
+export const LinkAsButton = styled(LinkWrapper)`
+  display: flex;
+  justify-content: center;
+  outline: none;
+  text-decoration: none;
+  ${asButtonCss}
+`;
+
+export const ButtonStyled = styled(ButtonWrapper)`
+  
+${asButtonCss}
 `;
 
 export const InputStyled = styled.input`
   box-sizing: border-box;
   border-radius: 8px;
   font-size: 26px;
-
   padding: 3px 8px;
-
   background: var(--pure-white);
   border: 1px solid var(--styled-gray);
-  
   ${p => p.flex && `flex:${p.flex};`}
   ${p => p.hide && `display:none;`}
 `;
@@ -334,20 +273,6 @@ export const TextInputStyled = styled.textarea`
 
   background: var(--pure-white);
   border: 1px solid var(--styled-gray);
-`;
-
-export const TestContainer = styled.div`
-  display: flex;
-  flex-direction: ${(p) => (p.vertical ? 'column' : 'row')};
-  ${(p) => (p.flex ? `flex: ${p.flex}` : '')};
-  ${(p) => (p.margin ? `margin: ${p.margin}` : '')};
-  ${(p) => (p.padding ? `padding: ${p.padding}` : '')};
-  ${(p) => (p.justifyContent ? `justify-content: ${p.justifyContent}` : '')};
-  ${(p) => (p.minHeight ? `min-height: ${p.minHeight}` : '')};
-  ${(p) => (p.height ? `height: ${p.height}` : '')};
-  ${(p) => (p.color ? `background: ${p.color}` : '')};
-  width: 100%;
-  height: 100%;
 `;
 
 export const Image = ({ src, alt, width, height, radius }) => {
@@ -374,23 +299,4 @@ export const H1Styled = styled.h1`
   ${(p) => (p.color ? `color:${p.color};` : '')}
   ${(p) => (p.size ? `font-size:${p.size};` : '')}
   ${(p) => (p.transform ? `text-transform:${p.transform};` : '')}
-`;
-export const SelectStyled = styled.select`
-  width: 100%;
-  height: 35px;
-  background: white;
-  color: gray;
-  padding-left: 5px;
-  font-size: 14px;
-  border: none;
-  margin-left: 10px;
-
-  option {
-    color: black;
-    background: white;
-    display: flex;
-    white-space: pre;
-    min-height: 20px;
-    padding: 0px 2px 1px;
-  }
 `;

@@ -31,6 +31,10 @@ const SearchBlock = () => {
                 setCookBooks(fetchedBooks.docs.slice(0, 3));
             })
         })()
+        return () => {
+            setRecipes([])
+            setCookBooks([])
+        }
     }, [debouncedValue]);
 
     return (
@@ -42,6 +46,8 @@ const SearchBlock = () => {
                           onBlur={() => {
                               timeOutRef = setTimeout(() => {
                                   setSearch("")
+                                  setRecipes([])
+                                  setCookBooks([])
                               }, 500)
                           }}
                           onFocus={() => {
@@ -50,19 +56,25 @@ const SearchBlock = () => {
 
             />
             {search !== "" &&
-            <Results>
+            <Results
+                onClick={() => {
+                        setSearch("")
+                        setRecipes([])
+                        setCookBooks([])
+                }}
+            >
                 <Recipes>
                     <H1Styled>Recipes</H1Styled>
-                    {recipesLoader && <Loading/>}
+                    {(recipesLoader || cookBooksLoader) && <Loading/>}
                     {!recipesLoader && recipes && recipes.map(item => <Recipe small key={item._id} {...item} />)}
-                    {!recipesLoader && recipes.length === 0 && <ParagraphStyled>No Recipes</ParagraphStyled>}
+                    {!recipesLoader && !cookBooksLoader && recipes.length === 0 && <ParagraphStyled>No Recipes</ParagraphStyled>}
                 </Recipes>
                 <CookBooks>
                     <H1Styled>CookBooks</H1Styled>
-                    {cookBooksLoader && <Loading/>}
+                    {(cookBooksLoader || recipesLoader) && <Loading/>}
                     {!cookBooksLoader && cookBooks && cookBooks.map(item => <CookCard type={"tiny"} tiny
                                                                                       key={item._id} {...item} />)}
-                    {!cookBooksLoader && cookBooks.length === 0 && <ParagraphStyled>No cookbooks</ParagraphStyled>}
+                    {!cookBooksLoader && !recipesLoader && cookBooks.length === 0 && <ParagraphStyled>No cookbooks</ParagraphStyled>}
                 </CookBooks>
                 <LinkStyled to={`/search/cookbooks?searchString=${search}`}>Show more</LinkStyled>
             </Results>}

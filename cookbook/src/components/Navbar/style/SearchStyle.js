@@ -38,7 +38,7 @@ export const Results = styled(Container)`
 `;
 const CardHolder = styled(Container)`
   padding: 10px;
-  width: 100%;
+  width: 97%;
   flex-direction: column;
   gap:10px;
 `;

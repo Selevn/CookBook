@@ -9,6 +9,7 @@ import Checkbox from '../MultyUsed/CheckBox/CheckBox';
 import { Loading } from '../MultyUsed/Loading/Loading';
 import {useFetch} from "../MultyUsed/CustomHooks/useFetch";
 import useDebounce from "../MultyUsed/CustomHooks/useDebouncer";
+import {Recipe} from "../MultyUsed/Recipe";
 export const CookBooks = ({ filters, sortBy, searchValue }) => {
 
   const [items, setItems] = useState([]);
@@ -32,7 +33,7 @@ export const CookBooks = ({ filters, sortBy, searchValue }) => {
       >
         {items && items.map((item) => <CookCard key={item._id} {...item} />)}
         {!loading && items?.length === 0 && (<h1>No cookbooks</h1>)}
-        {!items && loading && <Loading />}
+        {loading && <Loading />}
       </InfiniteScroll>
     </>
   );
@@ -50,7 +51,7 @@ export const CookBooksMenu = ({ foodPref, setFoodPref, stateChanged }) => {
 
   const handleCheckboxReducer = useCallback((name) => {
     setFoodPref((s) => ({ ...s, [name]: !s[name] }));
-    stateChanged(s=>!s)
+    stateChanged && stateChanged(s=>!s)
   }, []);
 
   return (

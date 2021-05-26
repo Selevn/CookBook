@@ -32,5 +32,10 @@ export const GlobalStyle = createGlobalStyle`
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-evenly;
+    
+    @media (max-width: 375px){
+      padding: 0;
+      gap: 0;
+    }
   }
 `;

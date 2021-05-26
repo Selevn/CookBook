@@ -6,7 +6,7 @@ import {Recipe} from '../MultyUsed/Recipe';
 import {ROUTES} from "../../constants";
 import {useFetch} from "../MultyUsed/CustomHooks/useFetch";
 
-export const ProfileRecipes = ({id, isLiked}) => {
+export const ProfileRecipes = ({id, isLiked, canEdit}) => {
     const [items, setItems] = useState([]);
     let fetchUrl;
     if (isLiked)
@@ -34,7 +34,7 @@ export const ProfileRecipes = ({id, isLiked}) => {
                 className="infinity-scroller"
             >
                 {loader && <Loading/>}
-                {!loader && items?.map((item) => <Recipe editable={!isLiked} key={item._id} {...item} />)}
+                {!loader && items?.map((item) => <Recipe editable={canEdit} key={item._id} {...item} />)}
                 {!loader && items?.length === 0 && (<h1>No recipes</h1>)}
             </InfiniteScroll>
         </>

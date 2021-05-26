@@ -7,7 +7,7 @@ import {ROUTES} from "../../constants";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {useFetch} from "../MultyUsed/CustomHooks/useFetch";
 
-export const ProfileCookBooks = ({id ,isLiked}) => {
+export const ProfileCookBooks = ({id ,isLiked, canEdit}) => {
   const [items, setItems] = useState([]);
   let fetchUrl;
     if(isLiked)
@@ -33,7 +33,7 @@ export const ProfileCookBooks = ({id ,isLiked}) => {
           className="infinity-scroller"
       >
         {/*{loading && <Loading />}*/}
-        {!loading && items?.map((item) => <CookCard isEditable={true} type="normal" key={item._id} {...item} />)}
+        {!loading && items?.map((item) => <CookCard isEditable={canEdit} type="normal" key={item._id} {...item} />)}
         {!loading && items?.length === 0 && (<h1>No cookbooks</h1>)}
       </InfiniteScroll>
     </>

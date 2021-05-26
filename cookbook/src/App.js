@@ -23,10 +23,24 @@ const CreateCookBook = React.lazy(() =>
 );
 const Profile = React.lazy(() => import('./components/Profile/ProfileComponent.js'));
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 function App() {
     return (
         <>
             <GlobalStyle/>
+            <ToastContainer
+                position="top-right"
+                autoClose={3000}
+                hideProgressBar
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
             <Router>
                 <Suspense fallback={<Loading class="loading"/>}>
                     <ScrollToTop>

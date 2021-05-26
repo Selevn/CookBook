@@ -27,6 +27,7 @@ import {profileActions} from "../../Redux/Profile";
 import Recipes from "./RecipeContainer";
 import ItemCommentsContainer from "./Comments";
 import Slider from "./Slider";
+import {ServerMessageHandler} from "../MultyUsed/ResponseSuccesHandler";
 
 const ItemPageComponent = ({match}) => {
     const {profile, auth} = useReduxState();
@@ -58,7 +59,6 @@ const ItemPageComponent = ({match}) => {
     const [item, setItem] = useState(false);
 
     useEffect(() => {
-        console.log(item)
         if (profile) {
             if (type === COMMON.COOKBOOK)
                 setIsLiked(profile?.likes?.cookBooks?.includes(Number(id)))
@@ -105,15 +105,13 @@ const ItemPageComponent = ({match}) => {
                     doLocalLike(-1)
                     SendData(url, {from: profile._id, to: Number(id)}, auth)
                         .then(result => {
-                            if (!result.success)
-                                doLocalLike(-1)
+                            ServerMessageHandler(result,null, ()=>{doLocalLike(1)}, true)
                         })
                 } else {
                     doLocalLike(1)
                     SendData(url, {from: profile._id, to: Number(id)}, auth)
                         .then(result => {
-                            if (!result.success)
-                                doLocalLike(-1)
+                            ServerMessageHandler(result,null, ()=>{doLocalLike(-1)}, true)
                         })
                 }
             }

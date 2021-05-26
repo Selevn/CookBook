@@ -101,3 +101,31 @@ exports.COOKBOOK_FIELDS = {
   ID:'_id'
 }
 
+exports.TOAST_SETTINGS = {
+  position: "top-right",
+  autoClose: 3000,
+  hideProgressBar: true,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  progress: undefined,
+}
+
+exports.MESSAGES = {
+  ERROR:{
+    NO_FILE_CHOSEN: "You didn't choose any file!",
+    UNKNOWN: 'Something went wrong! Try again.',
+    SERVER_NO_RESPONSE: "Server is not responding.",
+    AUTH: "You are not authorized.",
+    VALIDATION: "You have errors in some of your fields.",
+  },
+  SUCCESS:{
+    DATA_CHANGED: "Changes saved!",
+    IMAGE_CHANGED: "Image changed!",
+    SAVED: "Saved!",
+  }
+}
+
+exports.JWT = {
+  maxAge: 60*1000
+}

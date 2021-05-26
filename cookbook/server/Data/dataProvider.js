@@ -162,7 +162,6 @@ exports.visitItem = async (id, type) => {
 }
 
 exports.addComment = async (prop) => {
-    console.log("prop", prop)
     const {userId, type, itemId, comment} = prop
     try {
         const commentId = (await Comments.countDocuments({})) + 1;
@@ -191,7 +190,6 @@ exports.addComment = async (prop) => {
         const result = await Promise.all([saveComment, updateUser, updateItem])
         return Array.isArray(result);
     } catch (e) {
-        console.log(e)
         return false;
     }
 }
@@ -297,7 +295,6 @@ exports.getRecipes = async (filter) => {
     if (filter.searchString) {
         pipe.unshift(nameLkeMatcher(filter.searchString))
     }
-    console.log(pipe)
     aggregate = Recipes.aggregate(pipe)
     return await paginator(aggregate, aggregateOptions(filter.page, filter.sortBy))//await Recipes.aggregatePaginate(aggregate, aggregateOptions(filter.page, filter.sortBy))
 }

@@ -42,21 +42,20 @@ const ProfileComponent = ({match}) => {
     const dispatcher = useDispatch()
     useEffect(() => {
         (async () => {
-            if(Number(id) === profile?._id)
+            if (Number(id) === profile?._id)
                 setUser(profile)
-            else{
+            else {
                 const data = await fetchData(ROUTES.USER_CLIENT(id), setLoading);
                 setUser(data[0]);
             }
         })();
     }, [id]);
 
-    useEffect(() => {
+    /*useEffect(() => {
         if(user)
             dispatcher(profileActions.setProfile(user))
     }, [user]);
-
-
+*/
 
 
     return (
@@ -108,15 +107,19 @@ const ProfileComponent = ({match}) => {
                     >
                         {profile?._id === Number(id) && `My`} Recepies
                     </UserLinks>
-                    <UserLinks className={menu === myLikedBooks ? 'active' : ''} onClick={() => setMenu(myLikedBooks)}>
-                        {profile?._id === Number(id) && `My`} Liked CookBooks
-                    </UserLinks>
-                    <UserLinks
-                        className={menu === myLikedRecipes ? 'active' : ''}
-                        onClick={() => setMenu(myLikedRecipes)}
-                    >
-                        {profile?._id === Number(id) && `My`} Liked Recepies
-                    </UserLinks>
+                    {profile?._id === Number(id) &&
+                    <>
+                        <UserLinks className={menu === myLikedBooks ? 'active' : ''}
+                                   onClick={() => setMenu(myLikedBooks)}>
+                            {profile?._id === Number(id) && `My`} Liked CookBooks
+                        </UserLinks>
+                        <UserLinks
+                            className={menu === myLikedRecipes ? 'active' : ''}
+                            onClick={() => setMenu(myLikedRecipes)}
+                        >
+                            {profile?._id === Number(id) && `My`} Liked Recepies
+                        </UserLinks>
+                    </>}
                     {profile?._id === Number(id) &&
                     (<UserLinks
                         className={menu === settings ? 'active' : ''}
@@ -128,10 +131,10 @@ const ProfileComponent = ({match}) => {
                 </LinksContainer>
             </Container>
             <DataContainer>
-                {menu === myBooks && <ProfileCookBooks id={id}/>}
-                {menu === myRecipes && <ProfileRecipes id={id}/>}
-                {menu === myLikedBooks && <ProfileCookBooks id={id} isLiked={true}/>}
-                {menu === myLikedRecipes && <ProfileRecipes id={id} isLiked={true}/>}
+                {menu === myBooks && <ProfileCookBooks canEdit={profile?._id === Number(id)} id={id}/>}
+                {menu === myRecipes && <ProfileRecipes canEdit={profile?._id === Number(id)} id={id}/>}
+                {menu === myLikedBooks && <ProfileCookBooks canEdit={false} id={id} isLiked={true}/>}
+                {menu === myLikedRecipes && <ProfileRecipes canEdit={false} id={id} isLiked={true}/>}
                 {menu === settings && <Settings setUser={setUser}/>}
             </DataContainer>
         </>

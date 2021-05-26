@@ -4,10 +4,11 @@ import {Loading} from "../MultyUsed/Loading/Loading";
 import {Comment} from "../MultyUsed/Comment";
 import React, {useCallback, useEffect, useState} from "react";
 import {useFetch} from "../MultyUsed/CustomHooks/useFetch";
-import {ROUTES} from "../../constants";
+import {MESSAGES, ROUTES, TOAST_SETTINGS} from "../../constants";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {SendData} from "../../Connectors/dataProvider";
-import {Recipe} from "../MultyUsed/Recipe";
+import {toast} from "react-toastify";
+import {ServerMessageHandler} from "../MultyUsed/ResponseSuccesHandler";
 
 const ItemCommentsContainer = ({id, type, profile, auth}) => {
     const [comments, setComments] = useState([]);
@@ -34,12 +35,11 @@ const ItemCommentsContainer = ({id, type, profile, auth}) => {
 
     const postServerComment = useCallback((comment) => {
         (async () => {
-            const data = await SendData(ROUTES.USER_COMMENT, {type, itemId:id, comment, userId:profile._id}, auth)
-            if(data.success === false)
-            {
+            const data = await SendData(ROUTES.USER_COMMENT, {type, itemId: id, comment, userId: profile._id}, auth)
+            ServerMessageHandler(data, null, () => {
                 comments.shift()
                 setTotal(s => s - 1)
-            }
+            })
         })()
     }, [profile, comments])
 
@@ -50,10 +50,9 @@ const ItemCommentsContainer = ({id, type, profile, auth}) => {
             postLocalComment(comment);
             postServerComment(comment);
         } else {
-            alert("You shall be authrorized.")
+            toast.error(MESSAGES.ERROR.AUTH, TOAST_SETTINGS)
         }
     }, [id, type, profile, auth, post]);
-
 
 
     return (

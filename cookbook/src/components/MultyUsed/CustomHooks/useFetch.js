@@ -1,5 +1,5 @@
 import {fetchData} from "../../../Connectors/dataProvider";
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useState} from "react";
 
 const paginatorInitState = {nextPage: 1, hasNextPage: true};
 
@@ -12,13 +12,10 @@ export function useFetch(url, setItems, settings, paginatorDefault = paginatorIn
             if(start){
                 setItems([]);
                 setLoader(true)
-                console.log(url)
                 const data = await fetchData(
                     url, () => {
                     }, {...settings, page: 1},
                 );
-                console.log(data)
-
                 setLoader(false)
                 setTotal(data?.total)
                 setPaginator({nextPage: data.nextPage, hasNextPage: data.hasNextPage});

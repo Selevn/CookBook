@@ -12,12 +12,14 @@ import {
 } from './style/CreateCookBookComponentStyle';
 import {Loading} from "../MultyUsed/Loading/Loading";
 import {useFetch} from "../MultyUsed/CustomHooks/useFetch";
-import {COOKBOOK_FIELDS, ROUTES} from "../../constants";
+import {COOKBOOK_FIELDS, MESSAGES, ROUTES, TOAST_SETTINGS} from "../../constants";
 import useDebounce from "../MultyUsed/CustomHooks/useDebouncer";
 import {fetchData, SendFile} from "../../Connectors/dataProvider";
 import {useReduxState} from "../MultyUsed/CustomHooks/useReduxState";
 import {CookBooksMenu} from "../CookBookSearch/CookBooks";
 import {RecepiesContainer} from "../ItemPage/style/ItemPageComponentStyle";
+import {toast} from "react-toastify";
+import {ServerMessageHandler} from "../MultyUsed/ResponseSuccesHandler";
 
 const CreateCookBookComponent = ({isEdit, item}) => {
     const {profile, auth} = useReduxState();
@@ -79,11 +81,11 @@ const CreateCookBookComponent = ({isEdit, item}) => {
             foodPref[filter] && filtersNormalized.push(filter)
 
         if (!auth) {
-            alert("You are not authorizated")
+            toast.error(MESSAGES.ERROR.AUTH, TOAST_SETTINGS);
             return;
         }
         if (!file && !isEdit) {
-            alert("You didn't select any file")
+            toast.error(MESSAGES.ERROR.NO_FILE_CHOSEN, TOAST_SETTINGS);
             return;
         }
 
@@ -105,10 +107,10 @@ const CreateCookBookComponent = ({isEdit, item}) => {
 
         SendFile(isEdit ? ROUTES.EDIT_COOKBOOK : ROUTES.NEW_COOKBOOK, formData, auth)
             .then(response => {
-                console.log(response)
+                ServerMessageHandler(response,null,()=>{history.push(`/info/cookbook/${item._id}`)})
             })
             .catch((error) => {
-                console.log("err", error)
+                toast.error(MESSAGES.ERROR.UNKNOWN, TOAST_SETTINGS);
             });
     }
 

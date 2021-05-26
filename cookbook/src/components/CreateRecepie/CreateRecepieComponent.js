@@ -13,11 +13,13 @@ import {
     TitleContainer,
 } from '../CreateCookBook/style/CreateCookBookComponentStyle';
 import Item from "./Item";
-import {COMMON, RECIPE_FIELDS, ROUTES} from "../../constants";
+import {COMMON, MESSAGES, RECIPE_FIELDS, ROUTES, TOAST_SETTINGS} from "../../constants";
 import {SendFile} from '../../Connectors/dataProvider'
 import {useReduxState} from "../MultyUsed/CustomHooks/useReduxState";
 import {RecipesMenu} from "../CookBookSearch/Recipes";
 import {useHistory} from "react-router-dom";
+import {toast} from "react-toastify";
+import {ServerMessageHandler} from "../MultyUsed/ResponseSuccesHandler";
 
 const CreateRecepieComponent = ({edit}) => {
     const history = useHistory();
@@ -44,11 +46,12 @@ const CreateRecepieComponent = ({edit}) => {
     const send = useCallback((e) => {
         e.preventDefault();
         if (!auth) {
-            alert("You are not authorizated")
+            toast.error(MESSAGES.ERROR.AUTH, TOAST_SETTINGS);
             return;
         }
         if (!file && !edit) {
-            alert("You didn't select any file")
+
+            toast.error(MESSAGES.ERROR.NO_FILE_CHOSEN, TOAST_SETTINGS);
             return;
         }
 
@@ -76,10 +79,10 @@ const CreateRecepieComponent = ({edit}) => {
         formData.append(RECIPE_FIELDS.cookTime, cookTime);
         SendFile(edit?ROUTES.EDIT_RECIPE:ROUTES.NEW_RECIPE, formData, auth)
             .then(response => {
-                console.log(response)
+                ServerMessageHandler(response,null, ()=>{history.push(`/info/recipe/${edit._id}`)})
             })
             .catch((error) => {
-                console.log("err", error)
+                toast.error(MESSAGES.ERROR.UNKNOWN, TOAST_SETTINGS);
             });
     }, [file, secondaryFiles, recipe.title, recipe.description, recipe.ingredients, recipe.directions, cookTime])
 
@@ -90,7 +93,6 @@ const CreateRecepieComponent = ({edit}) => {
                 setRecipe(edit)
                 setRecipe(s => ({...s, title: edit.name}))
                 setRecipe(s => ({...s, description: edit.desc}))
-                console.log(edit)
             }
         })()
     }, [])

@@ -21,7 +21,9 @@ import {SendData, SendFile} from "../../Connectors/dataProvider";
 import {useReduxState} from "../MultyUsed/CustomHooks/useReduxState";
 import {useDispatch} from "react-redux";
 import {profileActions} from "../../Redux/Profile";
-import {ROUTES, USER_FIELDS} from "../../constants";
+import {MESSAGES, ROUTES, TOAST_SETTINGS, USER_FIELDS} from "../../constants";
+import {toast} from "react-toastify";
+import {ServerMessageHandler} from "../MultyUsed/ResponseSuccesHandler";
 
 const ChangeComponent = ({value, valueName, setChangeField, type, area = false}) => {
     const [data, setData] = useState(value);
@@ -48,9 +50,7 @@ const ChangeComponent = ({value, valueName, setChangeField, type, area = false})
     const remoteFieldChange = async (fieldName, value) => {
         const response = await SendData(ROUTES.CHANGE_ACC,
             {id: profile._id, field: fieldName, value: value}, auth);
-        if (!response.success) {
-            alert("Smth went wrong")
-        }
+        ServerMessageHandler(response)
         return response
     }
     return (<Container vertical>
@@ -126,11 +126,11 @@ const Settings = (
         const onFileSubmit = useCallback((e) => {
             e.preventDefault();
             if (!auth) {
-                alert("You are not authorizated")
+                toast.error(MESSAGES.ERROR.AUTH, TOAST_SETTINGS);
                 return;
             }
             if (!file) {
-                alert("You didn't select any file")
+                toast.error(MESSAGES.ERROR.NO_FILE_CHOSEN, TOAST_SETTINGS);
                 return;
             }
 
@@ -141,8 +141,9 @@ const Settings = (
             SendFile('/profile', formData, auth)
                 .then((response) => {
                     setUser(s => ({...s, image: response.img}))
+                    ServerMessageHandler(response)
                 }).catch((error) => {
-                console.log("err", error)
+                toast.error(MESSAGES.ERROR.UNKNOWN, TOAST_SETTINGS);
             });
             setFile(null)
         }, [file])
@@ -260,18 +261,13 @@ const Settings = (
 Settings.propTypes =
     {
         name: PropTypes.string,
-        email
-:
-PropTypes.string,
-}
-;
+        email: PropTypes.string,
+    }
 Settings.defaultProps =
     {
         name: 'John Doe',
-        email
-:
-'test@test.com',
-}
-;
+        email: 'test@test.com',
+    }
+
 
 export default Settings;

@@ -1,5 +1,6 @@
 const jsonwebtoken = require("jsonwebtoken");
 const crypto = require('crypto')
+const {JWT} = require("../../src/constants");
 const {PRIV_KEY} = require("./PasswordProvider");
 
 function genHash(password, salt) {
@@ -18,7 +19,7 @@ exports.checkPassword = (password, hash, salt) => {
 }
 exports.issueJWT = (user) => {
     const id = user._id;
-    const expiresIn = '1d';
+    const expiresIn = JWT.maxAge;
     const payload = {
         sub: id,
         iat: Date.now()

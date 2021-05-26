@@ -20,11 +20,11 @@ const {likeCookBook} = require("./Data/dataProvider");
 const {getUserLikedRecipes} = require("./Data/dataProvider");
 const {getUserLikedCookBooks} = require("./Data/dataProvider");
 const {getUserForLogin} = require("./Data/dataProvider");
-const {checkPassword} = require("./JWT/PasswordHasher");
-const {getPassword} = require("./JWT/PasswordHasher");
-const {issueJWT} = require("./JWT/PasswordHasher");
+const {checkPassword, getPassword, issueJWT} = require("./JWT/PasswordHasher");
 const multer = require("multer")
 const fs = require("fs");
+const {passportMiddlewareProvider} = require("./JWT/PasswordProvider");
+const {passportMiddleware} = require("./JWT/PasswordProvider");
 const {updateRecipe} = require("./Data/dataProvider");
 const {updateCookBook} = require("./Data/dataProvider");
 const {visitItem} = require("./Data/dataProvider");
@@ -76,20 +76,22 @@ app.use((req,res,next)=>{
 */
 require('./JWT/PassportConfig.js')(passport)
 app.use(passport.initialize());
+const passwordMiddleware = passportMiddlewareProvider(passport);
+
+
 
 app.get(ROUTES.COOKBOOKS, async (req, res) => {
     const items = await getCookBooks(req.query);
+    console.log(items.total)
     res.json(items)
 });
 app.get(ROUTES.RECIPES, async (req, res) => {
     const data = await getRecipes(req.query);
-    res.json(
-        data
-    );
+    console.log(data.total)
+    res.json(data);
 });
 
 app.get(ROUTES.COMMENTS, async (req, res) => {
-    console.log("getComments", req.query)
     const data = await getComments(req.query);
     res.json(
         data
@@ -139,12 +141,12 @@ app.get(`${ROUTES.USER_LIKED_RECIPES}:userId`, async (req, res) => {
     );
 });
 
-app.post(`${ROUTES.USER_LIKE_COOKBOOK}`, passport.authenticate('jwt', {session: false}), async (req, res) => {
+app.post(`${ROUTES.USER_LIKE_COOKBOOK}`, passwordMiddleware, async (req, res) => {
     res.json(
         {success: await likeCookBook(req.body.from, req.body.to)}
     );
 });
-app.post(`${ROUTES.USER_LIKE_RECIPE}`, passport.authenticate('jwt', {session: false}), async (req, res) => {
+app.post(`${ROUTES.USER_LIKE_RECIPE}`, passwordMiddleware, async (req, res) => {
     res.json(
         {success: await likeRecipe(req.body.from, req.body.to)}
     );
@@ -155,7 +157,7 @@ app.post(`${ROUTES.USER_VISIT_ITEM}`, async (req, res) => {
     );
 });
 
-app.post(`${ROUTES.USER_COMMENT}`, passport.authenticate('jwt', {session: false}), async (req, res) => {
+app.post(`${ROUTES.USER_COMMENT}`, passwordMiddleware, async (req, res) => {
     res.json(
         {success: await addComment({...req.body})}
     );
@@ -239,7 +241,7 @@ const renameFile = (folder, oldName, newName, oldStartsWith) => {
 
 
 app.post(ROUTES.CHANGE_ACC_IMAGE,
-    passport.authenticate('jwt', {session: false}),
+    passwordMiddleware,
     userUpload.single('avatar'),
     async function (req, res, next) {
     const newName = req.body.id+'__'+req.file.filename;
@@ -256,7 +258,7 @@ app.post(ROUTES.CHANGE_ACC_IMAGE,
 })
 
 app.post(ROUTES.CHANGE_ACC,
-    passport.authenticate('jwt', {session: false}),
+    passwordMiddleware,
     async function (req, res, next) {
     await updateUser(req.body.id, req.body.field,req.body.value)
     res.json({
@@ -266,7 +268,7 @@ app.post(ROUTES.CHANGE_ACC,
 })
 
 app.post(ROUTES.NEW_RECIPE,
-    passport.authenticate('jwt', {session: false}),
+    passwordMiddleware,
     recipeUpload.fields([{ name: 'image', maxCount: 1 }, {name:'gallery', maxCount: 8}]),
     async function (req, res, next) {
     let createRecipeFlag = false;
@@ -309,7 +311,7 @@ app.post(ROUTES.NEW_RECIPE,
         })
 })
 app.post(ROUTES.EDIT_RECIPE,
-    passport.authenticate('jwt', {session: false}),
+    passwordMiddleware,
     recipeUpload.fields([{ name: 'image', maxCount: 1 }, {name:'gallery', maxCount: 8}]),
     async function (req, res, next) {
     let createRecipeFlag = false;
@@ -333,11 +335,6 @@ app.post(ROUTES.EDIT_RECIPE,
                 renameFile(FOLDERS.RECIPES_IMAGES,oldName,newName,`${newId}_${position}_`)
                 secondaryFilesNames.push(newName)
             })
-            /*for (const file of req.files['gallery']) {
-                const oldName = file.filename;
-                const newName = `${newId}__${oldName}`;
-
-            }*/
             recipe[RECIPE_FIELDS.images] = secondaryFilesNames.map(item=>`/img/recipeImages/${item}`)
         }
         if(!req.files['gallery'])
@@ -358,7 +355,7 @@ app.post(ROUTES.EDIT_RECIPE,
 })
 
 app.post(ROUTES.NEW_COOKBOOK,
-    passport.authenticate('jwt', {session: false}),
+    passwordMiddleware,
     cookBookUpload.single('image'),
     async function (req, res, next) {
         let createCookBookFlag;
@@ -385,7 +382,7 @@ app.post(ROUTES.NEW_COOKBOOK,
     })
 
 app.post(ROUTES.EDIT_COOKBOOK,
-    passport.authenticate('jwt', {session: false}),
+    passwordMiddleware,
     cookBookUpload.single('image'),
     async function (req, res, next) {
         let createCookBookFlag = false;
@@ -402,9 +399,6 @@ app.post(ROUTES.EDIT_COOKBOOK,
             cookBook[COOKBOOK_FIELDS.recipesIds] = JSON.parse(req.body.recipesIds)
             cookBook[COOKBOOK_FIELDS.filters] = JSON.parse(req.body.filters)
             createCookBookFlag = await updateCookBook(cookBook);
-
-            console.log(cookBook)
-            //createCookBookFlag = await createCookBook(cookBook);
         }
         catch(e){
             console.log(e)

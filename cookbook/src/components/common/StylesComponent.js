@@ -239,6 +239,10 @@ export const LabelAsButton = styled.label`
   justify-content: center;
   ${asButtonCss}
 `;
+export const InputFeedback = styled.div`
+  color: red;
+  margin-top: .25rem;
+`;
 
 export const LinkAsButton = styled(LinkWrapper)`
   display: flex;
@@ -263,6 +267,7 @@ export const InputStyled = styled.input`
   ${p => p.flex && `flex:${p.flex};`}
   ${p => p.hide && `display:none;`}
 `;
+
 
 
 export const TextInputStyled = styled.textarea`

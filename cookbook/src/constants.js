@@ -123,6 +123,7 @@ exports.MESSAGES = {
     DATA_CHANGED: "Changes saved!",
     IMAGE_CHANGED: "Image changed!",
     SAVED: "Saved!",
+    SUCCESS: "Success!",
   }
 }
 

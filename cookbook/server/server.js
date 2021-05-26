@@ -181,20 +181,22 @@ app.post(`/api/login`, async (req, res) => {
             })
         } else {
             res.json({
-                success: false
+                success: false,
+                message: "No user with this credentials"
             })
         }
     } else {
         res.json({
-            success: false
+            success: false,
+            message: "No user with this credentials"
         })
     }
 });
 
 
 app.post(`/api/register`, async (req, res, next) => {
-    const {email, password, repeatPassword} = req.body;
-    if (password === repeatPassword && validateEmail(email) && validatePassword(password)) {
+    const {email, password} = req.body;
+    if (password && validateEmail(email) && validatePassword(password)) {
         const {hash, salt} = getPassword(password)
         if ((await getUserForLogin(email))[0]) {
             res.json({

@@ -4,19 +4,20 @@ import {toast} from "react-toastify";
 export const ServerMessageHandler = (response, onSuccess, onError, noShow) => {
     if (!response.success) {
         let errorMessage;
-        if (response.error === MESSAGES.ERROR.AUTH)
-        {
+        console.log(response)
+        if (response.error === MESSAGES.ERROR.AUTH) {
             errorMessage = MESSAGES.ERROR.AUTH
             //unlogin
-        }
-        else {
+        } else if (response.message) {
+            errorMessage = response.message
+        } else {
             errorMessage = MESSAGES.ERROR.UNKNOWN
         }
         toast.error(errorMessage, TOAST_SETTINGS);
         onError && typeof onError === 'function' && onError()
     }
     if (response.success) {
-        !noShow && toast.success(MESSAGES.SUCCESS.SAVED, TOAST_SETTINGS);
-        onSuccess && typeof onSuccess === 'function' &&onSuccess()
+        !noShow && toast.success(MESSAGES.SUCCESS.SUCCESS, TOAST_SETTINGS);
+        onSuccess && typeof onSuccess === 'function' && onSuccess()
     }
 }

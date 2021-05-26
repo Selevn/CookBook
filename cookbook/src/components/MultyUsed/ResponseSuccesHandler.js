@@ -16,7 +16,7 @@ export const ServerMessageHandler = (response, onSuccess, onError, noShow) => {
         onError && typeof onError === 'function' && onError()
     }
     if (response.success) {
-        !noShow && toast.success(MESSAGES.SUCCESS.IMAGE_CHANGED, TOAST_SETTINGS);
+        !noShow && toast.success(MESSAGES.SUCCESS.SAVED, TOAST_SETTINGS);
         onSuccess && typeof onSuccess === 'function' &&onSuccess()
     }
 }

@@ -9,6 +9,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import {SendData} from "../../Connectors/dataProvider";
 import {toast} from "react-toastify";
 import {ServerMessageHandler} from "../MultyUsed/ResponseSuccesHandler";
+import {useLogout} from "../MultyUsed/CustomHooks/useLogout";
 
 const ItemCommentsContainer = ({id, type, profile, auth}) => {
     const [comments, setComments] = useState([]);
@@ -16,6 +17,8 @@ const ItemCommentsContainer = ({id, type, profile, auth}) => {
 
     [fetchComments, hasNext, loading, count] = useFetch(ROUTES.COMMENTS, setComments, {type: type, itemId: id})
     const [total, setTotal] = useState(count)
+    const Logout = useLogout()
+
 
     useEffect(() => {
         fetchComments('start');
@@ -35,7 +38,7 @@ const ItemCommentsContainer = ({id, type, profile, auth}) => {
 
     const postServerComment = useCallback((comment) => {
         (async () => {
-            const data = await SendData(ROUTES.USER_COMMENT, {type, itemId: id, comment, userId: profile._id}, auth)
+            const data = await SendData(ROUTES.USER_COMMENT, {type, itemId: id, comment, userId: profile._id}, auth, Logout)
             ServerMessageHandler(data, null, () => {
                 comments.shift()
                 setTotal(s => s - 1)

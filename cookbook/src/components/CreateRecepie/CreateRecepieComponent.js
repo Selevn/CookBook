@@ -20,6 +20,8 @@ import {RecipesMenu} from "../CookBookSearch/Recipes";
 import {useHistory} from "react-router-dom";
 import {toast} from "react-toastify";
 import {ServerMessageHandler} from "../MultyUsed/ResponseSuccesHandler";
+import {useLogout} from "../MultyUsed/CustomHooks/useLogout";
+import {AuthCheckerWrapper} from "../../Connectors/AuthChecker";
 
 const CreateRecepieComponent = ({edit}) => {
     const history = useHistory();
@@ -29,6 +31,16 @@ const CreateRecepieComponent = ({edit}) => {
     const [currDirection, setCurrDirection] = useState('')
     const [file, setFile] = useState();
     const [secondaryFiles, setSecondaryFiles] = useState();
+
+    useEffect(() => {
+        const authCheck = AuthCheckerWrapper()
+        if (!authCheck(auth))
+        {
+            toast.error(MESSAGES.ERROR.AUTH, TOAST_SETTINGS);
+            logOut()
+        }
+    }, [])
+
     const secondaryFilesChange = (e) => {
         e.preventDefault();
         setSecondaryFiles(e.target.files)
@@ -41,7 +53,7 @@ const CreateRecepieComponent = ({edit}) => {
 
 
     const {profile, auth} = useReduxState()
-
+    const logOut = useLogout()
 
     const send = useCallback((e) => {
         e.preventDefault();
@@ -77,7 +89,7 @@ const CreateRecepieComponent = ({edit}) => {
         formData.append(RECIPE_FIELDS.directions, JSON.stringify(recipe.directions || []));
         formData.append(RECIPE_FIELDS.creationDate, Date.now());
         formData.append(RECIPE_FIELDS.cookTime, cookTime);
-        SendFile(edit?ROUTES.EDIT_RECIPE:ROUTES.NEW_RECIPE, formData, auth)
+        SendFile(edit?ROUTES.EDIT_RECIPE:ROUTES.NEW_RECIPE, formData, auth, logOut)
             .then(response => {
                 ServerMessageHandler(response,null, ()=>{history.push(`/info/recipe/${edit._id}`)})
             })

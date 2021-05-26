@@ -28,6 +28,7 @@ import Recipes from "./RecipeContainer";
 import ItemCommentsContainer from "./Comments";
 import Slider from "./Slider";
 import {ServerMessageHandler} from "../MultyUsed/ResponseSuccesHandler";
+import {useLogout} from "../MultyUsed/CustomHooks/useLogout";
 
 const ItemPageComponent = ({match}) => {
     const {profile, auth} = useReduxState();
@@ -52,6 +53,8 @@ const ItemPageComponent = ({match}) => {
             clearInterval(timerId)
         }
     }, [])
+
+    const LogOut = useLogout()
 
     const [loading, setLoading] = useState(false);
     const [isLiked, setIsLiked] = useState(false);
@@ -103,13 +106,13 @@ const ItemPageComponent = ({match}) => {
             if (profile && auth) {
                 if (isLiked) {
                     doLocalLike(-1)
-                    SendData(url, {from: profile._id, to: Number(id)}, auth)
+                    SendData(url, {from: profile._id, to: Number(id)}, auth, LogOut)
                         .then(result => {
                             ServerMessageHandler(result,null, ()=>{doLocalLike(1)}, true)
                         })
                 } else {
                     doLocalLike(1)
-                    SendData(url, {from: profile._id, to: Number(id)}, auth)
+                    SendData(url, {from: profile._id, to: Number(id)}, auth, LogOut)
                         .then(result => {
                             ServerMessageHandler(result,null, ()=>{doLocalLike(-1)}, true)
                         })

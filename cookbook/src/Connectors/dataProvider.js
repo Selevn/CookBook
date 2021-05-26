@@ -34,7 +34,7 @@ export const Login = async (url, data) => {
     if (response.status !== 200) throw Error(response);
     return await response.json();
 };
-export const SendData = async (url, data, authKey) => {
+export const SendData = async (url, data, authKey, logOutFunc) => {
     if (AuthChecker(authKey)) {
         const response = await fetch(url, {
             method: 'POST',
@@ -48,10 +48,11 @@ export const SendData = async (url, data, authKey) => {
         if (response.status === 401) return {success: false};
         return await response.json();
     }
+    logOutFunc && logOutFunc()
     return {success: false, error: MESSAGES.ERROR.AUTH}
 };
 
-export const SendFile = async (url, formData, authKey) => {
+export const SendFile = async (url, formData, authKey, logOutFunc) => {
     if (AuthChecker(authKey)) {
         const response = await fetch(url, {
             method: 'POST',
@@ -64,6 +65,7 @@ export const SendFile = async (url, formData, authKey) => {
         if (response.status === 401) return {success: false};
         return await response.json();
     }
+    logOutFunc && logOutFunc()
     return {success: false, error: MESSAGES.ERROR.AUTH}
 
 };

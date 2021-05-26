@@ -2,13 +2,13 @@ import jwt_decode from "jwt-decode";
 
 export const AuthCheckerWrapper = () => {
     let tmpStamp
-    let tokenChached
+    let tokenCached
     return (token) => {
-        if(token !== tokenChached)
+        if(token !== tokenCached)
         {
-            console.log("here")
-            tmpStamp = jwt_decode(token).exp
-            tokenChached = token
+            if(token)
+                tmpStamp = jwt_decode(token).exp
+            tokenCached = token
         }
         return tmpStamp > new Date()
     }

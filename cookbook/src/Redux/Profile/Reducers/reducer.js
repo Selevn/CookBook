@@ -26,29 +26,32 @@ export const profileReducer = (state = initialState, action) => {
                     changedArr = changedArr.filter(id => id !== inputId)
                 else
                     changedArr.push(inputId)
+                PutData(PROFILE, {...state, likes: {cookBooks: state.likes.cookBooks, recipes: changedArr}})
+                return {...state, likes: {cookBooks: state.likes.cookBooks, recipes: changedArr}}
             }
             else{
                 console.log("profileActionTypes.LIKE_COOKBOOK no person", state)
             }
-            PutData(PROFILE, {...state, likes: {cookBooks: state.likes.cookBooks, recipes: changedArr}})
-            return {...state, likes: {cookBooks: state.likes.cookBooks, recipes: changedArr}}
+
         }
         case profileActionTypes.LIKE_COOKBOOK:
         {
             const inputId = Number(action.payload)
-            let changedArr = [...state.likes.cookBooks]
+            let changedArr;
             if(state)
             {
+                changedArr = [...state.likes.cookBooks]
                 if(state.likes.cookBooks.includes(inputId))
                     changedArr = changedArr.filter(id => id !== inputId)
                 else
                     changedArr.push(inputId)
+                PutData(PROFILE, {...state, likes: {recipes: state.likes.recipes, cookBooks: changedArr}})
+                return {...state, likes: {recipes: state.likes.recipes, cookBooks: changedArr}}
             }
             else{
                 console.log("profileActionTypes.LIKE_COOKBOOK no person", state)
             }
-            PutData(PROFILE, {...state, likes: {recipes: state.likes.recipes, cookBooks: changedArr}})
-            return {...state, likes: {recipes: state.likes.recipes, cookBooks: changedArr}}
+
         }
         default: {
             return state

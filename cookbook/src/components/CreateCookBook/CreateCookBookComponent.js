@@ -20,6 +20,8 @@ import {CookBooksMenu} from "../CookBookSearch/CookBooks";
 import {RecepiesContainer} from "../ItemPage/style/ItemPageComponentStyle";
 import {toast} from "react-toastify";
 import {ServerMessageHandler} from "../MultyUsed/ResponseSuccesHandler";
+import {useLogout} from "../MultyUsed/CustomHooks/useLogout";
+import {AuthCheckerWrapper} from "../../Connectors/AuthChecker";
 
 const CreateCookBookComponent = ({isEdit, item}) => {
     const {profile, auth} = useReduxState();
@@ -47,6 +49,16 @@ const CreateCookBookComponent = ({isEdit, item}) => {
     const addSaved = useCallback((item, saved) => {
         setRecipesSelected(s => [...s, saved])
         setRecipesSelectedIds(s => [...s, item._id])
+    }, [])
+
+    const logOut = useLogout()
+    useEffect(() => {
+        const authCheck = AuthCheckerWrapper()
+        if (!authCheck(auth))
+        {
+            toast.error(MESSAGES.ERROR.AUTH, TOAST_SETTINGS);
+            logOut()
+        }
     }, [])
 
     useEffect(() => {
@@ -105,9 +117,11 @@ const CreateCookBookComponent = ({isEdit, item}) => {
 
         formData.append(COOKBOOK_FIELDS.filters, JSON.stringify(filtersNormalized));
 
-        SendFile(isEdit ? ROUTES.EDIT_COOKBOOK : ROUTES.NEW_COOKBOOK, formData, auth)
+        SendFile(isEdit ? ROUTES.EDIT_COOKBOOK : ROUTES.NEW_COOKBOOK, formData, auth, logOut)
             .then(response => {
-                ServerMessageHandler(response,null,()=>{history.push(`/info/cookbook/${item._id}`)})
+                ServerMessageHandler(response, null, () => {
+                    history.push(`/info/cookbook/${item._id}`)
+                })
             })
             .catch((error) => {
                 toast.error(MESSAGES.ERROR.UNKNOWN, TOAST_SETTINGS);
@@ -138,9 +152,9 @@ const CreateCookBookComponent = ({isEdit, item}) => {
             </TitleContainer>
             <TitleContainer>
                 <HeaderStyled>Cookbook picture</HeaderStyled>
-                    <LabelAsButton htmlFor={"image"} small light>
-                        {file?`Uploaded!`:`Upload`}
-                    </LabelAsButton>
+                <LabelAsButton htmlFor={"image"} small light>
+                    {file ? `Uploaded!` : `Upload`}
+                </LabelAsButton>
                 <InputStyled hide type={"file"} id="image" name="image" onChange={fileChanges}/>
             </TitleContainer>
             <TitleContainer>

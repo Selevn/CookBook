@@ -24,12 +24,14 @@ import {profileActions} from "../../Redux/Profile";
 import {MESSAGES, ROUTES, TOAST_SETTINGS, USER_FIELDS} from "../../constants";
 import {toast} from "react-toastify";
 import {ServerMessageHandler} from "../MultyUsed/ResponseSuccesHandler";
+import {useLogout} from "../MultyUsed/CustomHooks/useLogout";
 
 const ChangeComponent = ({value, valueName, setChangeField, type, area = false}) => {
     const [data, setData] = useState(value);
     const [secondPassword, setSecondPassword] = useState(value);
     const {profile, auth} = useReduxState()
     const dispatcher = useDispatch()
+    const logOut = useLogout()
     const localFieldChange = (fieldName, value) => {
         if (fieldName === USER_FIELDS.firstName) {
             const out = profile?.name?.first
@@ -49,7 +51,7 @@ const ChangeComponent = ({value, valueName, setChangeField, type, area = false})
     }
     const remoteFieldChange = async (fieldName, value) => {
         const response = await SendData(ROUTES.CHANGE_ACC,
-            {id: profile._id, field: fieldName, value: value}, auth);
+            {id: profile._id, field: fieldName, value: value}, auth, logOut);
         ServerMessageHandler(response)
         return response
     }

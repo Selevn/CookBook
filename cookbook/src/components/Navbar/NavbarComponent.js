@@ -13,20 +13,14 @@ import {authActions} from "../../Redux/AuthKey";
 import {useReduxState} from "../MultyUsed/CustomHooks/useReduxState";
 import {useHistory} from "react-router-dom";
 import SearchBlock from "./NavbarSearch";
+import {useLogout} from "../MultyUsed/CustomHooks/useLogout";
 
 const NavbarComponent = () => {
     const [menuOpen, setMenuOpen] = useState(true);
     const menuClick = () => setMenuOpen((s) => !s);
 
     const {profile} = useReduxState();
-    const dispatch = useDispatch();
-
-    const history = useHistory()
-    const Logout = useCallback(()=>{
-        history.push('/')
-        dispatch(profileActions.logOut());
-        dispatch(authActions.logOut());
-    },[])
+    const Logout = useLogout()
 
 
     return (

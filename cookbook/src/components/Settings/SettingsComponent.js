@@ -4,7 +4,7 @@ import {
     ButtonAsLinkStyled,
     ButtonStyled,
     Container,
-    H1Styled,
+    H1Styled, InputFeedback,
     InputStyled,
     LabelAsButton,
     LinkStyled,
@@ -25,6 +25,8 @@ import {MESSAGES, ROUTES, TOAST_SETTINGS, USER_FIELDS} from "../../constants";
 import {toast} from "react-toastify";
 import {ServerMessageHandler} from "../MultyUsed/ResponseSuccesHandler";
 import {useLogout} from "../MultyUsed/CustomHooks/useLogout";
+import {validateEmail, validateName, validateDescription, validatePassword} from "../../validator/validator";
+import {Formik} from "formik";
 
 const ChangeComponent = ({value, valueName, setChangeField, type, area = false}) => {
     const [data, setData] = useState(value);
@@ -55,51 +57,140 @@ const ChangeComponent = ({value, valueName, setChangeField, type, area = false})
         ServerMessageHandler(response)
         return response
     }
-    return (<Container vertical>
-        {
-            area &&
-            <TextAreaStyled
-                value={data}
-                onChange={(e) => {
-                    setData(e.target.value)
-                }}
-                cols={20}
-            />
-        }
-        {
-            type === "password"
-            &&
-            <Container vertical gap={"5px"}>
-                <InputStyled type={type || "text"} placeholder={"Enter new password..."} value={data} onChange={(e) => {
-                    setData(e.target.value)
-                }}/>
-                <InputStyled type={type || "text"} placeholder={"Repeat new password..."} value={secondPassword}
-                             onChange={(e) => {
-                                 setSecondPassword(e.target.value)
-                             }}/>
-            </Container>
-        }
-        {!type && !area &&
-        <InputStyled type={type || "text"} value={data} onChange={(e) => {
-            setData(e.target.value)
-        }}/>
-        }
-
-        <Container justifyContent={"space-around"} gap={"5px"} margin={"10px 0 0 0"}>
-            <ButtonStyled tiny onClick={() => {
-                const oldValue = localFieldChange(valueName, data)
-                remoteFieldChange(valueName, data).then(response => {
-                    if (!response.success) {
-                        localFieldChange(valueName, oldValue)
+    return (
+        <Formik
+            initialValues={{data: value, secondData: ""}}
+            validate={values => {
+                let validator;
+                switch (valueName) {
+                    case USER_FIELDS.firstName:
+                    case USER_FIELDS.lastName: {
+                        validator = validateName;
+                        break;
                     }
-                })
-                setChangeField({})
-            }}>Save</ButtonStyled>
-            <ButtonStyled margin={"5px"} tiny onClick={() => {
-                setChangeField({})
-            }}>Cancel</ButtonStyled>
-        </Container>
-    </Container>)
+                    case USER_FIELDS.desc: {
+                        validator = validateDescription;
+                        break;
+                    }
+                    case USER_FIELDS.password: {
+                        validator = validatePassword;
+                        break;
+                    }
+                }
+                const errors = {};
+                if (!values.data) {
+                    errors.data = 'Required';
+                } else if (
+                    !validator(values.data)
+                ) {
+                    errors.data = 'Invalid data';
+                }
+                if(valueName === USER_FIELDS.password)
+                {
+                    if (!values.secondData) {
+                        errors.secondData = 'Required';
+                    } else if (
+                        values.secondData!==values.data
+                    ) {
+                        errors.secondData = 'Invalid data';
+                    }
+                }
+                return errors;
+            }}
+            onSubmit={(values, {setSubmitting}) => {
+                    const oldValue = localFieldChange(valueName, values.data)
+                    remoteFieldChange(valueName, values.data).then(response => {
+                        if (!response.success) {
+                            localFieldChange(valueName, oldValue)
+                        }
+                    })
+                    setChangeField({})
+            }}
+        >
+            {({
+                  values,
+                  errors,
+                  touched,
+                  handleChange,
+                  handleBlur,
+                  handleSubmit,
+                  isSubmitting,
+                  /* and other goodies */
+              }) => (
+                <Container vertical>
+                    {
+                        area &&
+                        <>
+                            <TextAreaStyled
+                                value={values.data}
+                                onChange={handleChange}
+                                name="data"
+                                type={"text"}
+                                cols={20}
+                                onBlur={handleBlur}
+                                className={errors.data && touched.data && "error"}
+                            />
+                            {errors.data && touched.data && (
+                                <InputFeedback>{errors.data}</InputFeedback>
+                            )}</>
+                    }
+                    {
+                        type === "password"
+                        &&
+                        <Container vertical gap={"5px"}>
+                            <InputStyled
+                                type="password"
+                                name="data"
+                                value={values.data}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                className={errors.data && touched.data && "error"}
+                                placeholder={"Enter new password..."}
+                            />
+                            {errors.data && touched.data && (
+                                <InputFeedback>{errors.data}</InputFeedback>
+                            )}
+                            <InputStyled
+                                type="password"
+                                name="secondData"
+                                value={values.secondData}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                className={errors.secondData && touched.secondData && "error"}
+                                placeholder={"Repeat new password..."}
+                            />
+                            {errors.secondData && touched.secondData && (
+                                <InputFeedback>{errors.secondData}</InputFeedback>
+                            )}
+                        </Container>
+                    }
+                    {!type && !area &&
+                    <>
+                        <InputStyled
+                            type={type || "text"}
+                            value={values.data}
+                            onChange={handleChange}
+                            name="data"
+                            onBlur={handleBlur}
+                            className={errors.data && touched.data && "error"}
+                        />
+                        {errors.data && touched.data && (
+                            <InputFeedback>{errors.data}</InputFeedback>
+                        )}
+                    </>
+                    }
+
+                    <Container justifyContent={"space-around"} gap={"5px"} margin={"10px 0 0 0"}>
+                        <ButtonStyled tiny
+                                      onClick={handleSubmit}
+                        >Save</ButtonStyled>
+                        <ButtonStyled margin={"5px"} tiny onClick={() => {
+                            setChangeField({})
+                        }}>Cancel</ButtonStyled>
+                    </Container>
+                </Container>
+            )}
+        </Formik>)
 }
 
 
@@ -263,13 +354,17 @@ const Settings = (
 Settings.propTypes =
     {
         name: PropTypes.string,
-        email: PropTypes.string,
-    }
+        email
+:
+PropTypes.string,
+}
 Settings.defaultProps =
     {
         name: 'John Doe',
-        email: 'test@test.com',
-    }
+        email
+:
+'test@test.com',
+}
 
 
 export default Settings;

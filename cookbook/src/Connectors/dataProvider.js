@@ -23,8 +23,8 @@ export const fetchData = async (url, setLoader, settings) => {
     return data;
 };
 
-export const Login = async (url, data) => {
-    const response = await fetch(url, {
+export const Login = async ( data) => {
+    const response = await fetch('/api/login/', {
         method: 'POST',
         body: JSON.stringify(data),
         headers: {
@@ -71,8 +71,8 @@ export const SendFile = async (url, formData, authKey, logOutFunc) => {
 };
 
 
-export const Register = async (url, data) => {
-    const response = await fetch(url, {
+export const Register = async (data) => {
+    const response = await fetch('/api/register/', {
         method: 'POST',
         body: JSON.stringify(data),
         headers: {

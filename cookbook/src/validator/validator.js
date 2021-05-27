@@ -3,6 +3,6 @@ const passwordRegExp = /^.{8,}$/i
 const nameRegExp = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/ui
 
 exports.validateEmail = (email) => emailRegExp.test(email.toLowerCase())
-exports.validatePassword = (password) => passwordRegExp.test(password.toLowerCase())
+exports.validatePassword = (password) => passwordRegExp.test(password)
 exports.validateName = (name) => nameRegExp.test(name)
 exports.validateDescription = (desc) => desc.length<1000

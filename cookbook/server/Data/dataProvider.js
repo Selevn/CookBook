@@ -258,15 +258,14 @@ exports.updateCookBook = async (inputCookBook) => {
 exports.updateUser = async (id, field, value) => {
     if (field === USER_FIELDS.password) {
         const {hash, salt} = getPassword(value)
-        await Users.updateOne(
+        return Users.updateOne(
             {_id: Number(id)},
             {password: hash, salt: salt}
         );
-        return
     }
 
     if (checkField(field)) {
-        await Users.updateOne(
+        return Users.updateOne(
             {_id: Number(id)},
             {$set: {[field]: value}}
         );

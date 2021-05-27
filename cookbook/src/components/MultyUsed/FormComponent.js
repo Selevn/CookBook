@@ -16,6 +16,7 @@ import {authActions} from "../../Redux/AuthKey";
 import {useHistory} from "react-router-dom";
 import {Formik} from 'formik';
 import {ServerMessageHandler} from "./ResponseSuccesHandler";
+import {validateEmail, validatePassword} from "../../validator/validator";
 
 const FormComponent = ({
                            register
@@ -23,26 +24,25 @@ const FormComponent = ({
 
     const dispatch = useDispatch();
     const history = useHistory();
-    const LoginFunction =  useCallback((email, password)=>{
+    const LoginFunction = useCallback((email, password) => {
         (async () => {
             console.log(email)
-            const answer = await Login('/api/login/', {email: email, password: password})
-            ServerMessageHandler(answer,()=>{
+            const answer = await Login({email: email, password: password})
+            ServerMessageHandler(answer, () => {
                 dispatch(profileActions.setProfile(answer.user));
                 dispatch(authActions.setToken(answer.token));
                 history.push('/')
-            },null)
+            }, null)
         })()
-    },[])
-    const RegisterFunction =  useCallback((email, password, repeatPassword)=>{
+    }, [])
+    const RegisterFunction = useCallback((email, password, repeatPassword) => {
         (async () => {
-            const answer = await Register('/api/register/', {email: email, password: password})
-                ServerMessageHandler(answer,()=>{
-                    history.push('/login')
-                },null)
+            const answer = await Register({email: email, password: password})
+            ServerMessageHandler(answer, () => {
+                history.push('/login')
+            }, null)
         })()
-    },[])
-
+    }, [])
 
 
     return (
@@ -65,7 +65,7 @@ const FormComponent = ({
                     if (!values.email) {
                         errors.email = 'Required';
                     } else if (
-                        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+                        !validateEmail(values.email)
                     ) {
                         errors.email = 'Invalid email address';
                     }
@@ -73,28 +73,22 @@ const FormComponent = ({
                     if (!values.password) {
                         errors.password = 'Required';
                     } else if (
-                        values.password.length < 8
+                        !validatePassword(values.password)
                     ) {
                         errors.password = 'Length must be more than 8';
                     }
 
-                    if(register)
-                    {
+                    if (register) {
                         if (!values.passwordRepeat) {
                             errors.passwordRepeat = 'Required';
-                        } else if (
-                            values.passwordRepeat.length < 8
-                        ) {
-                            errors.passwordRepeat = 'Length must be more than 8';
-                        } else if(values.passwordRepeat !== values.password){
+                        } else if (values.passwordRepeat !== values.password) {
                             errors.passwordRepeat = 'Passwords is not the same';
                         }
                     }
-
                     return errors;
                 }}
                 onSubmit={(values, {setSubmitting}) => {
-                    if(register)
+                    if (register)
                         RegisterFunction(values.email, values.password, values.passwordRepeat)
                     else
                         LoginFunction(values.email, values.password)

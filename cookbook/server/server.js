@@ -82,12 +82,10 @@ const passwordMiddleware = passportMiddlewareProvider(passport);
 
 app.get(ROUTES.COOKBOOKS, async (req, res) => {
     const items = await getCookBooks(req.query);
-    console.log(items.total)
     res.json(items)
 });
 app.get(ROUTES.RECIPES, async (req, res) => {
     const data = await getRecipes(req.query);
-    console.log(data.total)
     res.json(data);
 });
 
@@ -252,9 +250,8 @@ app.post(ROUTES.CHANGE_ACC_IMAGE,
             success: false,
         })
     const result = await updateUser(req.body.id, 'image',`/img/profileImages/${newName}`)
-
     res.json({
-        success: result,
+        success: !!result,
         img: `/img/profileImages/${newName}`,
     })
 })

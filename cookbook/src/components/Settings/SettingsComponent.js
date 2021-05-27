@@ -34,7 +34,9 @@ const ChangeComponent = ({value, valueName, setChangeField, type, area = false})
     const {profile, auth} = useReduxState()
     const dispatcher = useDispatch()
     const logOut = useLogout()
+
     const localFieldChange = (fieldName, value) => {
+
         if (fieldName === USER_FIELDS.firstName) {
             const out = profile?.name?.first
             dispatcher(profileActions.setProfile({...profile, name: {...profile.name, first: value}}))
@@ -54,7 +56,6 @@ const ChangeComponent = ({value, valueName, setChangeField, type, area = false})
     const remoteFieldChange = async (fieldName, value) => {
         const response = await SendData(ROUTES.CHANGE_ACC,
             {id: profile._id, field: fieldName, value: value}, auth, logOut);
-        ServerMessageHandler(response)
         return response
     }
     return (
@@ -85,12 +86,11 @@ const ChangeComponent = ({value, valueName, setChangeField, type, area = false})
                 ) {
                     errors.data = 'Invalid data';
                 }
-                if(valueName === USER_FIELDS.password)
-                {
+                if (valueName === USER_FIELDS.password) {
                     if (!values.secondData) {
                         errors.secondData = 'Required';
                     } else if (
-                        values.secondData!==values.data
+                        values.secondData !== values.data
                     ) {
                         errors.secondData = 'Invalid data';
                     }
@@ -98,13 +98,14 @@ const ChangeComponent = ({value, valueName, setChangeField, type, area = false})
                 return errors;
             }}
             onSubmit={(values, {setSubmitting}) => {
-                    const oldValue = localFieldChange(valueName, values.data)
-                    remoteFieldChange(valueName, values.data).then(response => {
-                        if (!response.success) {
+                const oldValue = localFieldChange(valueName, values.data)
+                remoteFieldChange(valueName, values.data).then(response => {
+                    ServerMessageHandler(response, null, (err) => {
+                        if (err !== MESSAGES.ERROR.AUTH)
                             localFieldChange(valueName, oldValue)
-                        }
                     })
-                    setChangeField({})
+                })
+                setChangeField({})
             }}
         >
             {({
@@ -204,6 +205,8 @@ const Settings = (
         setUser
     }
     ) => {
+        const logOut = useLogout()
+
         const {auth, profile} = useReduxState()
         const [file, setFile] = useState();
 
@@ -231,10 +234,11 @@ const Settings = (
             formData.append('avatar', file);
             formData.append('id', profile._id);
 
-            SendFile('/profile', formData, auth)
+            SendFile('/profile', formData, auth, logOut)
                 .then((response) => {
-                    setUser(s => ({...s, image: response.img}))
-                    ServerMessageHandler(response)
+                    ServerMessageHandler(response, () => {
+                        setUser(s => ({...s, image: response.img}))
+                    })
                 }).catch((error) => {
                 toast.error(MESSAGES.ERROR.UNKNOWN, TOAST_SETTINGS);
             });
@@ -354,17 +358,13 @@ const Settings = (
 Settings.propTypes =
     {
         name: PropTypes.string,
-        email
-:
-PropTypes.string,
-}
+        email: PropTypes.string,
+    }
 Settings.defaultProps =
     {
         name: 'John Doe',
-        email
-:
-'test@test.com',
-}
+        email: 'test@test.com',
+    }
 
 
 export default Settings;

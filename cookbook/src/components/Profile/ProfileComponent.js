@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback, useRef} from 'react';
 import {withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {Container} from '../common/StylesComponent';
@@ -38,6 +38,7 @@ const ProfileComponent = ({match}) => {
     const [user, setUser] = useState();
     const {id} = match.params;
 
+    const imageRef = useRef()
 
     const dispatcher = useDispatch()
     useEffect(() => {
@@ -51,11 +52,10 @@ const ProfileComponent = ({match}) => {
         })();
     }, [id]);
 
-    /*useEffect(() => {
-        if(user)
+    useEffect(() => {
+        if(user?._id === profile?._id)
             dispatcher(profileActions.setProfile(user))
     }, [user]);
-*/
 
 
     return (
@@ -65,7 +65,7 @@ const ProfileComponent = ({match}) => {
                 {!loading && (
                     <>
                         <ProfileImageWrapper>
-                            <ProfileImage src={user?.image}/>
+                            <ProfileImage ref = {imageRef} src={user?.image}/>
                         </ProfileImageWrapper>
                         <UserTextContainer>
                             <UserName>{`${user?.name?.first} ${user?.name?.last}`}</UserName>
@@ -135,7 +135,7 @@ const ProfileComponent = ({match}) => {
                 {menu === myRecipes && <ProfileRecipes canEdit={profile?._id === Number(id)} id={id}/>}
                 {menu === myLikedBooks && <ProfileCookBooks canEdit={false} id={id} isLiked={true}/>}
                 {menu === myLikedRecipes && <ProfileRecipes canEdit={false} id={id} isLiked={true}/>}
-                {menu === settings && <Settings setUser={setUser}/>}
+                {menu === settings && <Settings imageRef={imageRef} setUser={setUser}/>}
             </DataContainer>
         </>
     );

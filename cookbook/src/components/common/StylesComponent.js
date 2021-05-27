@@ -26,6 +26,7 @@ export const Container = styled.div`
   ${(p) => (p.color ? `background: ${p.color}` : '')};
   ${(p) => (p.width ? `width: ${p.width}` : '')};
   ${(p) => (p.gap ? `gap: ${p.gap}` : '')};
+  ${(p) => (p.overflow ? `overflow: ${p.overflow}` : '')};
 `;
 
 const LogoImage = () => <img src={logo} alt="Logo" />;

@@ -102,7 +102,7 @@ const MainComponent = () => {
                     </Container>
                 </CookBooksList>
             </PopularBooksContainer>
-            <Container color="var(--primary-color)">
+            <Container color="var(--primary-color)" overflow={"hidden"}>
                 <PopularBooksContainer vertical>
                     <H1Styled>Trending Cookbooks</H1Styled>
                     {trendingCookbooks &&

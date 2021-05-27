@@ -2,6 +2,7 @@ import styled, {css} from 'styled-components';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
+  ButtonAsLinkStyled,
   ButtonStyled,
   Container,
   Image, LinkAsButton,
@@ -78,7 +79,7 @@ export const LinksContainer = styled(Container)`
     width: 300px;
   }
 `;
-export const UserLinks = styled(LinkStyled)`
+export const UserLinks = styled(ButtonAsLinkStyled)`
   font-size: 26px;
   font-weight: normal;
   color: var(--text-gray);

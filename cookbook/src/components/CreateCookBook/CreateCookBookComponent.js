@@ -1,5 +1,13 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {ButtonStyled, Container, H1Styled, InputStyled, LabelAsButton, LabelStyled} from '../common/StylesComponent';
+import {
+    ButtonStyled,
+    Container,
+    H1Styled,
+    InputFeedback,
+    InputStyled,
+    LabelAsButton,
+    LabelStyled
+} from '../common/StylesComponent';
 import {useHistory} from "react-router-dom";
 
 import {Recipe} from '../MultyUsed/Recipe';
@@ -22,6 +30,8 @@ import {toast} from "react-toastify";
 import {ServerMessageHandler} from "../MultyUsed/ResponseSuccesHandler";
 import {useLogout} from "../MultyUsed/CustomHooks/useLogout";
 import {AuthCheckerWrapper} from "../../Connectors/AuthChecker";
+import {Formik} from "formik";
+import {validateTitle, validateDescription} from "../../validator/validator";
 
 const CreateCookBookComponent = ({isEdit, item}) => {
     const {profile, auth} = useReduxState();
@@ -54,8 +64,7 @@ const CreateCookBookComponent = ({isEdit, item}) => {
     const logOut = useLogout()
     useEffect(() => {
         const authCheck = AuthCheckerWrapper()
-        if (!authCheck(auth))
-        {
+        if (!authCheck(auth)) {
             toast.error(MESSAGES.ERROR.AUTH, TOAST_SETTINGS);
             logOut()
         }
@@ -64,7 +73,6 @@ const CreateCookBookComponent = ({isEdit, item}) => {
     useEffect(() => {
         (async () => {
             if (isEdit && item.recipesIds) {
-                console.log(item)
                 const recipes = await fetchData(ROUTES.RECIPES, null, {ids: JSON.stringify(item.recipesIds)})
                 recipes.docs.forEach((recipeItem) => {
                     const savedRecipe = <Recipe removable onRemovable={
@@ -85,9 +93,7 @@ const CreateCookBookComponent = ({isEdit, item}) => {
         })()
     }, [isEdit, item])
 
-    const save = async (e) => {
-        e.preventDefault();
-
+    const save = async (values) => {
         const filtersNormalized = [];
         for (let filter in foodPref)
             foodPref[filter] && filtersNormalized.push(filter)
@@ -100,7 +106,6 @@ const CreateCookBookComponent = ({isEdit, item}) => {
             toast.error(MESSAGES.ERROR.NO_FILE_CHOSEN, TOAST_SETTINGS);
             return;
         }
-
         const formData = new FormData();
         if (file)
             formData.append('image', file);
@@ -110,8 +115,8 @@ const CreateCookBookComponent = ({isEdit, item}) => {
             formData.append(COOKBOOK_FIELDS.ID, item._id);
         }
         formData.append(COOKBOOK_FIELDS.author, profile._id);
-        formData.append(COOKBOOK_FIELDS.name, title);
-        formData.append(COOKBOOK_FIELDS.desc, desc);
+        formData.append(COOKBOOK_FIELDS.name, values.title);
+        formData.append(COOKBOOK_FIELDS.desc, values.desc);
         formData.append(COOKBOOK_FIELDS.recipesIds, JSON.stringify(recipesSelectedIds));
         formData.append(COOKBOOK_FIELDS.creationDate, Date.now());
 
@@ -119,9 +124,10 @@ const CreateCookBookComponent = ({isEdit, item}) => {
 
         SendFile(isEdit ? ROUTES.EDIT_COOKBOOK : ROUTES.NEW_COOKBOOK, formData, auth, logOut)
             .then(response => {
-                ServerMessageHandler(response, null, () => {
+                console.log(response)
+                ServerMessageHandler(response, () => {
                     history.push(`/info/cookbook/${item._id}`)
-                })
+                }, null)
             })
             .catch((error) => {
                 toast.error(MESSAGES.ERROR.UNKNOWN, TOAST_SETTINGS);
@@ -140,82 +146,142 @@ const CreateCookBookComponent = ({isEdit, item}) => {
             await fetchRecipes("start")
         })()
     }, [debouncedValue]);
+    const data = (
 
-    return (
-        <CreateCookBookPage>
-            <H1Styled size="56px">{isEdit ? `Edit cookbook` : `Create a new cookbook`}</H1Styled>
-            <TitleContainer>
-                <HeaderStyled>Cookbook title</HeaderStyled>
-                <InputStyled placeholder="Title" value={title} onChange={(e) => {
-                    setTitle(e.target.value)
-                }}/>
-            </TitleContainer>
-            <TitleContainer>
-                <HeaderStyled>Cookbook picture</HeaderStyled>
-                <LabelAsButton htmlFor={"image"} small light>
-                    {file ? `Uploaded!` : `Upload`}
-                </LabelAsButton>
-                <InputStyled hide type={"file"} id="image" name="image" onChange={fileChanges}/>
-            </TitleContainer>
-            <TitleContainer>
-                <HeaderStyled>Description</HeaderStyled>
-                <DescriptionInput placeholder="Description" value={desc} onChange={(e) => {
-                    setDesc(e.target.value)
-                }}/>
-            </TitleContainer>
-            <TitleContainer>
-                <CookBooksMenu setFoodPref={setFoodPref} foodPref={foodPref}/>
-            </TitleContainer>
-            {
-                recipesSelected.length > 0
-                &&
-                <TitleContainer>
-                    <HeaderStyled>Saved Recipes</HeaderStyled>
-                    {recipesSelected}
-                </TitleContainer>
-            }
-            <TitleContainer>
-                <HeaderStyled>Recepies</HeaderStyled>
-                <InputStyled placeholder="Fresh meat" value={recipeSearch} onChange={(e) => {
-                    setRecipeSearch(e.target.value)
-                }}/>
-            </TitleContainer>
-            <TitleContainer>
-                <RecepiesContainer noTopPadding
-                >
-                    <Container padding={"0"} className="recipesContainer">
-                        {recipes && recipes.map((item) => {
-                            const savedRecipe = <Recipe removable onRemovable={
-                                () => {
-                                    removeSaved(item, savedRecipe)
-                                }
-                            } key={item._id} {...item} />;
+            <Formik
+                initialValues={({title: title, desc: desc})}
+                validate={values => {
+                    const errors = {};
+                    if (!values.title) {
+                        errors.title = 'Required';
+                    } else if (
+                        !validateTitle(values.title)
+                    ) {
+                        errors.title = 'Invalid title';
+                    }
 
-                            if (!recipesSelectedIds.includes(item._id)) {
-                                return (<Recipe savable onSavable={
-                                    () => {
-                                        addSaved(item, savedRecipe)
-                                    }
-                                } key={item._id} {...item} />)
-                            }
-                        })}
-                        {loader && <Loading/>}
-                        {hasNextPage && recipes.length !== 0 && <ButtonStyled disabled={loader} onClick={() => {
-                            fetchRecipes()
-                        }} secondary light>Load more</ButtonStyled>}
-                    </Container>
-                </RecepiesContainer>
-            </TitleContainer>
-            <ControllButtons>
-                <ButtonStyled secondary small onClick={() => {
-                    history.goBack()
-                }}>
-                    Cancel
-                </ButtonStyled>
-                <ButtonStyled small onClick={save}>Save</ButtonStyled>
-            </ControllButtons>
-        </CreateCookBookPage>
+                    if (!values.desc) {
+                        errors.desc = 'Required';
+                    } else if (
+                        !validateDescription(values.desc)
+                    ) {
+                        errors.desc = 'Invalid description';
+                    }
+
+                    return errors;
+                }}
+                onSubmit={(values, {setSubmitting}) => {
+                    save(values)
+                }}
+            >
+                {({
+                      values,
+                      errors,
+                      touched,
+                      handleChange,
+                      handleBlur,
+                      handleSubmit,
+                      isSubmitting,
+                      /* and other goodies */
+                  }) => (
+                    <CreateCookBookPage>
+                        <H1Styled size="56px">{isEdit ? `Edit cookbook` : `Create a new cookbook`}</H1Styled>
+                        <TitleContainer>
+                            <HeaderStyled>Cookbook title</HeaderStyled>
+                            <InputStyled
+                                placeholder="Title"
+                                name={"title"}
+                                value={values.title}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                className={errors.title && touched.title && "error"}
+                            />
+                            {errors.title && touched.title && (
+                                <InputFeedback>{errors.title}</InputFeedback>
+                            )}
+                        </TitleContainer>
+                        <TitleContainer>
+                            <HeaderStyled>Cookbook picture</HeaderStyled>
+                            <LabelAsButton htmlFor={"image"} small light>
+                                {file ? `Uploaded!` : `Upload`}
+                            </LabelAsButton>
+                            <InputStyled hide type={"file"} id="image" name="image" onChange={fileChanges}/>
+                        </TitleContainer>
+                        <TitleContainer>
+                            <HeaderStyled>Description</HeaderStyled>
+                            <DescriptionInput
+                                placeholder="Description"
+                                value={values.desc}
+                                name={"desc"}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                className={errors.desc && touched.desc && "error"}/>
+                            {errors.desc && touched.desc && (
+                                <InputFeedback>{errors.desc}</InputFeedback>
+                            )}
+                        </TitleContainer>
+                        <TitleContainer>
+                            <CookBooksMenu setFoodPref={setFoodPref} foodPref={foodPref}/>
+                        </TitleContainer>
+                        {
+                            recipesSelected.length > 0
+                            &&
+                            <TitleContainer>
+                                <HeaderStyled>Saved Recipes</HeaderStyled>
+                                {recipesSelected}
+                            </TitleContainer>
+                        }
+                        <TitleContainer>
+                            <HeaderStyled>Recepies</HeaderStyled>
+                            <InputStyled placeholder="Fresh meat" value={recipeSearch} onChange={(e) => {
+                                setRecipeSearch(e.target.value)
+                            }}/>
+                        </TitleContainer>
+                        <TitleContainer>
+                            <RecepiesContainer noTopPadding
+                            >
+                                <Container padding={"0"} className="recipesContainer">
+                                    {recipes && recipes.map((item) => {
+                                        const savedRecipe = <Recipe removable onRemovable={
+                                            () => {
+                                                removeSaved(item, savedRecipe)
+                                            }
+                                        } key={item._id} {...item} />;
+
+                                        if (!recipesSelectedIds.includes(item._id)) {
+                                            return (<Recipe savable onSavable={
+                                                () => {
+                                                    addSaved(item, savedRecipe)
+                                                }
+                                            } key={item._id} {...item} />)
+                                        }
+                                    })}
+                                    {loader && <Loading/>}
+                                    {hasNextPage && recipes.length !== 0 &&
+                                    <ButtonStyled disabled={loader} onClick={() => {
+                                        fetchRecipes()
+                                    }} secondary light>Load more</ButtonStyled>}
+                                </Container>
+                            </RecepiesContainer>
+                        </TitleContainer>
+                        <ControllButtons>
+                            <ButtonStyled secondary small onClick={() => {
+                                history.goBack()
+                            }}>
+                                Cancel
+                            </ButtonStyled>
+                            <ButtonStyled
+                                small
+                                onClick={handleSubmit}>Save</ButtonStyled>
+                        </ControllButtons>
+                    </CreateCookBookPage>
+                )}
+            </Formik>
     );
+    if(!isEdit || (isEdit && title && desc))
+        return data;
+    else
+        return <Loading/>
 };
 
 export default CreateCookBookComponent;

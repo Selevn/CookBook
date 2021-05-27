@@ -7,13 +7,15 @@ export const SearchStyled = styled(InputStyled)`
   min-width: 284px;
   background: var(--search-gray);
   border-radius: 37px;
-  border: none;
   outline: none;
   font-size: 20px;
   padding: 3px 8px;
   color: var(--light-black);
+
+  border: none;
 `;
 export const Results = styled(Container)`
+  box-shadow: 5px 5px 25px 5px rgba(0,0,0,0.67);//3px 3px 21px 3px var(--primary-color-shadow);
   overflow:auto;
   padding: 5px;
   border-radius: 5px;

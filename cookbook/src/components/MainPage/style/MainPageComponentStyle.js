@@ -45,7 +45,6 @@ export const PopularBooksContainer = styled(Container)`
   padding-top: 45px;
   max-width: 1400px;
   margin: auto;
-
   justify-content: center;
 
   ${H1Styled} {

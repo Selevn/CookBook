@@ -29,6 +29,7 @@ import ItemCommentsContainer from "./Comments";
 import Slider from "./Slider";
 import {ServerMessageHandler} from "../MultyUsed/ResponseSuccesHandler";
 import {useLogout} from "../MultyUsed/CustomHooks/useLogout";
+import noImage from "../common/images/noImage.jpg"
 
 const ItemPageComponent = ({match}) => {
     const {profile, auth} = useReduxState();
@@ -131,8 +132,8 @@ const ItemPageComponent = ({match}) => {
                         {`${item?.author?.[0].name.first} ${item?.author?.[0].name.last}`}
                     </LinkStyled>
                     <InfoContainer>
-                        {item?.image &&
-                        <Slider mainImage={item.image} inputImagesArray={type === COMMON.COOKBOOK ? [] : item.images}/>}
+                        {item &&
+                        <Slider mainImage={item.image || noImage} inputImagesArray={type === COMMON.COOKBOOK ? [] : item.images}/>}
                         <Description>
                             <H1Styled>Description</H1Styled>
                             <ParagraphStyled>{item?.desc}</ParagraphStyled>

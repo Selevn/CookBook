@@ -4,7 +4,6 @@ import {toast} from "react-toastify";
 export const ServerMessageHandler = (response, onSuccess, onError, noShow) => {
     if (!response.success) {
         let errorMessage;
-        console.log(response)
         if (response.error === MESSAGES.ERROR.AUTH) {
             errorMessage = MESSAGES.ERROR.AUTH
             //unlogin
@@ -14,7 +13,7 @@ export const ServerMessageHandler = (response, onSuccess, onError, noShow) => {
             errorMessage = MESSAGES.ERROR.UNKNOWN
         }
         toast.error(errorMessage, TOAST_SETTINGS);
-        onError && typeof onError === 'function' && onError()
+        onError && typeof onError === 'function' && onError(errorMessage)
     }
     if (response.success) {
         !noShow && toast.success(MESSAGES.SUCCESS.SUCCESS, TOAST_SETTINGS);

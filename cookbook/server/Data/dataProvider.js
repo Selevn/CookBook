@@ -225,23 +225,24 @@ exports.getCookBook = async (id) => {
 exports.createRecipe = async (inputRecipe) => {
     const recipe = {
         ...inputRecipe,
-        _id: (await Recipes.countDocuments({})) + 1
+        _id: (await Recipes.countDocuments({})) + 1,
+        views:0,
     }
     return (new Recipes(recipe)).save();
 }
 exports.updateRecipe = async (inputRecipe) => {
-    await Recipes.updateOne(
+    return Recipes.updateOne(
         {_id: Number(inputRecipe._id)},
         inputRecipe
     );
-    return true
 }
 
 
 exports.createCookBook = async (inputCookBook) => {
     const cookBook = {
         ...inputCookBook,
-        _id: (await CookBooks.countDocuments({})) + 1
+        _id: (await CookBooks.countDocuments({})) + 1,
+        views:0,
     }
     return (new CookBooks(cookBook)).save();
 }
@@ -298,19 +299,16 @@ exports.getRecipes = async (filter) => {
     return await paginator(aggregate, aggregateOptions(filter.page, filter.sortBy))//await Recipes.aggregatePaginate(aggregate, aggregateOptions(filter.page, filter.sortBy))
 }
 exports.getComments = async (filter) => {
-    let item, aggregate;
+    let item, aggregate, pipe = [authorLookup];
+
     if (filter.type === COMMON.COOKBOOK) {
         item = await exports.getCookBook(filter.itemId);
-        aggregate = Comments.aggregate([
-            idInRangeMatcher(item[0].commentsIds),
-            authorLookup,
-        ])
+        item[0] && pipe.unshift(idInRangeMatcher(item[0].commentsIds))
+        aggregate = Comments.aggregate(pipe)
     } else {
         item = await exports.getRecipe(filter.itemId);
-        aggregate = Comments.aggregate([
-            idInRangeMatcher(item[0].commentsIds),
-            authorLookup,
-        ]);
+        item[0] && pipe.unshift(idInRangeMatcher(item[0].commentsIds))
+        aggregate = Comments.aggregate(pipe)
     }
     return await paginator(aggregate, aggregateOptions(filter.page))//await Recipes.aggregatePaginate(aggregate, aggregateOptions(filter.page, filter.sortBy))
 

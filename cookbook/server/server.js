@@ -271,10 +271,11 @@ app.post(ROUTES.NEW_RECIPE,
     recipeUpload.fields([{ name: 'image', maxCount: 1 }, {name:'gallery', maxCount: 8}]),
     async function (req, res, next) {
     let createRecipeFlag = false;
+    let newId;
     try{
         const recipe = {...req.body}
 
-        const newId = (await createRecipe({}))._id;
+        newId = (await createRecipe({}))._id;
         const oldName = req.files['image'][0].filename;
         const newName = `${newId}__${oldName}`;
         if(!renameFile(FOLDERS.RECIPES_IMAGES,oldName,newName))
@@ -306,7 +307,8 @@ app.post(ROUTES.NEW_RECIPE,
             createRecipeFlag = false;
         }
         res.json({
-            success: createRecipeFlag,
+            success: !!createRecipeFlag,
+            id:newId
         })
 })
 app.post(ROUTES.EDIT_RECIPE,
@@ -370,6 +372,7 @@ app.post(ROUTES.NEW_COOKBOOK,
             cookBook[COOKBOOK_FIELDS.recipesIds] = JSON.parse(req.body.recipesIds)
             cookBook[COOKBOOK_FIELDS.filters] = JSON.parse(req.body.filters)
             createCookBookFlag = await updateCookBook(cookBook);
+            console.log(createCookBookFlag)
         }
         catch(e){
             console.log(e)

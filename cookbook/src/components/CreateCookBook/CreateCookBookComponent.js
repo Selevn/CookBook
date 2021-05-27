@@ -8,7 +8,7 @@ import {
     LabelAsButton,
     LabelStyled
 } from '../common/StylesComponent';
-import {useHistory} from "react-router-dom";
+import {Redirect, useHistory} from "react-router-dom";
 
 import {Recipe} from '../MultyUsed/Recipe';
 import {
@@ -44,7 +44,9 @@ const CreateCookBookComponent = ({isEdit, item}) => {
     const [recipesSelectedIds, setRecipesSelectedIds] = useState([])
     const [recipes, setRecipes] = useState([])
     const [file, setFile] = useState();
-
+    
+    if(!profile || !auth)
+        return <Redirect to={'/'}/>
 
     const fileChanges = (e) => {
         e.preventDefault();

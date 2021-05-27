@@ -1,23 +1,34 @@
 import React, {useEffect, useState} from 'react';
 import {CreateCookBook} from "../CreateCookBook";
 import queryString from 'query-string'
-import { useLocation } from 'react-router-dom'
+import {Redirect, useLocation} from 'react-router-dom'
 import {fetchData} from "../../Connectors/dataProvider";
-import {ROUTES} from "../../constants";
+import {ROUTES, STATE} from "../../constants";
+import {useReduxState} from "../MultyUsed/CustomHooks/useReduxState";
 
 const EditCookBook = () => {
   const { search } = useLocation()
   const values = queryString.parse(search)
   const [cookBook, setCookBook] = useState({})
+  const {profile, auth} = useReduxState()
+
+  if(!profile || !auth)
+    return <Redirect to={'/'}/>
+
   useEffect(()=>{
     (async ()=>{
-      setCookBook((await fetchData(ROUTES.COOKBOOK_CLIENT(values.id)))[0])
+      const cookbook = (await fetchData(ROUTES.COOKBOOK_CLIENT(values.id)))[0]
+      if(cookbook.author[0]._id !== profile._id)
+        setCookBook(STATE.FAIL)
+      else
+        setCookBook(cookbook)
     })()
   },[])
 
   return (
     <>
-      <CreateCookBook isEdit = {true} item={cookBook}/>
+      {cookBook === STATE.FAIL && <Redirect to={"/"}/>}
+      {cookBook && <CreateCookBook isEdit = {true} item={cookBook}/>}
     </>
   );
 };

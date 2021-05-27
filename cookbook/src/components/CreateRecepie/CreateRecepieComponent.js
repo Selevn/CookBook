@@ -17,7 +17,7 @@ import {COMMON, MESSAGES, RECIPE_FIELDS, ROUTES, TOAST_SETTINGS} from "../../con
 import {SendFile} from '../../Connectors/dataProvider'
 import {useReduxState} from "../MultyUsed/CustomHooks/useReduxState";
 import {RecipesMenu} from "../CookBookSearch/Recipes";
-import {useHistory} from "react-router-dom";
+import {Redirect, useHistory} from "react-router-dom";
 import {toast} from "react-toastify";
 import {ServerMessageHandler} from "../MultyUsed/ResponseSuccesHandler";
 import {useLogout} from "../MultyUsed/CustomHooks/useLogout";
@@ -34,6 +34,9 @@ const CreateRecepieComponent = ({edit}) => {
     const [file, setFile] = useState();
     const [secondaryFiles, setSecondaryFiles] = useState();
 
+    const {profile, auth} = useReduxState()
+    if(!auth || !profile)
+        return <Redirect to={'/'}/>
     useEffect(() => {
         const authCheck = AuthCheckerWrapper()
         if (!authCheck(auth)) {
@@ -53,7 +56,7 @@ const CreateRecepieComponent = ({edit}) => {
     }
 
 
-    const {profile, auth} = useReduxState()
+
     const logOut = useLogout()
 
     const send = useCallback((values) => {

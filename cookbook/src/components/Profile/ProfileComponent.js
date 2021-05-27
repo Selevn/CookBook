@@ -31,7 +31,7 @@ const ProfileComponent = ({match}) => {
     const myLikedRecipes = 'myLikedRecipes';
     const myLikedBooks = 'myLikedBooks';
     const settings = 'settings';
-    const {profile} = useReduxState();
+    const {profile, auth} = useReduxState();
     const [loading, setLoading] = useState(false);
     const [addMenu, setAddMenu] = useState(false);
     const [menu, setMenu] = useState(myBooks);
@@ -53,10 +53,12 @@ const ProfileComponent = ({match}) => {
     }, [id]);
 
     useEffect(() => {
-        if(user?._id === profile?._id)
-            dispatcher(profileActions.setProfile(user))
+        if(auth && user?._id === profile?._id )
+                dispatcher(profileActions.setProfile(user))
     }, [user]);
 
+    const SettingsWithRef = React.forwardRef( (props, ref)=>
+        <Settings imageRef={ref} setUser={props.setUser}/>)
 
     return (
         <>
@@ -135,7 +137,7 @@ const ProfileComponent = ({match}) => {
                 {menu === myRecipes && <ProfileRecipes canEdit={profile?._id === Number(id)} id={id}/>}
                 {menu === myLikedBooks && <ProfileCookBooks canEdit={false} id={id} isLiked={true}/>}
                 {menu === myLikedRecipes && <ProfileRecipes canEdit={false} id={id} isLiked={true}/>}
-                {menu === settings && <Settings imageRef={imageRef} setUser={setUser}/>}
+                {menu === settings && <SettingsWithRef setUser={setUser} ref={imageRef}/>}
             </DataContainer>
         </>
     );

@@ -48,4 +48,30 @@
     border: 1px solid red !important;
 }
 
+.changeImage:hover{
+    cursor:pointer;
+
+}
+.changeImage:hover:after{
+     opacity: 0.85;
+    transition: opacity .3s ease-in-out;
+}
+
+.changeImage:after {
+    transition: opacity .3s ease-in-out;
+        content: '';
+        position: relative;
+        top:0;
+        opacity: 0.6;
+        border-radius: 102px;
+    /*transform: scale(0.2);*/
+        background-image: url("./components/common/images/Camera.jpg");
+        background-position: center; /* Положение фона */
+        background-repeat: no-repeat;
+        background-size: cover;
+        width: 200px;
+        height: 100%;
+        z-index: 3;
+    }
+
 

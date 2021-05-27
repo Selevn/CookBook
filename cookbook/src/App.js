@@ -25,6 +25,9 @@ const Profile = React.lazy(() => import('./components/Profile/ProfileComponent.j
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import NotFoundMiddleware from "./components/404/NoItemMiddleware";
+import {COMMON} from "./constants";
+import {NotFound} from "./components/404/404";
 
 function App() {
     return (
@@ -52,9 +55,11 @@ function App() {
                                 <Register/>
                             </Route>
                             <Route path="/profile/:id">
-                                <Navbar/>
-                                <Profile/>
-                                <Footer/>
+                                <NotFoundMiddleware propType={COMMON.PROFILE}>
+                                    <Navbar/>
+                                    <Profile/>
+                                    <Footer/>
+                                </NotFoundMiddleware>
                             </Route>
                             <Route path="/newRecipe">
                                 <Navbar/>
@@ -82,19 +87,19 @@ function App() {
                                 <Footer/>
                             </Route>
                             <Route path="/info/:type/:id">
-                                <Navbar/>
-                                <ItemPage/>
-                                <Footer/>
+                                <NotFoundMiddleware>
+                                    <Navbar/>
+                                    <ItemPage/>
+                                    <Footer/>
+                                </NotFoundMiddleware>
                             </Route>
-                            <Route path="/">
+                            <Route path="/" exact>
                                 <Navbar/>
                                 <MainPage/>
                                 <Footer/>
                             </Route>
                             <Route path="*">
-                                <Navbar/>
-                                <MainPage/>
-                                <Footer/>
+                                <NotFound/>
                             </Route>
                         </Switch>
                     </ScrollToTop>

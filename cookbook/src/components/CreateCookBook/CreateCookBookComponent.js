@@ -31,7 +31,7 @@ import {ServerMessageHandler} from "../MultyUsed/ResponseSuccesHandler";
 import {useLogout} from "../MultyUsed/CustomHooks/useLogout";
 import {AuthCheckerWrapper} from "../../Connectors/AuthChecker";
 import {Formik} from "formik";
-import {validateTitle, validateDescription} from "../../validator/validator";
+import {validateTitle, validateDescription, validateImage} from "../../validator/validator";
 
 const CreateCookBookComponent = ({isEdit, item}) => {
     const {profile, auth} = useReduxState();
@@ -48,7 +48,8 @@ const CreateCookBookComponent = ({isEdit, item}) => {
 
     const fileChanges = (e) => {
         e.preventDefault();
-        setFile(e.target.files[0])
+        const _file=e.target.files[0];
+        setFile(_file)
     }
 
     const removeSaved = useCallback((item, saved) => {
@@ -106,14 +107,27 @@ const CreateCookBookComponent = ({isEdit, item}) => {
             toast.error(MESSAGES.ERROR.NO_FILE_CHOSEN, TOAST_SETTINGS);
             return;
         }
+
         const formData = new FormData();
-        if (file)
-            formData.append('image', file);
+
+        /*if(file)
+            formData.append('image', file);*/
+
+
         if (!file && isEdit)
             formData.append(COOKBOOK_FIELDS.image, item.image);
+        else{
+            if (validateImage(file))
+                formData.append('image', file);
+            else {
+                toast.error("Invalid image format!", TOAST_SETTINGS)
+                return;
+            }
+        }
         if (isEdit) {
             formData.append(COOKBOOK_FIELDS.ID, item._id);
         }
+
         formData.append(COOKBOOK_FIELDS.author, profile._id);
         formData.append(COOKBOOK_FIELDS.name, values.title);
         formData.append(COOKBOOK_FIELDS.desc, values.desc);
@@ -126,12 +140,10 @@ const CreateCookBookComponent = ({isEdit, item}) => {
             .then(response => {
                 console.log(response)
                 ServerMessageHandler(response, () => {
-                    history.push(`/info/cookbook/${item._id}`)
+                    isEdit && history.push(`/info/cookbook/${item._id}`)
+                    !isEdit && history.push(`/info/cookbook/${response.id}`)
                 }, null)
             })
-            .catch((error) => {
-                toast.error(MESSAGES.ERROR.UNKNOWN, TOAST_SETTINGS);
-            });
     }
 
 
@@ -205,7 +217,7 @@ const CreateCookBookComponent = ({isEdit, item}) => {
                             <LabelAsButton htmlFor={"image"} small light>
                                 {file ? `Uploaded!` : `Upload`}
                             </LabelAsButton>
-                            <InputStyled hide type={"file"} id="image" name="image" onChange={fileChanges}/>
+                            <InputStyled hide type={"file"} accept=".jpg, .png"  id="image" name="image" onChange={fileChanges}/>
                         </TitleContainer>
                         <TitleContainer>
                             <HeaderStyled>Description</HeaderStyled>

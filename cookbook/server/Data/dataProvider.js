@@ -58,6 +58,18 @@ const aggregateOptions = (page = 1, sortBy = COMMON.ID) => ({
 exports.getUser = async (id) => {
     return await Users.aggregate([_idMatcher(id), publicUserData]);
 }
+exports.getUsersCount = async () => {
+    return Users.countDocuments({});
+}
+exports.getCookbooksCount = async () => {
+    return CookBooks.countDocuments({});
+}
+exports.getRecipesCount = async () => {
+    return Recipes.countDocuments({});
+}
+
+
+
 exports.getUserCookBooks = async (id, filters) => {
     const aggregate = CookBooks.aggregate([
         authorIdMatcher(id),

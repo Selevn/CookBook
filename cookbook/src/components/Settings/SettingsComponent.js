@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import {
     ButtonAsLinkStyled,
@@ -25,7 +25,13 @@ import {MESSAGES, ROUTES, TOAST_SETTINGS, USER_FIELDS} from "../../constants";
 import {toast} from "react-toastify";
 import {ServerMessageHandler} from "../MultyUsed/ResponseSuccesHandler";
 import {useLogout} from "../MultyUsed/CustomHooks/useLogout";
-import {validateEmail, validateName, validateDescription, validatePassword} from "../../validator/validator";
+import {
+    validateEmail,
+    validateName,
+    validateDescription,
+    validatePassword,
+    validateImage
+} from "../../validator/validator";
 import {Formik} from "formik";
 
 const ChangeComponent = ({value, valueName, setChangeField, type, area = false}) => {
@@ -202,25 +208,42 @@ ChangeComponent.propTypes =
 ;
 const Settings = (
     {
-        setUser
+        setUser, imageRef
     }
     ) => {
+        const inputRef = useRef()
+        useEffect(() => {
+            const closedRef = imageRef;
+            const imageFunction = () => {
+                inputRef?.current.click()
+            }
+            closedRef?.current.addEventListener('click', imageFunction)
+            closedRef.current.classList.add('changeImage')
+            return () => {
+                closedRef?.current?.removeEventListener('click', imageFunction)
+                closedRef?.current?.classList.remove('changeImage')
+            }
+        }, [imageRef])
+
         const logOut = useLogout()
 
         const {auth, profile} = useReduxState()
-        const [file, setFile] = useState();
+        //const [file, setFile] = useState();
 
         const [changeField, setChangeField] = useState({});
 
         const {name, desc} = profile;
 
         const fileChanges = (e) => {
-            e.preventDefault();
-            setFile(e.target.files[0])
-        }
+            const image =e?.target?.files?.[0]
+            if(validateImage(image))
+                    onFileSubmit(image)
+                else
+                    toast.error("Invalid image format!",TOAST_SETTINGS)
+            }
 
-        const onFileSubmit = useCallback((e) => {
-            e.preventDefault();
+
+        const onFileSubmit = useCallback((file) => {
             if (!auth) {
                 toast.error(MESSAGES.ERROR.AUTH, TOAST_SETTINGS);
                 return;
@@ -242,8 +265,8 @@ const Settings = (
                 }).catch((error) => {
                 toast.error(MESSAGES.ERROR.UNKNOWN, TOAST_SETTINGS);
             });
-            setFile(null)
-        }, [file])
+        }, [])
+
 
         return (
             <>
@@ -326,28 +349,16 @@ const Settings = (
                                 }
                             </PropChange>
                         </RowContainer>
-                        <RowContainer>
+                        <RowContainer display={"none"}>
                             <PropName>Image</PropName>
-                            {!file &&
                             <>
                                 <LabelAsButton htmlFor={"image"} medium light>
                                     Upload
                                 </LabelAsButton>
-                                <InputStyled hide type="file" id={"image"} name="avatar" onChange={fileChanges}/>
-                            </>}
-                            {file &&
-                            <ButtonsContainer>
-                                <ButtonStyled small light onClick={onFileSubmit}>
-                                    Send
-                                </ButtonStyled>
-                                <ButtonStyled small light onClick={() => {
-                                    setFile(null)
-                                }}>
-                                    Clear
-                                </ButtonStyled>
-                            </ButtonsContainer>
-                            }
-
+                                <InputStyled ref={inputRef} hide type="file" id={"image"} name="avatar"
+                                             accept=".jpg, .png"
+                                             onChange={fileChanges} />
+                            </>
                         </RowContainer>
                     </PropertiesContainer>
                 </SettingsContainer>

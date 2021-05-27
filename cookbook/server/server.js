@@ -23,6 +23,9 @@ const {getUserForLogin} = require("./Data/dataProvider");
 const {checkPassword, getPassword, issueJWT} = require("./JWT/PasswordHasher");
 const multer = require("multer")
 const fs = require("fs");
+const {getRecipesCount} = require("./Data/dataProvider");
+const {getCookbooksCount} = require("./Data/dataProvider");
+const {getUsersCount} = require("./Data/dataProvider");
 const {passportMiddlewareProvider} = require("./JWT/PasswordProvider");
 const {passportMiddleware} = require("./JWT/PasswordProvider");
 const {updateRecipe} = require("./Data/dataProvider");
@@ -101,6 +104,30 @@ app.get(`${ROUTES.COOKBOOKS}:id`, async (req, res) => {
         items
     );
 });
+app.post(ROUTES.PROFILE_CHECK, async (req, res) => {
+    const count = await getUsersCount();
+    if(count < Number(req.body.id))
+        res.status(404).json("No item");
+    else
+        res.status(200).json("Ok")
+});
+app.post(ROUTES.COOKBOOK_CHECK, async (req, res) => {
+    const count = await getCookbooksCount();
+    if(count < Number(req.body.id))
+        res.status(404).json("No item");
+    else
+        res.status(200).json("Ok")
+});
+app.post(ROUTES.RECIPE_CHECK, async (req, res) => {
+    const count = await getRecipesCount();
+    if(count < Number(req.body.id))
+        res.status(404).json("No item");
+    else
+        res.status(200).json("Ok")
+});
+
+
+
 app.get(`${ROUTES.RECIPES}:id`, async (req, res) => {
     const data = await getRecipe(req.params['id'], req.query);
     res.json(

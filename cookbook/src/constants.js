@@ -41,6 +41,10 @@ exports.ROUTES = {
   NEW_COOKBOOK: `/newCookBook`,
   EDIT_COOKBOOK: `/editCookBook`,
   EDIT_RECIPE: `/editRecipe`,
+
+  PROFILE_CHECK:`/api/check/profile/`,
+  COOKBOOK_CHECK:`/api/check/cookbook/`,
+  RECIPE_CHECK:`/api/check/recipe/`
 };
 
 exports.COMMON = {
@@ -53,7 +57,14 @@ exports.COMMON = {
 
   COOKBOOK: 'COOKBOOK',
   RECIPE: 'RECIPE',
+  PROFILE: 'PROFILE',
 };
+
+exports.STATE = {
+  INIT:"INIT",
+  OK:"OK",
+  FAIL:"FAIL",
+}
 
 exports.FOLDERS = {
   USERS_AVATARS: "./public/img/profileImages/",

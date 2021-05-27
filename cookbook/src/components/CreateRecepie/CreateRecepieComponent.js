@@ -22,7 +22,7 @@ import {toast} from "react-toastify";
 import {ServerMessageHandler} from "../MultyUsed/ResponseSuccesHandler";
 import {useLogout} from "../MultyUsed/CustomHooks/useLogout";
 import {AuthCheckerWrapper} from "../../Connectors/AuthChecker";
-import {validateDescription, validateTitle} from "../../validator/validator";
+import {validateTitle, validateDescription, validateImage} from "../../validator/validator";
 import {Formik} from "formik";
 
 const CreateRecepieComponent = ({edit}) => {
@@ -68,14 +68,30 @@ const CreateRecepieComponent = ({edit}) => {
         }
 
         const formData = new FormData();
-        if (file)
-            formData.append('image', file);
+
         if (!file && edit)
             formData.append(RECIPE_FIELDS.image, edit.image);
+        else{
+            if (validateImage(file))
+                formData.append('image', file);
+            else {
+                toast.error("Invalid image format!", TOAST_SETTINGS)
+                return;
+            }
+        }
+
+
+
+
 
         if (secondaryFiles)
             for (const _file of secondaryFiles) {
-                formData.append('gallery', _file)
+                if (validateImage(_file))
+                    formData.append('gallery', _file)
+                else {
+                    toast.error("Invalid image format!", TOAST_SETTINGS)
+                    return;
+                }
             }
         if (!secondaryFiles && edit)
             formData.append(RECIPE_FIELDS.images, JSON.stringify(edit.images));
@@ -170,14 +186,14 @@ const CreateRecepieComponent = ({edit}) => {
                         <LabelAsButton htmlFor={"image"} small light>
                             {file ? `Uploaded!` : `Upload`}
                         </LabelAsButton>
-                        <InputStyled hide type="file" id={"image"} name="image" onChange={fileChanges}/>
+                        <InputStyled hide type="file" accept=".jpg, .png" id={"image"} name="image" onChange={fileChanges}/>
                     </TitleContainer>
                     <TitleContainer>
                         <HeaderStyled>Recepie secondary pictures (8 max)</HeaderStyled>
                         <LabelAsButton htmlFor={"galley"} small light>
                             {secondaryFiles ? `Uploaded!` : `Upload many`}
                         </LabelAsButton>
-                        <InputStyled hide type="file" id={"galley"} name="gallery" onChange={secondaryFilesChange}
+                        <InputStyled hide type="file" accept=".jpg, .png" id={"galley"} name="gallery" onChange={secondaryFilesChange}
                                      multiple/>
                     </TitleContainer>
                     <TitleContainer>

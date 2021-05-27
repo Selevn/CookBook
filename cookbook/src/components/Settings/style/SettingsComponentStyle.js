@@ -29,6 +29,7 @@ export const PropName = styled(Container)`
   align-items: center;
 `;
 export const RowContainer = styled(Container)`
+  
   @media (max-width: 375px) {
     font-size: 14px;
     flex-direction: column !important;

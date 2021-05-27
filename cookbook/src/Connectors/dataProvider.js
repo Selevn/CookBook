@@ -1,5 +1,5 @@
 import {AuthCheckerWrapper} from "./AuthChecker";
-import {MESSAGES} from "../constants";
+import {COMMON, MESSAGES, ROUTES, STATE} from "../constants";
 
 const AuthChecker = AuthCheckerWrapper();
 
@@ -18,12 +18,42 @@ export const fetchData = async (url, setLoader, settings) => {
     }
     const response = await fetch(localurl);
     setLoader(false);
-    if (response.status !== 200) throw Error(response);
+    if (response.status === 404) {
+        console.log("notFound")
+        return {redirect: "/404"};
+    }
     const data = await response.json();
     return data;
 };
 
-export const Login = async ( data) => {
+export const hasItem = async (type, id) => {
+    let url;
+    switch(type){
+        case COMMON.PROFILE:{
+            url = ROUTES.PROFILE_CHECK
+            break;
+        }
+        case `recipe`:{
+            url = ROUTES.RECIPE_CHECK
+            break;
+        }
+        case `cookbook`:{
+            url = ROUTES.COOKBOOK_CHECK
+            break;
+        }
+    }
+    console.log(url)
+    const response = await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({id:id}),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    return response.status !== 404;
+};
+
+export const Login = async (data) => {
     const response = await fetch('/api/login/', {
         method: 'POST',
         body: JSON.stringify(data),

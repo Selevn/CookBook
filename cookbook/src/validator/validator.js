@@ -7,4 +7,10 @@ exports.validateEmail = (email) => emailRegExp.test(email.toLowerCase())
 exports.validatePassword = (password) => passwordRegExp.test(password)
 exports.validateName = (name) => nameRegExp.test(name)
 exports.validateTitle = (name) => titleRegExp.test(name)
-exports.validateDescription = (desc) => desc.length<1000
+exports.validateDescription = (desc) => desc.length < 1000
+
+exports.validateImage = (image) => {
+    return image && (image.type === "image/jpeg" || image.type === "image/png")
+}
+
+

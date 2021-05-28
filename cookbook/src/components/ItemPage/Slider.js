@@ -15,22 +15,16 @@ const Slider = ({mainImage, inputImagesArray=[]}) => {
     useEffect(() => {
         setImagesArr([mainImage, ...inputImagesArray])
         setLength(inputImagesArray.length)
-    },[mainImage, inputImagesArray])
+    },[mainImage, inputImagesArray.length])
 
 
     const scrollLeft = useCallback(() => {
-        if (current > 0)
-            setCurrent(s => s - 1);
-        else
-            setCurrent(length);
-    }, [length, current])
+            setCurrent(s => s > 0? s - 1: length);
+    }, [length])
 
     const scrollRight = useCallback(() => {
-        if (current < length)
-            setCurrent(s => s + 1);
-        else
-            setCurrent(0);
-    }, [length, current])
+        setCurrent(s => s < length? s + 1:0);
+    }, [length])
     return (
         <SliderStyle>
             {haveSlides && <FaChevronLeft className={"chevronLeft"} onClick={scrollLeft}/>}

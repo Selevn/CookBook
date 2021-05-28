@@ -7,16 +7,20 @@ import { InputUniteContainer, SortContainer } from './style/CookBookSearchCompon
 import { H1Styled, LabelStyled } from '../common/StylesComponent';
 import Checkbox from '../MultyUsed/CheckBox/CheckBox';
 import { Loading } from '../MultyUsed/Loading/Loading';
-import {useFetch} from "../MultyUsed/CustomHooks/useFetch";
-import useDebounce from "../MultyUsed/CustomHooks/useDebouncer";
-import {Recipe} from "../MultyUsed/Recipe";
-export const CookBooks = ({ filters, sortBy, searchValue }) => {
+import { useFetch } from '../MultyUsed/CustomHooks/useFetch';
+import useDebounce from '../MultyUsed/CustomHooks/useDebouncer';
+import { Recipe } from '../MultyUsed/Recipe';
 
+export const CookBooks = ({ filters, sortBy, searchValue }) => {
   const [items, setItems] = useState([]);
 
-  const debouncedValue = useDebounce(searchValue, 500)
+  const debouncedValue = useDebounce(searchValue, 500);
 
-  const [fetchBooks, hasNext, loading] = useFetch(ROUTES.COOKBOOKS, setItems,{ ...filters, sortBy, searchString:debouncedValue })
+  const [fetchBooks, hasNext, loading] = useFetch(ROUTES.COOKBOOKS, setItems, {
+    ...filters,
+    sortBy,
+    searchString: debouncedValue,
+  });
 
   useEffect(() => {
     fetchBooks('start');
@@ -32,7 +36,7 @@ export const CookBooks = ({ filters, sortBy, searchValue }) => {
         className="infinity-scroller"
       >
         {items && items.map((item) => <CookCard key={item._id} {...item} />)}
-        {!loading && items?.length === 0 && (<h1>No cookbooks</h1>)}
+        {!loading && items?.length === 0 && <h1>No cookbooks</h1>}
         {loading && <Loading />}
       </InfiniteScroll>
     </>
@@ -51,7 +55,7 @@ export const CookBooksMenu = ({ foodPref, setFoodPref, stateChanged }) => {
 
   const handleCheckboxReducer = useCallback((name) => {
     setFoodPref((s) => ({ ...s, [name]: !s[name] }));
-    stateChanged && stateChanged(s=>!s)
+    stateChanged && stateChanged((s) => !s);
   }, []);
 
   return (

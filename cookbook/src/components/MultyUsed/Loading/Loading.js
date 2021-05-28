@@ -1,3 +1,4 @@
+import React from 'react';
 import Spinner from '../../common/Spinner.svg';
 
 export const Loading = () => {

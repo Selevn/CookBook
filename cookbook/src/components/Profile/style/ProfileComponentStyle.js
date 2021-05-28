@@ -1,12 +1,12 @@
-import styled, {css} from 'styled-components';
+import styled, { css } from 'styled-components';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
   ButtonAsLinkStyled,
   ButtonStyled,
   Container,
-  Image, LinkAsButton,
-  LinkStyled,
+  Image,
+  LinkAsButton,
   ParagraphStyled,
 } from '../../common/StylesComponent';
 
@@ -125,7 +125,7 @@ const addCss = css`
   font-size: 18px;
   text-align: center;
   font-weight: normal;
-`
+`;
 export const AddLink = styled(LinkAsButton)`
   ${addCss}
 `;

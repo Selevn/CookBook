@@ -19,6 +19,6 @@ LikedComponent.propTypes = {
 LikedComponent.defaultProps = {
   count: 0,
   isLiked: false,
-  doLike: ()=>{},
+  doLike: () => {},
 };
 export default LikedComponent;

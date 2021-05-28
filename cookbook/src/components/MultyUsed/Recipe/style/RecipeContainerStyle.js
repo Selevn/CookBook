@@ -1,4 +1,4 @@
-import styled, {css} from 'styled-components';
+import styled, { css } from 'styled-components';
 import { ButtonStyled, Container, LinkStyled } from '../../../common/StylesComponent';
 import { Description } from '../../CookCard/style/CookCardComponentStyle';
 
@@ -106,33 +106,33 @@ export const RecipeContainer = styled(Container)`
 `;
 
 export const RecipeContainerWrapper = styled(Container)`
-
-  ${p=>p.small && css`
-    
-    ${Container}{
-      padding: 4px;
-      width:95%;
-    }
-  img{
-    height:80px;
-  }
-    @media (max-width: 425px) {
-      flex-direction: row !important;
-      align-items: normal !important;
-
-      ${RemoveContainer} {
-        ${LinkStyled} {
-          font-size: 17px;
-        }
-        height: 10px;
-        margin: 0 auto;
+  ${(p) =>
+    p.small &&
+    css`
+      ${Container} {
+        padding: 4px;
+        width: 95%;
       }
-    }
-    @media (min-width: 425px) {
-      flex-direction: row !important;
-    }
-  `}
-  
+      img {
+        height: 80px;
+      }
+      @media (max-width: 425px) {
+        flex-direction: row !important;
+        align-items: normal !important;
+
+        ${RemoveContainer} {
+          ${LinkStyled} {
+            font-size: 17px;
+          }
+          height: 10px;
+          margin: 0 auto;
+        }
+      }
+      @media (min-width: 425px) {
+        flex-direction: row !important;
+      }
+    `}
+
   width:100%;
   @media (min-width: 768px) {
     max-height: 318px;

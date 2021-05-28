@@ -7,10 +7,9 @@ import { SortContainer } from './style/CookBookSearchComponentStyle';
 import { H1Styled } from '../common/StylesComponent';
 import { Loading } from '../MultyUsed/Loading/Loading';
 import { InfinityScrolls } from '../MultyUsed/InfiniteScroll';
-import {useFetch} from "../MultyUsed/CustomHooks/useFetch";
-import {CookCard} from "../MultyUsed/CookCard";
-import useDebounce from "../MultyUsed/CustomHooks/useDebouncer";
-
+import { useFetch } from '../MultyUsed/CustomHooks/useFetch';
+import { CookCard } from '../MultyUsed/CookCard';
+import useDebounce from '../MultyUsed/CustomHooks/useDebouncer';
 
 function InfinityScroll(props) {
   return null;
@@ -22,33 +21,37 @@ InfinityScroll.propTypes = {
   dataLength: PropTypes.number,
   next: PropTypes.func,
   className: PropTypes.string,
-  children: PropTypes.node
+  children: PropTypes.node,
 };
 export const Recipes = ({ filters, sortBy, searchValue }) => {
   const [items, setItems] = useState([]);
-  const debouncedValue = useDebounce(searchValue, 500)
-  const [fetchRecipes, hasNext, loader] = useFetch(ROUTES.RECIPES, setItems, { ...filters, sortBy, searchString:debouncedValue })
+  const debouncedValue = useDebounce(searchValue, 500);
+  const [fetchRecipes, hasNext, loader] = useFetch(ROUTES.RECIPES, setItems, {
+    ...filters,
+    sortBy,
+    searchString: debouncedValue,
+  });
   // firstLoad
 
   useEffect(() => {
     fetchRecipes('start');
-  }, [sortBy,filters, debouncedValue]);
-//sortBy, filters, debouncedValue
-  return(
-      <>
-        <InfiniteScroll
-            dataLength={items.length}
-            hasMore={hasNext}
-            loader={<Loading />}
-            next={fetchRecipes}
-            className="infinity-scroller"
-        >
-          {items && items.map((item) => <Recipe key={item._id} {...item} />)}
-          {!loader && items?.length === 0 && (<h1>No recipes</h1>)}
-          {loader && <Loading />}
-        </InfiniteScroll>
-      </>
-  )
+  }, [sortBy, filters, debouncedValue]);
+  // sortBy, filters, debouncedValue
+  return (
+    <>
+      <InfiniteScroll
+        dataLength={items.length}
+        hasMore={hasNext}
+        loader={<Loading />}
+        next={fetchRecipes}
+        className="infinity-scroller"
+      >
+        {items && items.map((item) => <Recipe key={item._id} {...item} />)}
+        {!loader && items?.length === 0 && <h1>No recipes</h1>}
+        {loader && <Loading />}
+      </InfiniteScroll>
+    </>
+  );
 };
 
 Recipes.propTypes = {

@@ -1,14 +1,12 @@
 import styled from 'styled-components';
 import {
-    ButtonStyled,
-    Container,
-    H1Styled,
-    InputStyled,
-    LinkStyled,
-    TextInputStyled,
+  ButtonStyled,
+  Container,
+  H1Styled,
+  InputStyled,
+  LinkStyled,
+  TextInputStyled,
 } from '../../common/StylesComponent';
-import {Fragment} from "react";
-import {FaChevronLeft} from "react-icons/all";
 
 export const HeaderStyled = styled.h3`
   font-size: 24px;
@@ -39,7 +37,6 @@ export const CookBookContainer = styled(Container)`
   }
 `;
 
-
 export const ItemPageImageBook = styled(Container)`
   height: 304px;
   position: relative;
@@ -57,7 +54,8 @@ export const ItemPageImageBook = styled(Container)`
 export const SliderStyle = styled.div`
   position: relative;
 
-  .chevronLeft, .chevronRight {
+  .chevronLeft,
+  .chevronRight {
     color: var(--styled-gray);
     background-color: var(--search-gray);
     opacity: 0.1;
@@ -68,7 +66,8 @@ export const SliderStyle = styled.div`
     top: 0;
   }
 
-  .chevronLeft:hover, .chevronRight:hover {
+  .chevronLeft:hover,
+  .chevronRight:hover {
     cursor: pointer;
     opacity: 0.4;
   }
@@ -185,7 +184,7 @@ export const InfoContainer = styled(Container)`
 `;
 
 export const RecepiesContainer = styled(Container)`
-  ${p => p.noTopPadding ? '' : `padding-top: 100px;`}
+  ${(p) => (p.noTopPadding ? '' : 'padding-top: 100px;')}
   flex-direction: column;
 
   ${H1Styled} {
@@ -194,7 +193,7 @@ export const RecepiesContainer = styled(Container)`
 
   .recipesContainer {
     flex-direction: column;
-    ${p => p.noTopPadding ? '' : `margin-top: 30px;`}
+    ${(p) => (p.noTopPadding ? '' : 'margin-top: 30px;')}
     gap: 20px;
   }
 `;
@@ -227,5 +226,3 @@ export const Comments = styled(Container)`
   flex-direction: column;
   gap: 50px;
 `;
-
-

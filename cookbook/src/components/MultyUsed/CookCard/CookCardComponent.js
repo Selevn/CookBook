@@ -11,11 +11,11 @@ import {
   MinimizedCardText,
   Name,
 } from './style/CookCardComponentStyle';
-import {Container, LinkStyled} from '../../common/StylesComponent';
+import { Container, LinkStyled } from '../../common/StylesComponent';
 import { Views } from '../Views';
 import { Commented } from '../Commented';
 import { Liked } from '../Liked';
-import {useReduxState} from "../CustomHooks/useReduxState";
+import { useReduxState } from '../CustomHooks/useReduxState';
 
 export const CookCardComponent = ({
   views,
@@ -82,7 +82,7 @@ export const CookCardComponent = ({
       break;
     }
   }
-  const {profile} = useReduxState();
+  const { profile } = useReduxState();
   const isLiked = profile?.likes?.cookBooks?.includes(id);
   const history = useHistory();
   return (
@@ -96,18 +96,13 @@ export const CookCardComponent = ({
       containerHeight={height}
       type={type}
     >
-      {type !== 'tiny' &&
-      <Container justifyContent="space-between">
-        <Views count={views}/>
-        {isEditable && <LinkStyled to={`/editCookBook?id=${id}`}>Edit</LinkStyled>}
-      </Container>
-      }
-      <CookCardImage
-        src={image}
-        width={imgWidth}
-        height={imgHeight}
-        alt="CookBook front image"
-      />
+      {type !== 'tiny' && (
+        <Container justifyContent="space-between">
+          <Views count={views} />
+          {isEditable && <LinkStyled to={`/editCookBook?id=${id}`}>Edit</LinkStyled>}
+        </Container>
+      )}
+      <CookCardImage src={image} width={imgWidth} height={imgHeight} alt="CookBook front image" />
       <Container vertical>
         <Name>{name}</Name>
         <Author>{`${author[0].name.first} ${author[0].name.last}`}</Author>
@@ -121,10 +116,10 @@ export const CookCardComponent = ({
         </>
       )}
       {showFooter && type !== 'tiny' && (
-          <Container margin="auto 0 0 0" justifyContent="space-between">
-            <Liked count={likes || 0} isLiked={isLiked} />
-            <Commented count={comments.length || 0} commented={isCommented} />
-          </Container>
+        <Container margin="auto 0 0 0" justifyContent="space-between">
+          <Liked count={likes || 0} isLiked={isLiked} />
+          <Commented count={comments.length || 0} commented={isCommented} />
+        </Container>
       )}
     </CookCardContainer>
   );

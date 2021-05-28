@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ImageVegetable, ImageVegetablesContainer, MainDiv } from './style/LoginComponentStyle';
 import { Container } from '../common/StylesComponent';
 import FormComponent from '../MultyUsed/FormComponent';
@@ -8,8 +8,7 @@ const LoginComponent = () => {
     <>
       <MainDiv>
         <Container flex="2">
-          <FormComponent
-          />
+          <FormComponent />
         </Container>
         <ImageVegetablesContainer flex="2">
           <ImageVegetable />

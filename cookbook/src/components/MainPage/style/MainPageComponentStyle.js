@@ -1,5 +1,10 @@
 import styled, { css } from 'styled-components';
-import {ButtonStyled, Container, H1Styled, LinkAsButton, ParagraphStyled} from '../../common/StylesComponent';
+import {
+  Container,
+  H1Styled,
+  LinkAsButton,
+  ParagraphStyled,
+} from '../../common/StylesComponent';
 
 export const WelcomeDiv = styled(Container)`
   flex-direction: column;
@@ -63,9 +68,7 @@ export const CookBooksList = styled(Container)`
   gap: 30px;
   padding: 0 10px;
   justify-content: center;
-  
-  
-  
+
   @media (max-width: 1023px) {
     justify-content: center;
   }

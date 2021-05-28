@@ -85,7 +85,17 @@ const LinkWrapper = ({ className, children, id, onClick, to }) => {
     to = () => {};
   }
   return (
-    <Link to={to} className={className} id={id} onClick={onClick || ((e) => {e.stopPropagation()})}>
+    <Link
+      to={to}
+      className={className}
+      id={id}
+      onClick={
+        onClick ||
+        ((e) => {
+          e.stopPropagation();
+        })
+      }
+    >
       {children}
     </Link>
   );
@@ -108,8 +118,8 @@ const ButtonWrapper = ({ className, children, onClick, href, disabled }) => {
     history.push(href);
   };
   const clickHandle = (e) => {
-    onClick && onClick(e);
-    href && redirector(e);
+    if (onClick) onClick(e);
+    if (href) redirector(e);
   };
 
   return (
@@ -140,9 +150,9 @@ export const LinkStyled = styled(LinkWrapper)`
   font-family: var(--nunito-font);
   font-weight: bold;
   text-decoration: none;
-  
-  :hover{
-    color:var(--styled-gray)
+
+  :hover {
+    color: var(--styled-gray);
   }
 `;
 export const ButtonAsLinkStyled = styled.button`
@@ -152,12 +162,12 @@ export const ButtonAsLinkStyled = styled.button`
   font-size: 16px;
   text-decoration: none;
   background-color: #00000000;
-  border:none;
-  outline:none;
-  
-  :hover{
-    color:var(--styled-gray);
-    cursor:pointer;
+  border: none;
+  outline: none;
+
+  :hover {
+    color: var(--styled-gray);
+    cursor: pointer;
   }
 `;
 
@@ -167,22 +177,23 @@ export const LabelStyled = styled.label`
   color: var(--styled-gray);
 `;
 const asButtonCss = css`
-width: 100%;
+  width: 100%;
   height: 48px;
   background: var(--primary-color);
   border: 2px solid var(--primary-color);
-  :hover{
+  :hover {
     cursor: pointer;
     background: var(--pure-white);
   }
   border-radius: 8px;
-  ${(p)=>
-    p.disabled && css`
-      :hover{
+  ${(p) =>
+    p.disabled &&
+    css`
+      :hover {
         cursor: auto;
       }
-    opacity: 0.4;
-      `}
+      opacity: 0.4;
+    `}
   ${(p) =>
     p.secondary &&
     css`
@@ -190,7 +201,7 @@ width: 100%;
       border-radius: 8px;
       border: 2px solid var(--primary-color);
 
-      :hover{
+      :hover {
         background: var(--primary-color);
       }
     `}
@@ -234,7 +245,7 @@ width: 100%;
   align-items: center;
   text-align: center;
   color: var(--pure-black);
-`
+`;
 
 export const LabelAsButton = styled.label`
   display: flex;
@@ -243,7 +254,7 @@ export const LabelAsButton = styled.label`
 `;
 export const InputFeedback = styled.div`
   color: red;
-  margin-top: .25rem;
+  margin-top: 0.25rem;
 `;
 
 export const LinkAsButton = styled(LinkWrapper)`
@@ -255,8 +266,7 @@ export const LinkAsButton = styled(LinkWrapper)`
 `;
 
 export const ButtonStyled = styled(ButtonWrapper)`
-  
-${asButtonCss}
+  ${asButtonCss}
 `;
 
 export const InputStyled = styled.input`
@@ -266,11 +276,9 @@ export const InputStyled = styled.input`
   padding: 3px 8px;
   background: var(--pure-white);
   border: 1px solid var(--styled-gray);
-  ${p => p.flex && `flex:${p.flex};`}
-  ${p => p.hide && `display:none;`}
+  ${(p) => p.flex && `flex:${p.flex};`}
+  ${(p) => p.hide && 'display:none;'}
 `;
-
-
 
 export const TextInputStyled = styled.textarea`
   box-sizing: border-box;
@@ -283,7 +291,15 @@ export const TextInputStyled = styled.textarea`
 `;
 
 export const Image = ({ src, alt, width, height, radius }) => {
-  return <img src={src} alt={alt} width={width} height={height} style={{ borderRadius: radius, objectFit:"cover", objectPosition: "center center" }} />;
+  return (
+    <img
+      src={src}
+      alt={alt}
+      width={width}
+      height={height}
+      style={{ borderRadius: radius, objectFit: 'cover', objectPosition: 'center center' }}
+    />
+  );
 };
 Image.propTypes = {
   src: PropTypes.string,

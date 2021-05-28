@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment/moment';
 import {
   Body,
   CommentContainer,
@@ -9,8 +10,6 @@ import {
   TextDataContainer,
 } from './style/CommentComponentStyle';
 import { ParagraphStyled } from '../../common/StylesComponent';
-import moment from "moment/moment";
-
 
 const CommentComponent = ({ author, text, date }) => {
   return (

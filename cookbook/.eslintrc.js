@@ -21,7 +21,7 @@ module.exports = {
     rules: {
         "import/prefer-default-export": "off",
         "import/no-extraneous-dependencies": "off",
-        "react/prop-types":"warn",
+        //"react/prop-types":"warn",
         "react/button-has-type":"off",
         "jsx-a11y/label-has-associated-control":"off",
 
@@ -30,6 +30,8 @@ module.exports = {
         'implicit-arrow-linebreak': 'off',
         'operator-linebreak': 'off',
         'no-confusing-arrow': 'off',
+        'no-underscore-dangle': 'off',
+        'react/prop-types': 'off',
 
         'arrow-parens': 'off',
         'object-curly-newline': 'off',

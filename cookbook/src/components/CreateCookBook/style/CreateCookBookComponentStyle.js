@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {Container, InputStyled, TextInputStyled} from '../../common/StylesComponent';
+import { Container, InputStyled, TextInputStyled } from '../../common/StylesComponent';
 
 export const ControllButtons = styled(Container)`
   justify-content: flex-end;

@@ -257,7 +257,7 @@ const Settings = (
             formData.append('avatar', file);
             formData.append('id', profile._id);
 
-            SendFile('/profile', formData, auth, logOut)
+            SendFile(ROUTES.CHANGE_ACC_IMAGE, formData, auth, logOut)
                 .then((response) => {
                     ServerMessageHandler(response, () => {
                         setUser(s => ({...s, image: response.img}))

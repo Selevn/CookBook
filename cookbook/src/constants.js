@@ -4,48 +4,100 @@ const __ROUTES__ = {
   USERS: '/api/users/',
   COMMENTS: '/api/comments/',
 }
+exports.HOME_ROUTES = {
+  LOGIN:`/api/login`,
+  EDIT:`/api/edit`,
+  CREATE:`/api/create`,
+  CHECK:`/api/check`,
+  USER_INTERACTIONS: `/api/userInteractions`,
+  USER_DATA: `/api/userData`,
+  GET: `/api/get`,
+}
+exports.RELATIVE_ROUTES = {
+  LOGIN:              `/login`,
+  REGISTER:           `/register`,
+
+  CHANGE_ACC:         `/changeAccount`,
+  CHANGE_ACC_IMAGE:   `/profile`,
+  EDIT_COOKBOOK:      `/editCookBook`,
+  EDIT_RECIPE:        `/editRecipe`,
+
+  NEW_RECIPE:         `/newRecipe`,
+  NEW_COOKBOOK:       `/newCookBook`,
+
+  PROFILE_CHECK:      `/profile`,
+  COOKBOOK_CHECK:     `/cookbook`,
+  RECIPE_CHECK:       `/recipe`,
+
+  USER_LIKE_COOKBOOK: `/likeCookBook`,
+  USER_LIKE_RECIPE:   `/likeRecipe`,
+  USER_VISIT_ITEM:    `/visitItem`,
+  USER_COMMENT:       `/comment`,
+
+  USER_RECIPES: `/recipes`,
+  USER_COOKBOOKS: `/cookbooks`,
+  USER_LIKED_RECIPES: `/liked/recipes`,
+  USER_LIKED_COOKBOOKS: `/liked/cookbooks`,
+
+  COOKBOOKS: `/cookbooks`,
+  RECIPES: `/recipes`,
+  USERS: `/users`,
+  COMMENTS: `/comments`,
+}
+
 exports.ROUTES = {
-  COOKBOOKS:__ROUTES__.COOKBOOKS,
-  RECIPES:__ROUTES__.RECIPES,
-  USERS:__ROUTES__.USERS,
-  COMMENTS:__ROUTES__.COMMENTS,
-
-  RECIPE_CLIENT: (id) => `${__ROUTES__.RECIPES}${id}`,
-  COOKBOOK_CLIENT: (id) => `${__ROUTES__.COOKBOOKS}${id}`,
-  USER_CLIENT: (id) => `${__ROUTES__.USERS}${id}`,
-
-  USER_CLIENT_COOKBOOKS: (id) => `${__ROUTES__.USERS}cookbooks/${id}`,
-  USER_CLIENT_RECIPES: (id) => `${__ROUTES__.USERS}recipes/${id}`,
-
-  USER_CLIENT_LIKED_COOKBOOKS: (id) => `${__ROUTES__.USERS}liked/cookbooks/${id}`,
-  USER_CLIENT_LIKED_RECIPES: (id) => `${__ROUTES__.USERS}liked/recipes/${id}`,
 
 
 
-  USER_RECIPES: `${__ROUTES__.USERS}recipes/`,
-  USER_COOKBOOKS: `${__ROUTES__.USERS}cookbooks/`,
 
-  USER_LIKED_RECIPES: `${__ROUTES__.USERS}liked/recipes/`,
-  USER_LIKED_COOKBOOKS: `${__ROUTES__.USERS}liked/cookbooks/`,
 
-  USER_LIKE_COOKBOOK: `${__ROUTES__.COOKBOOKS}like/`,
-  USER_LIKE_RECIPE: `${__ROUTES__.RECIPES}like/`,
 
-  USER_VISIT_ITEM: `/api/items/visit/`,
+  LOGIN_ABSOLUTE_ROUTE:     `${exports.HOME_ROUTES.LOGIN}${exports.RELATIVE_ROUTES.LOGIN}`,
+  REGISTER_ABSOLUTE_ROUTE:  `${exports.HOME_ROUTES.LOGIN}${exports.RELATIVE_ROUTES.REGISTER}`,
 
-  USER_COMMENT: `${__ROUTES__.COMMENTS}comment/`,
+  CHANGE_ACC:               `${exports.HOME_ROUTES.EDIT}${exports.RELATIVE_ROUTES.CHANGE_ACC}`,
+  CHANGE_ACC_IMAGE:         `${exports.HOME_ROUTES.EDIT}${exports.RELATIVE_ROUTES.CHANGE_ACC_IMAGE}`,
 
-  CHANGE_ACC: `/api/changeAccount/`,
-  CHANGE_ACC_IMAGE: `/profile`,
-  NEW_RECIPE: `/newRecipe`,
-  NEW_COOKBOOK: `/newCookBook`,
-  EDIT_COOKBOOK: `/editCookBook`,
-  EDIT_RECIPE: `/editRecipe`,
+  EDIT_COOKBOOK:            `${exports.HOME_ROUTES.EDIT}${exports.RELATIVE_ROUTES.EDIT_COOKBOOK}`,
+  EDIT_RECIPE:              `${exports.HOME_ROUTES.EDIT}${exports.RELATIVE_ROUTES.EDIT_RECIPE}`,
 
-  PROFILE_CHECK:`/api/check/profile/`,
-  COOKBOOK_CHECK:`/api/check/cookbook/`,
-  RECIPE_CHECK:`/api/check/recipe/`
+  NEW_RECIPE:               `${exports.HOME_ROUTES.EDIT}${exports.RELATIVE_ROUTES.NEW_RECIPE}`,
+  NEW_COOKBOOK:             `${exports.HOME_ROUTES.EDIT}${exports.RELATIVE_ROUTES.NEW_COOKBOOK}`,
+
+
+  PROFILE_CHECK:            `${exports.HOME_ROUTES.CHECK}${exports.RELATIVE_ROUTES.PROFILE_CHECK}`,
+  COOKBOOK_CHECK:           `${exports.HOME_ROUTES.CHECK}${exports.RELATIVE_ROUTES.COOKBOOK_CHECK}`,
+  RECIPE_CHECK:             `${exports.HOME_ROUTES.CHECK}${exports.RELATIVE_ROUTES.RECIPE_CHECK}`,
+
+
+  USER_LIKE_COOKBOOK:       `${exports.HOME_ROUTES.USER_INTERACTIONS}${exports.RELATIVE_ROUTES.USER_LIKE_COOKBOOK}`,
+  USER_LIKE_RECIPE:         `${exports.HOME_ROUTES.USER_INTERACTIONS}${exports.RELATIVE_ROUTES.USER_LIKE_RECIPE}`,
+  USER_VISIT_ITEM:          `${exports.HOME_ROUTES.USER_INTERACTIONS}${exports.RELATIVE_ROUTES.USER_VISIT_ITEM}`,
+  USER_COMMENT:             `${exports.HOME_ROUTES.USER_INTERACTIONS}${exports.RELATIVE_ROUTES.USER_COMMENT}`,
+
+  USER_RECIPES:             `${exports.HOME_ROUTES.USER_DATA}${exports.RELATIVE_ROUTES.USER_RECIPES}`,
+  USER_COOKBOOKS:           `${exports.HOME_ROUTES.USER_DATA}${exports.RELATIVE_ROUTES.USER_COOKBOOKS}`,
+  USER_LIKED_RECIPES:       `${exports.HOME_ROUTES.USER_DATA}${exports.RELATIVE_ROUTES.USER_LIKED_RECIPES}`,
+  USER_LIKED_COOKBOOKS:     `${exports.HOME_ROUTES.USER_DATA}${exports.RELATIVE_ROUTES.USER_LIKED_COOKBOOKS}`,
+
+  USER_CLIENT_LIKED_COOKBOOKS: (id) =>  `${exports.HOME_ROUTES.USER_DATA}${exports.RELATIVE_ROUTES.USER_LIKED_COOKBOOKS}/${id}`,
+  USER_CLIENT_LIKED_RECIPES: (id) =>    `${exports.HOME_ROUTES.USER_DATA}${exports.RELATIVE_ROUTES.USER_LIKED_RECIPES}/${id}`,
+  USER_CLIENT_COOKBOOKS: (id) =>        `${exports.HOME_ROUTES.USER_DATA}${exports.RELATIVE_ROUTES.USER_COOKBOOKS}/${id}`,
+  USER_CLIENT_RECIPES: (id) =>          `${exports.HOME_ROUTES.USER_DATA}${exports.RELATIVE_ROUTES.USER_RECIPES}/${id}`,
+
+  COOKBOOKS:   `${exports.HOME_ROUTES.GET}${exports.RELATIVE_ROUTES.COOKBOOKS}`,
+  RECIPES:     `${exports.HOME_ROUTES.GET}${exports.RELATIVE_ROUTES.RECIPES}`,
+  USERS:       `${exports.HOME_ROUTES.GET}${exports.RELATIVE_ROUTES.USERS}`,
+  COMMENTS:    `${exports.HOME_ROUTES.GET}${exports.RELATIVE_ROUTES.COMMENTS}`,
+
+  RECIPE_CLIENT: (id) => `${exports.HOME_ROUTES.GET}${exports.RELATIVE_ROUTES.RECIPES}/${id}`,
+  COOKBOOK_CLIENT: (id) => `${exports.HOME_ROUTES.GET}${exports.RELATIVE_ROUTES.COOKBOOKS}/${id}`,
+  USER_CLIENT: (id) => `${exports.HOME_ROUTES.GET}${exports.RELATIVE_ROUTES.USERS}/${id}`,
+
 };
+
+
+
 
 exports.COMMON = {
   ALLCONSTANT: '1000',

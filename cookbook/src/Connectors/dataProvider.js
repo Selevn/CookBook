@@ -1,5 +1,5 @@
 import {AuthCheckerWrapper} from "./AuthChecker";
-import {COMMON, MESSAGES, ROUTES, STATE} from "../constants";
+import {COMMON, MESSAGES, ROUTES} from "../constants";
 
 const AuthChecker = AuthCheckerWrapper();
 
@@ -54,7 +54,7 @@ export const hasItem = async (type, id) => {
 };
 
 export const Login = async (data) => {
-    const response = await fetch('/api/login/', {
+    const response = await fetch(ROUTES.LOGIN_ABSOLUTE_ROUTE, {
         method: 'POST',
         body: JSON.stringify(data),
         headers: {
@@ -102,7 +102,7 @@ export const SendFile = async (url, formData, authKey, logOutFunc) => {
 
 
 export const Register = async (data) => {
-    const response = await fetch('/api/register/', {
+    const response = await fetch(ROUTES.REGISTER_ABSOLUTE_ROUTE, {
         method: 'POST',
         body: JSON.stringify(data),
         headers: {

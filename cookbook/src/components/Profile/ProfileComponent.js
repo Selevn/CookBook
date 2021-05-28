@@ -53,11 +53,11 @@ const ProfileComponent = ({match}) => {
     }, [id]);
 
     useEffect(() => {
-        if(auth && user?._id === profile?._id )
-                dispatcher(profileActions.setProfile(user))
+        if (auth && user?._id === profile?._id)
+            dispatcher(profileActions.setProfile(user))
     }, [user]);
 
-    const SettingsWithRef = React.forwardRef( (props, ref)=>
+    const SettingsWithRef = React.forwardRef((props, ref) =>
         <Settings imageRef={ref} setUser={props.setUser}/>)
 
     return (
@@ -67,7 +67,7 @@ const ProfileComponent = ({match}) => {
                 {!loading && (
                     <>
                         <ProfileImageWrapper>
-                            <ProfileImage ref = {imageRef} src={user?.image}/>
+                            <ProfileImage ref={imageRef} src={user?.image}/>
                         </ProfileImageWrapper>
                         <UserTextContainer>
                             <UserName>{`${user?.name?.first} ${user?.name?.last}`}</UserName>

@@ -26,7 +26,6 @@ const FormComponent = ({
     const history = useHistory();
     const LoginFunction = useCallback((email, password) => {
         (async () => {
-            console.log(email)
             const answer = await Login({email: email, password: password})
             ServerMessageHandler(answer, () => {
                 dispatch(profileActions.setProfile(answer.user));

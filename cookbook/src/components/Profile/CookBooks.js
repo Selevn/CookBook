@@ -14,7 +14,6 @@ export const ProfileCookBooks = ({id ,isLiked, canEdit}) => {
         fetchUrl = ROUTES.USER_CLIENT_LIKED_COOKBOOKS(id)
     else
         fetchUrl = ROUTES.USER_CLIENT_COOKBOOKS(id)
-
   const [fetchBooks, hasNext, loading] = useFetch(fetchUrl, setItems )
   // firstLoad
   useEffect(() => {

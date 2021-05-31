@@ -25,14 +25,14 @@ export const ProfileRecipes = ({ id, isLiked, canEdit }) => {
     <>
       <InfiniteScroll
         dataLength={items.length}
-        hasMore={hasNext && items.length !== 0}
+        hasMore={hasNext}
         loader={<Loading />}
         next={fetchRecipes}
         className="infinity-scroller"
       >
-        {loader && <Loading />}
-        {!loader && items?.map((item) => <Recipe editable={canEdit} key={item._id} {...item} />)}
+        {items?.map((item) => <Recipe editable={canEdit} key={item._id} {...item} />)}
         {!loader && items?.length === 0 && <h1>No recipes</h1>}
+        {loader && items.length === 0 && <Loading />}
       </InfiniteScroll>
     </>
   );

@@ -71,12 +71,17 @@ function Routing(passport) {
                     recipe[RECIPE_FIELDS.image] = uploadedFile.secure_url
                     recipe[RECIPE_FIELDS.cloudinary_id] = uploadedFile.public_id
                 }
+                if(!req.files['image'])
+                {
+                    recipe[RECIPE_FIELDS.image] = req.body.image
+                }
 
                 if(req.files['gallery']){
                     const recipeKeys = currentRecipe.secondary_cloudinary_ids
-                    recipeKeys.forEach((key) => {
-                        cloudinary.uploader.destroy(key[0])
-                    })
+                    if(recipeKeys)
+                        recipeKeys.forEach((key) => {
+                            cloudinary.uploader.destroy(key[0])
+                        })
 
                     const promisesArray = []
                     recipe[RECIPE_FIELDS.images] = []

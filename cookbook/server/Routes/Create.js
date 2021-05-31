@@ -42,7 +42,6 @@ function Routing(passport) {
                     })
                     await Promise.all(promisesArray).then(values=>{
                         values.forEach(uploadedFile => {
-                            console.log(uploadedFile)
                             recipe[RECIPE_FIELDS.images].push(uploadedFile.secure_url)
                             recipe[RECIPE_FIELDS.secondary_cloudinary_ids].push(uploadedFile.public_id)
                         })

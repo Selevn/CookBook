@@ -51,7 +51,7 @@ const FormComponent = ({ register }) => {
 
   return (
     <FormDiv vertical>
-      <Logo logoHeight="50px" />
+      <Logo logoHeight="50px" wide />
       <Container vertical>
         <br />
         <h1>{register ? 'Join our community' : 'Welcome back'}</h1>
@@ -112,7 +112,7 @@ const FormComponent = ({ register }) => {
                 <Container vertical>
                   <Container justifyContent="space-between">
                     <LabelStyled>Password</LabelStyled>
-                    {register ? '' : <LinkStyled>Forgot password?</LinkStyled>}
+                    {/* {register ? '' : <LinkStyled>Forgot password?</LinkStyled>} deprecated for a while */}
                   </Container>
                   <InputStyled
                     value={values.password}

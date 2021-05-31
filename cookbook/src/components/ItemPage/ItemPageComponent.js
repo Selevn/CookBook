@@ -15,7 +15,7 @@ import { Statistics, StatisticsContainer } from '../MultyUsed/Recipe/style/Recip
 import { Liked } from '../MultyUsed/Liked';
 import { Commented } from '../MultyUsed/Commented';
 import { Views } from '../MultyUsed/Views';
-import { fetchData, SendData } from '../../Connectors/dataProvider';
+import { fetchData, SendData, SendVisited } from '../../Connectors/dataProvider';
 import { COMMON, ROUTES } from '../../constants';
 import { Loading } from '../MultyUsed/Loading/Loading';
 import { useReduxState } from '../MultyUsed/CustomHooks/useReduxState';
@@ -38,11 +38,11 @@ const ItemPageComponent = ({ match }) => {
 
   useEffect(() => {
     const timerId = setTimeout(async () => {
-      await SendData(ROUTES.USER_VISIT_ITEM, {
+      await SendVisited({
         to: id,
         type,
       });
-    }, 7000);
+    }, 2000);
     return () => {
       clearInterval(timerId);
     };

@@ -40,6 +40,6 @@ export const ProfileRecipes = ({ id, isLiked, canEdit }) => {
 
 ProfileRecipes.propTypes = {
   canEdit: PropTypes.bool,
-  id: PropTypes.number,
+  id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   isLiked: PropTypes.bool,
 };

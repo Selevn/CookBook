@@ -82,6 +82,19 @@ export const SendData = async (url, data, authKey, logOutFunc) => {
   return { success: false, error: MESSAGES.ERROR.AUTH };
 };
 
+export const SendVisited = async (data) => {
+  const response = await fetch(ROUTES.USER_VISIT_ITEM, {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  if (response.status !== 200 && response.status !== 401) throw Error(response);
+  if (response.status === 401) return { success: false };
+  return response.json();
+};
+
 export const SendFile = async (url, formData, authKey, logOutFunc) => {
   if (AuthChecker(authKey)) {
     const response = await fetch(url, {

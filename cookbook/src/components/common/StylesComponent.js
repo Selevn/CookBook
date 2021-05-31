@@ -30,7 +30,7 @@ export const Container = styled.div`
   ${(p) => (p.display ? `display: ${p.display}` : '')};
 `;
 
-const LogoImage = () => <img src={logo} alt="Logo" />;
+const LogoImage = ({ width }) => <img src={logo} width={width} alt="Logo" />;
 const LogoImageLight = () => <img src={lightlogo} alt="Logo" />;
 
 const LogoWrapper = styled(Container)`
@@ -40,10 +40,11 @@ const LogoWrapper = styled(Container)`
   height: ${(p) => (p.logoHeight ? p.logoHeight : '37px')};
 `;
 
-export const Logo = ({ alignSelf, className, logoHeight }) => {
+export const Logo = ({ alignSelf, className, logoHeight, wide }) => {
   const href = '/';
   const history = useHistory();
-  let redirector = () => {};
+  let redirector = () => {
+  };
   if (href) {
     redirector = () => {
       history.push(href);
@@ -56,7 +57,7 @@ export const Logo = ({ alignSelf, className, logoHeight }) => {
       logoHeight={logoHeight}
       onClick={redirector}
     >
-      <LogoImage />
+      <LogoImage width={wide && '100%'} />
     </LogoWrapper>
   );
 };
@@ -82,7 +83,8 @@ Logo.propTypes = {
 
 const LinkWrapper = ({ className, children, id, onClick, to }) => {
   if (to === '') {
-    to = () => {};
+    to = () => {
+    };
   }
   return (
     <Link
@@ -90,11 +92,11 @@ const LinkWrapper = ({ className, children, id, onClick, to }) => {
       className={className}
       id={id}
       onClick={
-        onClick ||
-        ((e) => {
-          e.stopPropagation();
-        })
-      }
+                onClick ||
+                ((e) => {
+                  e.stopPropagation();
+                })
+            }
     >
       {children}
     </Link>
@@ -182,65 +184,68 @@ const asButtonCss = css`
   height: 48px;
   background: var(--primary-color);
   border: 2px solid var(--primary-color);
+
   :hover {
     cursor: pointer;
     background: var(--pure-white);
   }
+
   border-radius: 8px;
   ${(p) =>
     p.disabled &&
-    css`
-      :hover {
-        cursor: auto;
-      }
-      opacity: 0.4;
-    `}
+          css`
+            :hover {
+              cursor: auto;
+            }
+
+            opacity: 0.4;
+          `}
   ${(p) =>
     p.secondary &&
-    css`
-      background: var(--pure-white);
-      border-radius: 8px;
-      border: 2px solid var(--primary-color);
+          css`
+            background: var(--pure-white);
+            border-radius: 8px;
+            border: 2px solid var(--primary-color);
 
-      :hover {
-        background: var(--primary-color);
-      }
-    `}
+            :hover {
+              background: var(--primary-color);
+            }
+          `}
   ${(p) =>
     p.thick &&
-    css`
-      border: 1px solid var(--primary-color);
-    `}
-  
+          css`
+            border: 1px solid var(--primary-color);
+          `}
+
   ${(p) =>
     p.medium &&
-    css`
-      max-width: 220px;
-      max-height: 45px;
-      font-size: 18px;
-    `}
+          css`
+            max-width: 220px;
+            max-height: 45px;
+            font-size: 18px;
+          `}
   ${(p) =>
     p.small &&
-    css`
-      max-width: 120px;
-      max-height: 45px;
-      font-size: 18px;
-    `}
+          css`
+            max-width: 120px;
+            max-height: 45px;
+            font-size: 18px;
+          `}
   ${(p) =>
     p.tiny &&
-    css`
-      max-width: 90px;
-      max-height: 40px;
-      font-size: 14px;
-    `}
+          css`
+            max-width: 90px;
+            max-height: 40px;
+            font-size: 14px;
+          `}
   font-family: var(--nunito-font);
   font-style: normal;
   font-weight: 600;
   ${(p) =>
     p.light &&
-    css`
-      font-weight: 400;
-    `}
+          css`
+            font-weight: 400;
+          `}
   font-size: 18px;
   line-height: 27px;
   align-items: center;
@@ -324,3 +329,7 @@ export const H1Styled = styled.h1`
   ${(p) => (p.size ? `font-size:${p.size};` : '')}
   ${(p) => (p.transform ? `text-transform:${p.transform};` : '')}
 `;
+
+LogoImage.propTypes = {
+  width: PropTypes.string,
+};

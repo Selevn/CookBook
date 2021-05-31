@@ -19,8 +19,7 @@ export const profileReducer = (state = initialState, action) => {
       const inputId = Number(action.payload);
       let changedArr = [...state.likes.recipes];
       if (state) {
-        if (state.likes.recipes.includes(inputId))
-          changedArr = changedArr.filter((id) => id !== inputId);
+        if (state.likes.recipes.includes(inputId)) changedArr = changedArr.filter((id) => id !== inputId);
         else changedArr.push(inputId);
         PutData(PROFILE, {
           ...state,
@@ -35,8 +34,7 @@ export const profileReducer = (state = initialState, action) => {
       let changedArr;
       if (state) {
         changedArr = [...state.likes.cookBooks];
-        if (state.likes.cookBooks.includes(inputId))
-          changedArr = changedArr.filter((id) => id !== inputId);
+        if (state.likes.cookBooks.includes(inputId)) changedArr = changedArr.filter((id) => id !== inputId);
         else changedArr.push(inputId);
         PutData(PROFILE, {
           ...state,

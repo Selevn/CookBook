@@ -8,12 +8,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('public'));
 
-/*
-app.use((req,res,next)=>{
-    setTimeout(next,500)
-})
-*/
-
 require('./JWT/PassportConfig.js')(passport)
 app.use(passport.initialize());
 
@@ -37,7 +31,5 @@ app.use(HOME_ROUTES.USER_DATA, usersDataRouter)
 
 const itemRouter = require('./Routes/GetItem');
 app.use(HOME_ROUTES.GET, itemRouter)
-
-
 
 app.listen(process.env.BACKEND_PORT, process.env.IP, () => console.log(`Listening on ${process.env.IP}:${process.env.BACKEND_PORT}`));

@@ -17,7 +17,6 @@ router.get(`${RELATIVE_ROUTES.USER_RECIPES}/:userId`, async (req, res) => {
 });
 
 router.get(`${RELATIVE_ROUTES.USER_LIKED_COOKBOOKS}/:userId`, async (req, res) => {
-    console.log("here lol")
     const data = await getUserLikedCookBooks(req.params['userId'], req.query);
     res.json(
         data

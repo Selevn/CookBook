@@ -104,9 +104,9 @@ export default ItemCommentsContainer;
 
 ItemCommentsContainer.propTypes = {
   auth: PropTypes.string,
-  id: PropTypes.string || PropTypes.number,
+  id: PropTypes.number,
   profile: PropTypes.shape({
-    _id: PropTypes.string || PropTypes.number,
+    _id: PropTypes.number,
     name: PropTypes.object,
     image: PropTypes.string,
   }),

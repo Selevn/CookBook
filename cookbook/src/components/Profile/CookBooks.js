@@ -23,23 +23,23 @@ export const ProfileCookBooks = ({ id, isLiked, canEdit }) => {
     <>
       <InfiniteScroll
         dataLength={items.length}
-        hasMore={hasNext && items.length !== 0}
+        hasMore={hasNext}
         loader={<Loading />}
         next={fetchBooks}
         className="infinity-scroller"
       >
-        {/* {loading && <Loading />} */}
         {!loading &&
           items?.map((item) => (
             <CookCard isEditable={canEdit} type="normal" key={item._id} {...item} />
           ))}
         {!loading && items?.length === 0 && <h1>No cookbooks</h1>}
+        {loading && items?.length === 0 && <Loading />}
       </InfiniteScroll>
     </>
   );
 };
 ProfileCookBooks.propTypes = {
   canEdit: PropTypes.bool,
-  id: PropTypes.number,
+  id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   isLiked: PropTypes.bool,
 };

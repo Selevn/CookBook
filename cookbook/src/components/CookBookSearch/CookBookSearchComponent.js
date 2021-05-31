@@ -30,7 +30,7 @@ const SearchComponent = ({ match }) => {
 
   const type = match.params.type;
 
-  const { profile, auth } = useReduxState();
+  const { profile } = useReduxState();
 
   const cookbooks = 'cookbooks';
   const recipes = 'recipes';

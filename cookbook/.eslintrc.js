@@ -24,6 +24,9 @@ module.exports = {
         //"react/prop-types":"warn",
         "react/button-has-type":"off",
         "jsx-a11y/label-has-associated-control":"off",
+        "import/no-named-as-default":"off",
+        "no-unused-expressions":"off",
+
 
         'linebreak-style': 'off',
         'react/jsx-props-no-spreading': 'off',
@@ -41,7 +44,8 @@ module.exports = {
         'no-plusplus': 'off',
         'space-before-function-paren': 0,
 
-        'max-len': ['error', 100, 2, { ignoreUrls: true, }],
+        //'max-len': ['error', 100, 2, { ignoreUrls: true, }],
+        "max-len":"off",
         'no-console': 'error',
         'no-alert': 'error',
 

@@ -9,7 +9,6 @@ import {
   InputFeedback,
   InputStyled,
   LabelAsButton,
-  LabelStyled,
 } from '../common/StylesComponent';
 
 import { Recipe } from '../MultyUsed/Recipe';
@@ -53,14 +52,14 @@ const CreateCookBookComponent = ({ isEdit, item }) => {
     setFile(_file);
   };
 
-  const removeSaved = useCallback((item, saved) => {
+  const removeSaved = useCallback((cbItem, saved) => {
     setRecipesSelected((s) => s.filter((recipe) => saved !== recipe));
-    setRecipesSelectedIds((s) => s.filter((recipeId) => item._id !== recipeId));
+    setRecipesSelectedIds((s) => s.filter((recipeId) => cbItem._id !== recipeId));
   }, []);
 
-  const addSaved = useCallback((item, saved) => {
+  const addSaved = useCallback((cbItem, saved) => {
     setRecipesSelected((s) => [...s, saved]);
-    setRecipesSelectedIds((s) => [...s, item._id]);
+    setRecipesSelectedIds((s) => [...s, cbItem._id]);
   }, []);
 
   const logOut = useLogout();
@@ -75,10 +74,10 @@ const CreateCookBookComponent = ({ isEdit, item }) => {
   useEffect(() => {
     (async () => {
       if (isEdit && item.recipesIds) {
-        const recipes = await fetchData(ROUTES.RECIPES, null, {
+        const recipesData = await fetchData(ROUTES.RECIPES, null, {
           ids: JSON.stringify(item.recipesIds),
         });
-        recipes.docs.forEach((recipeItem) => {
+        recipesData.docs.forEach((recipeItem) => {
           const savedRecipe = (
             <Recipe
               removable
@@ -104,6 +103,7 @@ const CreateCookBookComponent = ({ isEdit, item }) => {
 
   const save = async (values) => {
     const filtersNormalized = [];
+    /* eslint-disable-next-line */
     for (const filter in foodPref) foodPref[filter] && filtersNormalized.push(filter);
 
     if (!auth) {
@@ -116,9 +116,6 @@ const CreateCookBookComponent = ({ isEdit, item }) => {
     }
 
     const formData = new FormData();
-
-    /* if(file)
-            formData.append('image', file); */
 
     if (!file && isEdit) formData.append(COOKBOOK_FIELDS.image, item.image);
     else if (validateImage(file)) formData.append('image', file);
@@ -140,7 +137,6 @@ const CreateCookBookComponent = ({ isEdit, item }) => {
 
     SendFile(isEdit ? ROUTES.EDIT_COOKBOOK : ROUTES.NEW_COOKBOOK, formData, auth, logOut).then(
       (response) => {
-        console.log(response);
         ServerMessageHandler(
           response,
           () => {
@@ -181,10 +177,9 @@ const CreateCookBookComponent = ({ isEdit, item }) => {
         } else if (!validateDescription(values.desc)) {
           errors.desc = 'Invalid description';
         }
-
         return errors;
       }}
-      onSubmit={(values, { setSubmitting }) => {
+      onSubmit={(values) => {
         save(values);
       }}
     >
@@ -195,8 +190,6 @@ const CreateCookBookComponent = ({ isEdit, item }) => {
         handleChange,
         handleBlur,
         handleSubmit,
-        isSubmitting,
-        /* and other goodies */
       }) => (
         <CreateCookBookPage>
           <H1Styled size="56px">{isEdit ? 'Edit cookbook' : 'Create a new cookbook'}</H1Styled>
@@ -261,30 +254,31 @@ const CreateCookBookComponent = ({ isEdit, item }) => {
             <RecepiesContainer noTopPadding>
               <Container padding="0" className="recipesContainer">
                 {recipes &&
-                  recipes.map((item) => {
+                  recipes.map((itemLocal) => {
                     const savedRecipe = (
                       <Recipe
                         removable
                         onRemovable={() => {
-                          removeSaved(item, savedRecipe);
+                          removeSaved(itemLocal, savedRecipe);
                         }}
-                        key={item._id}
-                        {...item}
+                        key={itemLocal._id}
+                        {...itemLocal}
                       />
                     );
 
-                    if (!recipesSelectedIds.includes(item._id)) {
+                    if (!recipesSelectedIds.includes(itemLocal._id)) {
                       return (
                         <Recipe
                           savable
                           onSavable={() => {
-                            addSaved(item, savedRecipe);
+                            addSaved(itemLocal, savedRecipe);
                           }}
-                          key={item._id}
-                          {...item}
+                          key={itemLocal._id}
+                          {...itemLocal}
                         />
                       );
                     }
+                    return <></>;
                   })}
                 {loader && <Loading />}
                 {hasNextPage && recipes.length !== 0 && (

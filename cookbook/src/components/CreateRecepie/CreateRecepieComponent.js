@@ -82,6 +82,7 @@ const CreateRecepieComponent = ({ edit }) => {
       }
 
       if (secondaryFiles) {
+        /* eslint-disable-next-line */
         for (const _file of secondaryFiles) {
           if (validateImage(_file)) formData.append('gallery', _file);
           else {

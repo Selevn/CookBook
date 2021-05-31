@@ -61,7 +61,7 @@ const ChangeComponent = ({ value, valueName, setChangeField, type, area = false 
   const remoteFieldChange = async (fieldName, data) => {
     const response = await SendData(
       ROUTES.CHANGE_ACC,
-      { id: profile._id, field: fieldName, data },
+      { id: profile._id, field: fieldName, value: data },
       auth,
       logOut,
     );
@@ -89,7 +89,6 @@ const ChangeComponent = ({ value, valueName, setChangeField, type, area = false 
           default:
             validator = () => true;
             throw new Error('NO VALIDATOR');
-            break;
         }
         const errors = {};
         if (!values.data) {
@@ -108,6 +107,7 @@ const ChangeComponent = ({ value, valueName, setChangeField, type, area = false 
       }}
       onSubmit={(values) => {
         const oldValue = localFieldChange(valueName, values.data);
+
         remoteFieldChange(valueName, values.data).then((response) => {
           ServerMessageHandler(response, null, (err) => {
             if (err !== MESSAGES.ERROR.AUTH) localFieldChange(valueName, oldValue);

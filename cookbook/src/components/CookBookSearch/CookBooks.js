@@ -9,7 +9,6 @@ import Checkbox from '../MultyUsed/CheckBox/CheckBox';
 import { Loading } from '../MultyUsed/Loading/Loading';
 import { useFetch } from '../MultyUsed/CustomHooks/useFetch';
 import useDebounce from '../MultyUsed/CustomHooks/useDebouncer';
-import { Recipe } from '../MultyUsed/Recipe';
 
 export const CookBooks = ({ filters, sortBy, searchValue }) => {
   const [items, setItems] = useState([]);

@@ -78,7 +78,7 @@ export const SendData = async (url, data, authKey, logOutFunc) => {
     if (response.status === 401) return { success: false };
     return response.json();
   }
-  logOutFunc && logOutFunc();
+  if (logOutFunc) logOutFunc();
   return { success: false, error: MESSAGES.ERROR.AUTH };
 };
 
@@ -95,7 +95,7 @@ export const SendFile = async (url, formData, authKey, logOutFunc) => {
     if (response.status === 401) return { success: false };
     return response.json();
   }
-  logOutFunc && logOutFunc();
+  if (logOutFunc) logOutFunc();
   return { success: false, error: MESSAGES.ERROR.AUTH };
 };
 

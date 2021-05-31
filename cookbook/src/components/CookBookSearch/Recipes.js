@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Recipe } from '../MultyUsed/Recipe';
@@ -6,23 +6,9 @@ import { COMMON, ROUTES } from '../../constants';
 import { SortContainer } from './style/CookBookSearchComponentStyle';
 import { H1Styled } from '../common/StylesComponent';
 import { Loading } from '../MultyUsed/Loading/Loading';
-import { InfinityScrolls } from '../MultyUsed/InfiniteScroll';
 import { useFetch } from '../MultyUsed/CustomHooks/useFetch';
-import { CookCard } from '../MultyUsed/CookCard';
 import useDebounce from '../MultyUsed/CustomHooks/useDebouncer';
 
-function InfinityScroll(props) {
-  return null;
-}
-
-InfinityScroll.propTypes = {
-  hasMore: PropTypes.any,
-  loader: PropTypes.element,
-  dataLength: PropTypes.number,
-  next: PropTypes.func,
-  className: PropTypes.string,
-  children: PropTypes.node,
-};
 export const Recipes = ({ filters, sortBy, searchValue }) => {
   const [items, setItems] = useState([]);
   const debouncedValue = useDebounce(searchValue, 500);
@@ -32,11 +18,9 @@ export const Recipes = ({ filters, sortBy, searchValue }) => {
     searchString: debouncedValue,
   });
   // firstLoad
-
   useEffect(() => {
     fetchRecipes('start');
   }, [sortBy, filters, debouncedValue]);
-  // sortBy, filters, debouncedValue
   return (
     <>
       <InfiniteScroll

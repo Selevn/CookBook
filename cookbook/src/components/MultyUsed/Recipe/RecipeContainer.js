@@ -12,7 +12,6 @@ import {
   DataContainer,
   ImageContainer,
   RecipeContainer,
-
   Statistics,
   ToolsContainer,
   RecipeContainerWrapper,
@@ -31,8 +30,6 @@ export const Recipe = ({
   author,
   name,
   desc,
-  // eslint-disable-next-line
-  type,
   isMy,
   savable,
   onSavable,
@@ -117,21 +114,25 @@ export const Recipe = ({
 };
 
 Recipe.propTypes = {
-  views: PropTypes.number,
-  likes: PropTypes.number,
-  commentsIds: PropTypes.array,
-  isLiked: PropTypes.bool,
-  isCommented: PropTypes.bool,
+  _id: PropTypes.number,
   author: PropTypes.array,
-  name: PropTypes.string,
+  commentsIds: PropTypes.array,
   desc: PropTypes.string,
-  type: PropTypes.string,
+  editable: PropTypes.bool,
+  handleRemove: PropTypes.func,
+  image: PropTypes.string,
+  isCommented: PropTypes.bool,
+  isLiked: PropTypes.bool,
   isMy: PropTypes.bool,
+  likes: PropTypes.number,
+  name: PropTypes.string,
+  onRemovable: PropTypes.func,
+  onSavable: PropTypes.func,
   removable: PropTypes.bool,
   savable: PropTypes.bool,
-  handleRemove: PropTypes.func,
-  _id: PropTypes.number,
-  image: PropTypes.string,
+  small: PropTypes.bool,
+  type: PropTypes.string,
+  views: PropTypes.number,
 };
 
 export default Recipe;

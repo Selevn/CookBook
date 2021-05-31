@@ -1,5 +1,6 @@
 import { AiOutlineClose } from 'react-icons/all';
 import React, { useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { ParagraphStyled } from '../common/StylesComponent';
 import { CloseIngredient, Ingredient } from './style/CreateRecepieComponentStyle';
 
@@ -24,3 +25,11 @@ const Item = ({ value, index, setRecipe, recipe, type }) => {
 };
 
 export default Item;
+
+Item.propTypes = {
+  index: PropTypes.number,
+  recipe: PropTypes.object,
+  setRecipe: PropTypes.func,
+  type: PropTypes.string,
+  value: PropTypes.string,
+};

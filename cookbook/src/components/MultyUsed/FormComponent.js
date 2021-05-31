@@ -92,14 +92,7 @@ const FormComponent = ({ register }) => {
           else LoginFunction(values.email, values.password);
         }}
       >
-        {({
-          values,
-          errors,
-          touched,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-        }) => (
+        {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
           <>
             <Container minHeight={register ? '60%' : '40%'} vertical justifyContent="center">
               <Container vertical minHeight="80%" justifyContent="space-around">

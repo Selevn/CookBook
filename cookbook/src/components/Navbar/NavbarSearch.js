@@ -3,11 +3,7 @@ import useDebounce from '../MultyUsed/CustomHooks/useDebouncer';
 import { fetchData } from '../../Connectors/dataProvider';
 import { ROUTES } from '../../constants';
 import { Recipes, Results, SearchStyled, CookBooks } from './style/SearchStyle';
-import {
-  H1Styled,
-  LinkStyled,
-  ParagraphStyled,
-} from '../common/StylesComponent';
+import { H1Styled, LinkStyled, ParagraphStyled } from '../common/StylesComponent';
 import { Recipe } from '../MultyUsed/Recipe';
 import { CookCard } from '../MultyUsed/CookCard';
 import { Loading } from '../MultyUsed/Loading/Loading';

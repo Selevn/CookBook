@@ -34,7 +34,7 @@ module.exports = {
         'operator-linebreak': 'off',
         'no-confusing-arrow': 'off',
         'no-underscore-dangle': 'off',
-        'react/prop-types': 'off',
+        //'react/prop-types': 'off',
 
         'arrow-parens': 'off',
         'object-curly-newline': 'off',

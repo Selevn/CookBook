@@ -4,6 +4,9 @@ const schema = new Schema({
     "_id": {
         "type": "Number"
     },
+    "cloudinary_id": {
+        "type": "String"
+    },
     "name": {
         "first": {
             "type": "String"

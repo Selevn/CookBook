@@ -152,12 +152,12 @@ const ItemPageComponent = ({ match }) => {
                   <H1Styled>Directions</H1Styled>
                   <ol>
                     {item?.directions &&
-                    item.directions.map((i, index) => (
+                      item.directions.map((i, index) => (
                         // eslint-disable-next-line
                         <li key={`${index}directions`}>
                           <span>{i}</span>
                         </li>
-                    ))}
+                      ))}
                   </ol>
                 </RecipeStats>
                 <RecipeStats>

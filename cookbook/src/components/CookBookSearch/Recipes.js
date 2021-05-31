@@ -32,14 +32,15 @@ export const Recipes = ({ filters, sortBy, searchValue }) => {
       >
         {items && items.map((item) => <Recipe key={item._id} {...item} />)}
         {!loader && items?.length === 0 && <h1>No recipes</h1>}
-        {loader && <Loading />}
+        {loader && items?.length === 0 && <Loading />}
       </InfiniteScroll>
     </>
   );
 };
 
 Recipes.propTypes = {
-  filters: PropTypes.string,
+  filters: PropTypes.any,
+  searchValue: PropTypes.string,
   sortBy: PropTypes.string,
 };
 
@@ -64,5 +65,6 @@ export const RecipesMenu = ({ cookTime, setCookTime, isAllAvailible = true }) =>
 
 RecipesMenu.propTypes = {
   cookTime: PropTypes.string,
+  isAllAvailible: PropTypes.bool,
   setCookTime: PropTypes.func,
 };

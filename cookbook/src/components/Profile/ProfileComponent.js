@@ -59,7 +59,9 @@ const ProfileComponent = ({ match }) => {
   const SettingsWithRef = React.forwardRef((props, ref) => (
     <Settings imageRef={ref} setUser={props.setUser} />
   ));
-
+  SettingsWithRef.propTypes = {
+    setUser: PropTypes.func,
+  };
   return (
     <>
       <UserInformation>

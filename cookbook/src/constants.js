@@ -122,6 +122,7 @@ exports.USER_FIELDS = {
   desc: 'desc',
   likes: 'likes',
   comments: 'comments',
+  cloudinary_id: 'cloudinary_id',
 };
 exports.RECIPE_FIELDS = {
   views: 'views',
@@ -137,6 +138,8 @@ exports.RECIPE_FIELDS = {
   commentsIds: 'commentsIds',
   likes: 'likes',
   ID: '_id',
+  cloudinary_id: 'cloudinary_id',
+  secondary_cloudinary_ids: 'secondary_cloudinary_ids',
 };
 exports.COOKBOOK_FIELDS = {
   views: 'views',
@@ -150,6 +153,7 @@ exports.COOKBOOK_FIELDS = {
   recipesIds: 'recipesIds',
   likes: 'likes',
   ID: '_id',
+  cloudinary_id: 'cloudinary_id',
 };
 
 exports.TOAST_SETTINGS = {

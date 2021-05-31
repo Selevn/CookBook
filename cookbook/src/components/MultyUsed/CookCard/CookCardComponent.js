@@ -126,17 +126,18 @@ export const CookCardComponent = ({
 };
 
 CookCardComponent.propTypes = {
-  views: PropTypes.number,
-  likes: PropTypes.number,
-  comments: PropTypes.array,
-  isLiked: PropTypes.bool,
-  isCommented: PropTypes.bool,
-  author: PropTypes.array,
-  name: PropTypes.string,
-  desc: PropTypes.string,
-  type: PropTypes.string,
-  image: PropTypes.string,
   _id: PropTypes.number,
+  author: PropTypes.array,
+  comments: PropTypes.array,
+  desc: PropTypes.string,
+  image: PropTypes.string,
+  isCommented: PropTypes.bool,
+  isEditable: PropTypes.bool,
+  isLiked: PropTypes.bool,
+  likes: PropTypes.number,
+  name: PropTypes.string,
+  type: PropTypes.string,
+  views: PropTypes.number,
 };
 
 export const CookCardMenuComponent = ({ name, type, image, _id: id }) => {

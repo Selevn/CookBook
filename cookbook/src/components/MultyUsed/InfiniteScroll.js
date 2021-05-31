@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useCallback, useEffect, useState } from 'react';
 import debouncer from '../common/Debouncer';
 
@@ -41,3 +42,4 @@ export const InfinityScrolls = ({ children, hasMore, loader, next, dataLength })
     </>
   );
 };
+/* eslint-enable */

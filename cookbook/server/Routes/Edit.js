@@ -1,22 +1,18 @@
+const cloudinary = require('../Cloudinary/cloudinary');
+
 const express = require('express');
-const fs = require("fs");
-const renameFile = require("./utils/renameFile");
+const removeFiles = require("./utils/removeFile");
+const {getRecipe} = require("../Data/dataProvider");
+const {getCookBook} = require("../Data/dataProvider");
+const {USER_FIELDS} = require("../../src/constants");
+const {getUser} = require("../Data/dataProvider");
 const {updateRecipe} = require("../Data/dataProvider");
 const {RECIPE_FIELDS} = require("../../src/constants");
 const {updateCookBook} = require("../Data/dataProvider");
 const {COOKBOOK_FIELDS} = require("../../src/constants");
 const {updateUser} = require("../Data/dataProvider");
-const {FOLDERS} = require("../../src/constants");
 const {RELATIVE_ROUTES} = require("../../src/constants");
 const {passportMiddlewareProvider} = require("../JWT/PasswordProvider");
-const {ROUTES} = require("../../src/constants");
-const {createUser} = require("../Data/dataProvider");
-const {getPassword} = require("../JWT/PasswordHasher");
-const {validatePassword} = require("../validator/validator");
-const {validateEmail} = require("../validator/validator");
-const {issueJWT} = require("../JWT/PasswordHasher");
-const {checkPassword} = require("../JWT/PasswordHasher");
-const {getUserForLogin} = require("../Data/dataProvider");
 
 function Routing(passport) {
     const passwordMiddleware = passportMiddlewareProvider(passport);
@@ -28,15 +24,17 @@ function Routing(passport) {
         passwordMiddleware,
         userUpload.single('avatar'),
         async function (req, res, next) {
-            const newName = req.body.id+'__'+req.file.filename;
-            if (!renameFile(FOLDERS.USERS_AVATARS, req.file.filename, newName, req.body.id+'__'))
-                res.json({
-                    success: false,
-                })
-            const result = await updateUser(req.body.id, 'image',`/img/profileImages/${newName}`)
+            let result = true;
+            const userKey = (await getUser(req.body.id))[0].cloudinary_id;
+            if(userKey)
+                cloudinary.uploader.destroy(userKey)
+            const uploadedFile = await cloudinary.uploader.upload(req.file.path)
+            removeFiles(req.file.path)
+            result = result && await updateUser(req.body.id, USER_FIELDS.image,uploadedFile.secure_url)
+            result = result && await updateUser(req.body.id, USER_FIELDS.cloudinary_id,uploadedFile.public_id)
             res.json({
-                success: !!result,
-                img: `/img/profileImages/${newName}`,
+                success: result,
+                img: uploadedFile.secure_url,
             })
         })
 
@@ -54,33 +52,51 @@ function Routing(passport) {
         passwordMiddleware,
         recipeUpload.fields([{ name: 'image', maxCount: 1 }, {name:'gallery', maxCount: 8}]),
         async function (req, res, next) {
-            let createRecipeFlag = false;
-            const newId = req.body._id;
+            const id = req.body._id;
+            const toRemove = [];
+            let createRecipeFlag;
+            let currentRecipe;
+            if(req.files['image'] || req.files['gallery'])
+                currentRecipe = (await getRecipe(id))[0]
             try{
+
                 const recipe = {...req.body}
                 if(req.files['image'])
                 {
-                    const oldName = req.files['image'][0].filename;
-                    const newName = `${newId}__${oldName}`;
-                    if(!renameFile(FOLDERS.RECIPES_IMAGES,oldName,newName,`${newId}__`))
-                        throw new Error("File was not renamed")
-                    recipe[RECIPE_FIELDS.image] = `/img/recipeImages/${newName}`
+                    const recipeKey = currentRecipe.cloudinary_id
+                    if(recipeKey)
+                        cloudinary.uploader.destroy(recipeKey)
+                    const uploadedFile = await cloudinary.uploader.upload(req.files['image'][0].path)
+                    toRemove.push(req.files['image'][0].path)
+                    recipe[RECIPE_FIELDS.image] = uploadedFile.secure_url
+                    recipe[RECIPE_FIELDS.cloudinary_id] = uploadedFile.public_id
                 }
 
                 if(req.files['gallery']){
-                    const secondaryFilesNames = []
-                    req.files['gallery'].forEach((file, position) => {
-                        const oldName = file.filename;
-                        const newName = `${newId}_${position}_${oldName}`;
-                        renameFile(FOLDERS.RECIPES_IMAGES,oldName,newName,`${newId}_${position}_`)
-                        secondaryFilesNames.push(newName)
+                    const recipeKeys = currentRecipe.secondary_cloudinary_ids
+                    recipeKeys.forEach((key) => {
+                        cloudinary.uploader.destroy(key[0])
                     })
-                    recipe[RECIPE_FIELDS.images] = secondaryFilesNames.map(item=>`/img/recipeImages/${item}`)
+
+                    const promisesArray = []
+                    recipe[RECIPE_FIELDS.images] = []
+                    recipe[RECIPE_FIELDS.secondary_cloudinary_ids] = []
+                    req.files['gallery'].forEach((file) => {
+                        promisesArray.push(cloudinary.uploader.upload(file.path))
+                        toRemove.push(file.path)
+                    })
+                    await Promise.all(promisesArray).then(values=>{
+                        values.forEach(uploadedFile => {
+                            recipe[RECIPE_FIELDS.images].push(uploadedFile.secure_url)
+                            recipe[RECIPE_FIELDS.secondary_cloudinary_ids].push(uploadedFile.public_id)
+                        })
+                    })
                 }
                 if(!req.files['gallery'])
                 {
                     recipe[RECIPE_FIELDS.images] = JSON.parse(req.body.images)
                 }
+                removeFiles(toRemove)
                 recipe[RECIPE_FIELDS.directions] = JSON.parse(recipe[RECIPE_FIELDS.directions])
                 recipe[RECIPE_FIELDS.ingredients] = JSON.parse(recipe[RECIPE_FIELDS.ingredients])
                 createRecipeFlag = await updateRecipe(recipe);
@@ -91,7 +107,7 @@ function Routing(passport) {
             }
             res.json({
                 success: !!createRecipeFlag,
-                id:newId
+                id:id
             })
         })
 
@@ -100,16 +116,17 @@ function Routing(passport) {
         cookBookUpload.single('image'),
         async function (req, res, next) {
             let createCookBookFlag = false;
-            const newId = req.body._id;
-
+            const id = req.body._id;
             try{
                 const cookBook = {...req.body}
                 if(req.file){
-                    const oldName = req.file.filename;
-                    const newName = `${newId}__${oldName}`;
-                    if(!renameFile(FOLDERS.COOKBOOK_IMAGES, oldName, newName, `${newId}__`))
-                        throw new Error("Can not rename file")
-                    cookBook[COOKBOOK_FIELDS.image] = `/img/cookBookImages/${newName}`
+                    const cookBookKey = (await getCookBook(id))[0].cloudinary_id;
+                    if(cookBookKey)
+                        cloudinary.uploader.destroy(cookBookKey)
+                    const uploadedFile = await cloudinary.uploader.upload(req.file.path)
+                    removeFiles(req.file.path)
+                    cookBook[COOKBOOK_FIELDS.image] = uploadedFile.secure_url
+                    cookBook[COOKBOOK_FIELDS.cloudinary_id] = uploadedFile.public_id
                 }
                 cookBook[COOKBOOK_FIELDS.recipesIds] = JSON.parse(req.body.recipesIds)
                 cookBook[COOKBOOK_FIELDS.filters] = JSON.parse(req.body.filters)
@@ -121,7 +138,7 @@ function Routing(passport) {
             }
             res.json({
                 success: !!createCookBookFlag,
-                id:newId
+                id:id
             })
         })
     return router;

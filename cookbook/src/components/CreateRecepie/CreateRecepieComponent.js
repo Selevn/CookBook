@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Formik } from 'formik';
+import PropTypes from 'prop-types';
 import {
   ButtonStyled,
   H1Styled,
@@ -91,7 +92,8 @@ const CreateRecepieComponent = ({ edit }) => {
           }
         }
       }
-      if (!secondaryFiles && edit) formData.append(RECIPE_FIELDS.images, JSON.stringify(edit.images));
+      if (!secondaryFiles && edit)
+        formData.append(RECIPE_FIELDS.images, JSON.stringify(edit.images));
 
       if (edit) formData.append(RECIPE_FIELDS.ID, edit._id);
       formData.append(RECIPE_FIELDS.author, profile._id);
@@ -157,14 +159,7 @@ const CreateRecepieComponent = ({ edit }) => {
         send(values);
       }}
     >
-      {({
-        values,
-        errors,
-        touched,
-        handleChange,
-        handleBlur,
-        handleSubmit,
-      }) => (
+      {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
         <CreateCookBookPage>
           <H1Styled size="56px">{edit ? 'Edit recipe' : 'Create a new recipe'}</H1Styled>
           <TitleContainer>
@@ -249,7 +244,7 @@ const CreateRecepieComponent = ({ edit }) => {
               recipe.ingredients.map((item, index) => {
                 return (
                   <Item
-                    key={`${index}ing`}
+                    key={`${index}`}
                     value={item}
                     index={index}
                     recipe={recipe}
@@ -288,7 +283,7 @@ const CreateRecepieComponent = ({ edit }) => {
               recipe.directions.map((item, index) => {
                 return (
                   <Item
-                    key={`${index}ing`}
+                    key={`${index}`}
                     value={item}
                     index={index}
                     recipe={recipe}
@@ -317,3 +312,14 @@ const CreateRecepieComponent = ({ edit }) => {
 };
 
 export default CreateRecepieComponent;
+
+CreateRecepieComponent.propTypes = {
+  edit: PropTypes.shape({
+    _id: PropTypes.number || PropTypes.string,
+    image: PropTypes.string,
+    images: PropTypes.any,
+    cookTime: PropTypes.any,
+    name: PropTypes.string,
+    desc: PropTypes.string,
+  }),
+};

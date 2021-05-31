@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Formik } from 'formik';
+import PropTypes from 'prop-types';
 import {
   ButtonStyled,
   Container,
@@ -183,14 +184,7 @@ const CreateCookBookComponent = ({ isEdit, item }) => {
         save(values);
       }}
     >
-      {({
-        values,
-        errors,
-        touched,
-        handleChange,
-        handleBlur,
-        handleSubmit,
-      }) => (
+      {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
         <CreateCookBookPage>
           <H1Styled size="56px">{isEdit ? 'Edit cookbook' : 'Create a new cookbook'}</H1Styled>
           <TitleContainer>
@@ -319,3 +313,8 @@ const CreateCookBookComponent = ({ isEdit, item }) => {
 };
 
 export default CreateCookBookComponent;
+
+CreateCookBookComponent.propTypes = {
+  isEdit: PropTypes.bool,
+  item: PropTypes.object,
+};

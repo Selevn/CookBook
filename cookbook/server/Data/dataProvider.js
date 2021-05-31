@@ -267,7 +267,6 @@ exports.updateCookBook = async (inputCookBook) => {
 }
 
 
-
 exports.updateUser = async (id, field, value) => {
     if (field === USER_FIELDS.password) {
         const {hash, salt} = getPassword(value)
@@ -276,7 +275,6 @@ exports.updateUser = async (id, field, value) => {
             {password: hash, salt: salt}
         );
     }
-
     if (checkField(field)) {
         return Users.updateOne(
             {_id: Number(id)},

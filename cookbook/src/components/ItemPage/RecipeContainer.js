@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { ButtonStyled, Container, H1Styled } from '../common/StylesComponent';
 import { Loading } from '../MultyUsed/Loading/Loading';
 import { Recipe } from '../MultyUsed/Recipe';
@@ -38,3 +39,7 @@ const Recipes = ({ id }) => {
 };
 
 export default Recipes;
+
+Recipes.propTypes = {
+  id: PropTypes.number,
+};

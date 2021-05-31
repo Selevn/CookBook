@@ -36,14 +36,15 @@ export const CookBooks = ({ filters, sortBy, searchValue }) => {
       >
         {items && items.map((item) => <CookCard key={item._id} {...item} />)}
         {!loading && items?.length === 0 && <h1>No cookbooks</h1>}
-        {loading && <Loading />}
+        {loading && items?.length === 0 && <Loading />}
       </InfiniteScroll>
     </>
   );
 };
 
 CookBooks.propTypes = {
-  filters: PropTypes.object,
+  filters: PropTypes.any,
+  searchValue: PropTypes.string,
   sortBy: PropTypes.string,
 };
 
@@ -129,5 +130,5 @@ CookBooksMenu.propTypes = {
     noEggs: PropTypes.bool,
   }),
   setFoodPref: PropTypes.func,
-  sortBy: PropTypes.string,
+  stateChanged: PropTypes.func,
 };

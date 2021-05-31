@@ -39,5 +39,7 @@ export const ProfileRecipes = ({ id, isLiked, canEdit }) => {
 };
 
 ProfileRecipes.propTypes = {
+  canEdit: PropTypes.bool,
   id: PropTypes.number,
+  isLiked: PropTypes.bool,
 };

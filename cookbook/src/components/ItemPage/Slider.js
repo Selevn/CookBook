@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/all';
+import PropTypes from 'prop-types';
 import { ItemPageImageBook, SliderStyle } from './style/ItemPageComponentStyle';
 
 const Slider = ({ mainImage, inputImagesArray = [] }) => {
@@ -32,3 +33,8 @@ const Slider = ({ mainImage, inputImagesArray = [] }) => {
 };
 
 export default Slider;
+
+Slider.propTypes = {
+  inputImagesArray: PropTypes.array,
+  mainImage: PropTypes.any,
+};

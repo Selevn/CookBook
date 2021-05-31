@@ -5,6 +5,12 @@ const schema = new Schema({
     "_id": {
         "type": "Number"
     },
+    "cloudinary_id":{
+        "type": "String"
+    },
+    "secondary_cloudinary_ids":{
+        "type": "Array"
+    },
     "views": {
         "type": "Number"
     },

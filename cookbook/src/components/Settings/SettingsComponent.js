@@ -41,9 +41,7 @@ const ChangeComponent = ({ value, valueName, setChangeField, type, area = false 
   const localFieldChange = (fieldName, data) => {
     if (fieldName === USER_FIELDS.firstName) {
       const out = profile?.name?.first;
-      dispatcher(
-        profileActions.setProfile({ ...profile, name: { ...profile.name, first: data } }),
-      );
+      dispatcher(profileActions.setProfile({ ...profile, name: { ...profile.name, first: data } }));
       return out;
     }
     if (fieldName === USER_FIELDS.lastName) {
@@ -116,14 +114,7 @@ const ChangeComponent = ({ value, valueName, setChangeField, type, area = false 
         setChangeField({});
       }}
     >
-      {({
-        values,
-        errors,
-        touched,
-        handleChange,
-        handleBlur,
-        handleSubmit,
-      }) => (
+      {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
         <Container vertical>
           {area && (
             <>
@@ -200,7 +191,12 @@ const ChangeComponent = ({ value, valueName, setChangeField, type, area = false 
 };
 
 ChangeComponent.propTypes = {
+  area: PropTypes.bool,
   children: PropTypes.node,
+  setChangeField: PropTypes.func,
+  type: PropTypes.string,
+  value: PropTypes.string,
+  valueName: PropTypes.string,
 };
 const Settings = ({ setUser, imageRef }) => {
   const inputRef = useRef();
@@ -379,12 +375,8 @@ const Settings = ({ setUser, imageRef }) => {
   );
 };
 Settings.propTypes = {
-  name: PropTypes.string,
-  email: PropTypes.string,
-};
-Settings.defaultProps = {
-  name: 'John Doe',
-  email: 'test@test.com',
+  imageRef: PropTypes.any,
+  setUser: PropTypes.func,
 };
 
 export default Settings;

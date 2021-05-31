@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { toast } from 'react-toastify';
@@ -100,3 +101,14 @@ const ItemCommentsContainer = ({ id, type, profile, auth }) => {
 };
 
 export default ItemCommentsContainer;
+
+ItemCommentsContainer.propTypes = {
+  auth: PropTypes.string,
+  id: PropTypes.string || PropTypes.number,
+  profile: PropTypes.shape({
+    _id: PropTypes.string || PropTypes.number,
+    name: PropTypes.object,
+    image: PropTypes.string,
+  }),
+  type: PropTypes.string,
+};

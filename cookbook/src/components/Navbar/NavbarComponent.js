@@ -48,9 +48,8 @@ const NavbarComponent = () => {
           {profile && (
             <Container flex={4} className="mustBeHidden">
               <Container padding="15px" justifyContent="flex-end" alignItems="center" flex={1}>
-                <NavbarLink
-                  to={`/profile/${profile?._id}`}
-                >{`${profile?.name?.first} ${profile?.name?.last}`}
+                <NavbarLink to={`/profile/${profile?._id}`}>
+                  {`${profile?.name?.first} ${profile?.name?.last}`}
                 </NavbarLink>
               </Container>
               <Container padding="15px" justifyContent="flex-end" alignItems="center" flex={1}>

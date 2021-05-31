@@ -39,5 +39,7 @@ export const ProfileCookBooks = ({ id, isLiked, canEdit }) => {
   );
 };
 ProfileCookBooks.propTypes = {
+  canEdit: PropTypes.bool,
   id: PropTypes.number,
+  isLiked: PropTypes.bool,
 };

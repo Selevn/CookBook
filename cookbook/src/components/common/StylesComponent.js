@@ -133,6 +133,7 @@ ButtonWrapper.propTypes = {
   children: PropTypes.node,
   onClick: PropTypes.func,
   href: PropTypes.string,
+  disabled: PropTypes.bool,
 };
 
 const InputWrapper = ({ className, type, onChange, value }) => (

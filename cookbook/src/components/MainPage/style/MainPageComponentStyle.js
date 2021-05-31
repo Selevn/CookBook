@@ -1,10 +1,5 @@
 import styled, { css } from 'styled-components';
-import {
-  Container,
-  H1Styled,
-  LinkAsButton,
-  ParagraphStyled,
-} from '../../common/StylesComponent';
+import { Container, H1Styled, LinkAsButton, ParagraphStyled } from '../../common/StylesComponent';
 
 export const WelcomeDiv = styled(Container)`
   flex-direction: column;

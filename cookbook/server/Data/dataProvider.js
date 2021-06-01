@@ -1,18 +1,13 @@
-const fs = require("fs");
-const path = require("path");
 const {COMMON} = require("../../src/constants");
-const {ObjectId, aggregate} = require('mongoose')
 const mongoose = require('mongoose')
 
-const aggregatePaginate = require('mongoose-aggregate-paginate-v2');
+//const aggregatePaginate = require('mongoose-aggregate-paginate-v2');
 
 const CookBooks = require('./../models/CookBookModel')
 const Users = require('./../models/UserModel')
 const Comments = require('./../models/CommentModel')
 const Recipes = require('./../models/RecipeModel')
-const {privateUserData} = require("../models/lookups");
 const {publicUserData} = require("../models/lookups");
-const {passwordMatcher} = require("../models/lookups");
 const {emailMatcher} = require("../models/lookups");
 const {paginator} = require("./paginator");
 const {dataSearchSorter} = require("./dataSorter");
@@ -23,12 +18,11 @@ const {_idMatcher} = require("../models/lookups");
 const {recipesLookUp, authorLookup, commentsLookup} = require("../models/lookups");
 
 const dotenv = require('dotenv');
+const {StartProfileSname, StartProfileName, StartProfileImage} = require("./DataConstants");
 const {hideMyFilter} = require("../models/lookups");
-const {RECIPE_FIELDS} = require("../../src/constants");
-const {COOKBOOK_FIELDS} = require("../../src/constants");
+const {RECIPE_FIELDS, COOKBOOK_FIELDS, USER_FIELDS} = require("../../src/constants");
 const {nameLkeMatcher} = require("../models/lookups");
 const {getPassword} = require("../JWT/PasswordHasher");
-const {USER_FIELDS} = require("../../src/constants");
 const {checkField} = require("./fieldChecker");
 const {idInRangeMatcher} = require("../models/lookups");
 dotenv.config({path: '../.env'});
@@ -67,9 +61,6 @@ exports.getCookbooksCount = async () => {
 exports.getRecipesCount = async () => {
     return Recipes.countDocuments({});
 }
-
-
-
 exports.getUserCookBooks = async (id, filters) => {
     const aggregate = CookBooks.aggregate([
         authorIdMatcher(id),
@@ -81,7 +72,6 @@ exports.getUserCookBooks = async (id, filters) => {
 
 exports.getUserLikedCookBooks = async (id, filters) => {
     const user = (await exports.getUser(id))[0]
-    //TODO: убери потом
     user.likes.cookBooks = user.likes.cookBooks || []
 
     const aggregate = CookBooks.aggregate([
@@ -102,7 +92,6 @@ exports.getUserRecipes = async (id, filters) => {
 }
 exports.getUserLikedRecipes = async (id, filters) => {
     const user = (await exports.getUser(id))[0]
-    //TODO: убери потом
     user.likes.recipes = user.likes.recipes || []
     const aggregate = Recipes.aggregate([
         idInRangeMatcher(user.likes.recipes),
@@ -142,14 +131,14 @@ exports.likeRecipe = async (userId, id) => {
         user.likes.recipes = user.likes.recipes || []
         if (user.likes.recipes.includes(Number(id))) {
             //remove
-            await Recipes.updateOne({_id: Number(id)}, {$inc: {'likes': -1}})
+            await Recipes.updateOne({_id: Number(id)}, {$inc: {[RECIPE_FIELDS.likes]: -1}})
             await Users.updateOne(
                 {_id: Number(userId)},
                 {$pull: {"likes.recipes": Number(id)}}
             )
         } else {
             //add
-            await Recipes.updateOne({_id: Number(id)}, {$inc: {'likes': 1}})
+            await Recipes.updateOne({_id: Number(id)}, {$inc: {[RECIPE_FIELDS.likes]: 1}})
             await Users.updateOne(
                 {_id: Number(userId)},
                 {$push: {"likes.recipes": Number(id)}}
@@ -185,18 +174,18 @@ exports.addComment = async (prop) => {
         const saveComment = (new Comments(newComment)).save();
         const updateUser = Users.updateOne(
             {_id: Number(userId)},
-            {$push: {"comments": commentId}}
+            {$push: {[USER_FIELDS.comments]: commentId}}
         )
         let updateItem;
         if (type === COMMON.RECIPE) {
             updateItem = Recipes.updateOne(
                 {_id: Number(itemId)},
-                {$push: {"commentsIds": commentId}}
+                {$push: {[RECIPE_FIELDS.commentsIds]: commentId}}
             )
         } else {
             updateItem = CookBooks.updateOne(
                 {_id: Number(itemId)},
-                {$push: {"commentsIds": commentId}}
+                {$push: {[COOKBOOK_FIELDS.commentsIds]: commentId}}
             )
         }
         const result = await Promise.all([saveComment, updateUser, updateItem])
@@ -249,7 +238,6 @@ exports.updateRecipe = async (inputRecipe) => {
     );
 }
 
-
 exports.createCookBook = async (inputCookBook) => {
     const cookBook = {
         ...inputCookBook,
@@ -283,13 +271,10 @@ exports.updateUser = async (id, field, value) => {
     }
 }
 
-
-//continue
-//filters & authors
 exports.getRecipes = async (filter) => {
     let pipe = [authorLookup]
     let aggregate;
-    if (filter.cookTime && filter.cookTime !== '1000') {
+    if (filter.cookTime && filter.cookTime !== COMMON.ALLCONSTANT) {
         pipe.unshift(cookTimeFilter(filter.cookTime))
     }
     if (filter.hideMy == 'true') {
@@ -306,7 +291,7 @@ exports.getRecipes = async (filter) => {
         pipe.unshift(nameLkeMatcher(filter.searchString))
     }
     aggregate = Recipes.aggregate(pipe)
-    return await paginator(aggregate, aggregateOptions(filter.page, filter.sortBy))//await Recipes.aggregatePaginate(aggregate, aggregateOptions(filter.page, filter.sortBy))
+    return await paginator(aggregate, aggregateOptions(filter.page, filter.sortBy))
 }
 exports.getComments = async (filter) => {
     let item, aggregate, pipe = [authorLookup];
@@ -320,7 +305,7 @@ exports.getComments = async (filter) => {
         item[0] && pipe.unshift(idInRangeMatcher(item[0].commentsIds))
         aggregate = Comments.aggregate(pipe)
     }
-    return await paginator(aggregate, aggregateOptions(filter.page))//await Recipes.aggregatePaginate(aggregate, aggregateOptions(filter.page, filter.sortBy))
+    return await paginator(aggregate, aggregateOptions(filter.page))
 
 
 }
@@ -343,47 +328,10 @@ exports.getUserForLogin = async (email) => {
 exports.createUser = async (user) => {
     const newUser = {
         ...user,
-        name: {first: 'Valar', last: 'Morghulis'},
+        name: {first: StartProfileName, last: StartProfileSname},
         desc: "",
-        image: 'http://tastyethnics.com/wp-content/uploads/bb-plugin/cache/default-profile-square.png',
+        image: StartProfileImage,
         _id: (await Users.countDocuments({})) + 1
     }
     return (new Users(newUser)).save();
 }
-
-
-/*
-//Deprecated
-exports.getComment = async (id) => {
-    const data = await Comments.aggregate([
-        {$match: {_id: id}},
-        {
-            $lookup: {
-                from: "users",
-                localField: "author",
-                foreignField: "_id",
-                as: "user"
-            }
-        }])
-    return data[0];
-}
-exports.getComments = async (ids) => {
-    const data = await Comments.aggregate([
-        {$match: {_id: {"$in": ids}}},
-        {
-            $lookup: {
-                from: "users",
-                localField: "author",
-                foreignField: "_id",
-                as: "user"
-            }
-        }])
-    return data;
-
-    //return await Comments.find({ "_id": { "$in": ids }});
-}
-*/
-
-
-
-

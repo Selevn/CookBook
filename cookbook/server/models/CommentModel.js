@@ -12,7 +12,12 @@ const schema = new Schema({
     },
     "date": {
         "type": "Date"
-    }
+    },
+    "itemId": {
+        "type": "Number"
+    },
+    "itemType": {
+        "type": "String"
+    },
 })
-
 module.exports = model('Comment', schema)

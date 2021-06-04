@@ -26,7 +26,7 @@ function Routing(passport) {
                 const forRemove = [];
                 const recipe = {...req.body}
 
-                newId = (await createRecipe({}))._id;
+                newId = (await createRecipe({}));
 
                 const uploadedFile = await cloudinary.uploader.upload(req.files['image'][0].path)
                 forRemove.push(req.files['image'][0].path)
@@ -67,18 +67,16 @@ function Routing(passport) {
         cookBookUpload.single('image'),
         async function (req, res, next) {
             let createCookBookFlag;
-            const newId = (await createCookBook({}))._id;
-            let uploadedFile
+            let uploadedFile, newId
             try {
                 const cookBook = {...req.body}
                 uploadedFile = await cloudinary.uploader.upload(req.file.path)
                 removeFiles(req.file.path)
                 cookBook[COOKBOOK_FIELDS.image] = uploadedFile.secure_url
                 cookBook[COOKBOOK_FIELDS.cloudinary_id] = uploadedFile.public_id
-                cookBook[COOKBOOK_FIELDS.ID] = newId
                 cookBook[COOKBOOK_FIELDS.recipesIds] = JSON.parse(req.body.recipesIds)
                 cookBook[COOKBOOK_FIELDS.filters] = JSON.parse(req.body.filters)
-                createCookBookFlag = await updateCookBook(cookBook);
+                createCookBookFlag = await createCookBook(cookBook);
             } catch (e) {
                 if(uploadedFile)
                     await cloudinary.uploader.destroy(uploadedFile.public_id)
@@ -88,7 +86,7 @@ function Routing(passport) {
             }
             res.json({
                 success: !!createCookBookFlag,
-                id: newId
+                id: createCookBookFlag
             })
         })
     return router

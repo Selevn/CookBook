@@ -7,7 +7,7 @@ import { CommentsContainer, CreateComment } from './style/ItemPageComponentStyle
 import { Loading } from '../MultyUsed/Loading/Loading';
 import { Comment } from '../MultyUsed/Comment';
 import { useFetch } from '../MultyUsed/CustomHooks/useFetch';
-import { MESSAGES, ROUTES, TOAST_SETTINGS } from '../../constants';
+import {COMMENT_FIELDS, MESSAGES, ROUTES, TOAST_SETTINGS} from '../../constants';
 import { SendData } from '../../Connectors/dataProvider';
 import { ServerMessageHandler } from '../MultyUsed/ResponseSuccesHandler';
 import { useLogout } from '../MultyUsed/CustomHooks/useLogout';
@@ -45,7 +45,7 @@ const ItemCommentsContainer = ({ id, type, profile, auth }) => {
       (async () => {
         const data = await SendData(
           ROUTES.USER_COMMENT,
-          { type, itemId: id, comment, userId: profile._id },
+          { [COMMENT_FIELDS.itemType]:type, [COMMENT_FIELDS.itemId]: id, [COMMENT_FIELDS.text]:comment.text, [COMMENT_FIELDS.date]:comment.date, [COMMENT_FIELDS.author]: profile._id },
           auth,
           Logout,
         );

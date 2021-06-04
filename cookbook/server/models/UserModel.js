@@ -46,6 +46,11 @@ const schema = new Schema({
         "type": [
             "Number"
         ]
+    },
+    "isBlocked":{
+        "type":[
+            "Boolean"
+        ]
     }
 })
 

@@ -1,12 +1,20 @@
 const {HOME_ROUTES} = require("../src/constants");
-
+const {Connector} = require("./Data/index")
 const express = require("express");
 const bodyParser = require("body-parser");
 const passport = require('passport')
+const dotenv = require('dotenv')
+const result = dotenv.config({ path: '../.env' })
+if (result.error) {
+    throw result.error
+}
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('public'));
+
+
+const connection = Connector(process.env.DB_CONNECTION_STRING)
 
 require('./JWT/PassportConfig.js')(passport)
 app.use(passport.initialize());

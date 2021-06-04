@@ -78,8 +78,8 @@ exports.likedRecipesLookUp =
         }
     }
 
-exports.publicUserData = ({$project: {"password": 0, "email": 0}})
-exports.privateUserData = ({$project: {"password": 0}})
+exports.publicUserData = ({$project: {"password": 0, "email": 0, "salt":0}})
+exports.privateUserData = ({$project: {"password": 0, "salt":0}})
 
 exports._idMatcher = (id) =>
     ({

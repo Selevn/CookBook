@@ -9,6 +9,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import {ClickAwayListener, Grow, MenuItem, MenuList, Paper, Popper} from "@material-ui/core";
 import {FaBook, FaCog, FaList, FaUser} from "react-icons/all";
 import {Link} from "react-router-dom"
+import RouteConstants from "../../constants/RouteConstants";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -96,10 +97,34 @@ export default function Menu() {
                                             id="menu-list-grow"
                                             onKeyDown={handleListKeyDown}
                                         >
-                                            <MenuItem onClick={handleClose}><FaBook/>CookBooks</MenuItem>
-                                            <MenuItem onClick={handleClose}><FaBook/>CookBooks</MenuItem>
-                                            <MenuItem onClick={handleClose}><FaList/>Recipes</MenuItem>
-                                            <MenuItem onClick={handleClose}><FaCog/>Statistics</MenuItem>
+                                            <MenuItem
+                                                onClick={handleClose}
+                                                component={Link}
+                                                to={RouteConstants.users}
+                                            >
+                                                <FaUser/>Users
+                                            </MenuItem>
+                                            <MenuItem
+                                                onClick={handleClose}
+                                                component={Link}
+                                                to={RouteConstants.cookbooks}
+                                            ><FaBook/>CookBooks</MenuItem>
+                                            <MenuItem
+                                                onClick={handleClose}
+                                                component={Link}
+                                                to={RouteConstants.recipes}
+                                            ><FaList/>Recipes</MenuItem>
+                                            <MenuItem
+                                                onClick={handleClose}
+                                                component={Link}
+                                                to={RouteConstants.statistic}
+                                            ><FaList/>Statistics</MenuItem>
+                                            <MenuItem
+                                                onClick={handleClose}
+                                                component={Link}
+                                                to={RouteConstants.settings}
+                                            ><FaCog/>Settings</MenuItem>
+
                                         </MenuList>
                                     </ClickAwayListener>
                                 </Paper>

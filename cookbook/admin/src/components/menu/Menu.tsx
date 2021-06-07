@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import {ClickAwayListener, Grow, MenuItem, MenuList, Paper, Popper} from "@material-ui/core";
-import {FaBook, FaCog, FaList, FaUser} from "react-icons/all";
+import {FaBook, FaCog, FaList, FaUser, FaEye} from "react-icons/all";
 import {Link} from "react-router-dom"
 import RouteConstants from "../../constants/RouteConstants";
 
@@ -118,7 +118,7 @@ export default function Menu() {
                                                 onClick={handleClose}
                                                 component={Link}
                                                 to={RouteConstants.statistic}
-                                            ><FaList/>Statistics</MenuItem>
+                                            ><FaEye/>Statistics</MenuItem>
                                             <MenuItem
                                                 onClick={handleClose}
                                                 component={Link}

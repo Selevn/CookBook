@@ -14,8 +14,6 @@ export const FilterContainer = styled(Container)`
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.06);
   border-radius: 10px;
 
-  ${H1Styled} {
-  }
   .hideMy {
     color: var(--pure-black);
     font-size: 20px;

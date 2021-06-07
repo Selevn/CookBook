@@ -1,0 +1,18 @@
+:root {
+    --pure-white: #ffffff;
+    --pure-black: #000000;
+    --login-background: #eeeaeb;
+    --primary-color: #f7b602;
+    --primary-color-shadow: rgba(247, 182, 2,0.4);
+    --styled-gray: #7b7b80;
+    --statistic-gray: #515151;
+    --search-gray: #EEEEEE;
+    --light-black: #1B1C20;
+    --very-light-black: #393939;
+    --text-gray: #787878;
+
+    --main-background:#FCFAF8;
+    --nunito-font: Nunito, sans-serif;
+
+    --padding-card: 20px;
+}

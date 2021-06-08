@@ -5,6 +5,8 @@ const RouteConstants = {
     recipes: '/recipes',
     statistic: '/statistic',
     settings: '/settings',
+    logout: '/logout',
+    login: '/login',
 }
 
 export default RouteConstants

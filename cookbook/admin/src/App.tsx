@@ -7,8 +7,9 @@ import MyRouter from "./Router";
 const App = () => {
     return (
         <>
-            <Menu/>
-            <MyRouter/>
+            <Menu>
+                <MyRouter/>
+            </Menu>
         </>
     );
 }

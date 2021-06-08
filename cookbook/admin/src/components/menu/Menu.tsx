@@ -1,142 +1,105 @@
 import React from 'react';
-import {makeStyles} from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
+import Drawer from '@material-ui/core/Drawer';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
+import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import {ClickAwayListener, Grow, MenuItem, MenuList, Paper, Popper} from "@material-ui/core";
-import {FaBook, FaCog, FaList, FaUser, FaEye} from "react-icons/all";
-import {Link} from "react-router-dom"
+import Divider from '@material-ui/core/Divider';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import {Book, ExitToApp, ListAlt, Person} from "@material-ui/icons";
+import {NavLink} from "react-router-dom";
 import RouteConstants from "../../constants/RouteConstants";
+import {FaCog, FaEye} from "react-icons/all";
+import { useLocation } from "react-router-dom";
+import {MenuStyled} from "./Menu.styled";
+
+const drawerWidth = 200;
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        flexGrow: 1,
+        display: 'flex',
     },
-    menuButton: {
-        marginRight: theme.spacing(2),
+    appBar: {
+        width: `calc(100% - ${drawerWidth}px)`,
+        marginLeft: drawerWidth,
     },
-    title: {
+    drawer: {
+        width: drawerWidth,
+        flexShrink: 0,
+    },
+    drawerPaper: {
+        width: drawerWidth,
+    },
+    toolbar: theme.mixins.toolbar,
+    content: {
         flexGrow: 1,
+        backgroundColor: theme.palette.background.default,
+        padding: theme.spacing(3),
     },
 }));
 
-export default function Menu() {
+
+
+type Props = {
+    children: JSX.Element,
+};
+export default function Menu({ children }: Props) {
     const classes = useStyles();
-    const [open, setOpen] = React.useState(false);
-    const anchorRef = React.useRef(null);
-
-    const handleToggle = () => {
-        setOpen((prevOpen) => !prevOpen);
-    };
-
-    const handleClose = (event: React.MouseEvent<any, MouseEvent>) => {
-// @ts-ignore
-        if (anchorRef.current && anchorRef.current.contains(event.target)) {
-            return;
-        }
-
-        setOpen(false);
-    };
-
-    function handleListKeyDown(event: React.KeyboardEvent<HTMLUListElement>) {
-        if (event.key === "Tab") {
-            event.preventDefault();
-            setOpen(false);
-        }
-    }
-
-    const prevOpen = React.useRef(open);
-    React.useEffect(() => {
-        if (prevOpen.current && !open) {
-            // @ts-ignore
-            anchorRef.current.focus();
-        }
-
-        prevOpen.current = open;
-    }, [open]);
-
     return (
         <div className={classes.root}>
-            <AppBar position="static">
-                <Toolbar>
-                    <IconButton
-                        edge="start"
-                        className={classes.menuButton}
-                        color="inherit"
-                        aria-label="menu"
-                        ref={anchorRef}
-                        aria-controls={open ? "menu-list-grow" : undefined}
-                        aria-haspopup="true"
-                        onClick={handleToggle}
-                    >
+            <MenuStyled drawerWidth={drawerWidth}>
+                <SearchStyled>
 
-                        <MenuIcon/>
-                    </IconButton>
-                    <Popper
-                        open={open}
-                        anchorEl={anchorRef.current}
-                        role={undefined}
-                        transition
-                        disablePortal
-                    >
-                        {({TransitionProps, placement}) => (
-                            <Grow
-                                {...TransitionProps}
-                                style={{
-                                    transformOrigin:
-                                        placement === "bottom" ? "center top" : "center bottom"
-                                }}
-                            >
-                                <Paper>
-                                    <ClickAwayListener onClickAway={handleClose}>
-                                        <MenuList
-                                            autoFocusItem={open}
-                                            id="menu-list-grow"
-                                            onKeyDown={handleListKeyDown}
-                                        >
-                                            <MenuItem
-                                                onClick={handleClose}
-                                                component={Link}
-                                                to={RouteConstants.users}
-                                            >
-                                                <FaUser/>Users
-                                            </MenuItem>
-                                            <MenuItem
-                                                onClick={handleClose}
-                                                component={Link}
-                                                to={RouteConstants.cookbooks}
-                                            ><FaBook/>CookBooks</MenuItem>
-                                            <MenuItem
-                                                onClick={handleClose}
-                                                component={Link}
-                                                to={RouteConstants.recipes}
-                                            ><FaList/>Recipes</MenuItem>
-                                            <MenuItem
-                                                onClick={handleClose}
-                                                component={Link}
-                                                to={RouteConstants.statistic}
-                                            ><FaEye/>Statistics</MenuItem>
-                                            <MenuItem
-                                                onClick={handleClose}
-                                                component={Link}
-                                                to={RouteConstants.settings}
-                                            ><FaCog/>Settings</MenuItem>
-
-                                        </MenuList>
-                                    </ClickAwayListener>
-                                </Paper>
-                            </Grow>
-                        )}
-                    </Popper>
-                    <Typography variant="h6" className={classes.title}>
-                        Admin panel
-                    </Typography>
-                    <Button color="inherit">Log out</Button>
-                </Toolbar>
-            </AppBar>
+                </SearchStyled>
+            </MenuStyled>
+            <Drawer
+                className={classes.drawer}
+                variant="permanent"
+                classes={{
+                    paper: classes.drawerPaper,
+                }}
+                anchor="left"
+            >
+                <div className={classes.toolbar} />
+                <Divider />
+                <List>
+                    <ListItem component={NavLink} to={RouteConstants.users} activeClassName="selected">
+                        <ListItemIcon><Person /></ListItemIcon>
+                        <ListItemText primary={"Users"} />
+                    </ListItem>
+                    <ListItem component={NavLink} to={RouteConstants.cookbooks} activeClassName="selected">
+                        <ListItemIcon><Book /></ListItemIcon>
+                        <ListItemText primary={"CookBooks"} />
+                    </ListItem>
+                    <ListItem component={NavLink} to={RouteConstants.recipes} activeClassName="selected">
+                        <ListItemIcon><ListAlt /></ListItemIcon>
+                        <ListItemText primary={"Recipes"} />
+                    </ListItem>
+                    <ListItem component={NavLink} to={RouteConstants.statistic} activeClassName="selected">
+                        <ListItemIcon><FaEye /></ListItemIcon>
+                        <ListItemText primary={"Statistic"} />
+                    </ListItem>
+                </List>
+                <Divider />
+                <List>
+                    <ListItem component={NavLink} to={RouteConstants.settings} activeClassName="selected">
+                        <ListItemIcon><FaCog /></ListItemIcon>
+                        <ListItemText primary={"Settings"} />
+                    </ListItem>
+                    <ListItem component={NavLink} to={RouteConstants.logout}>
+                        <ListItemIcon><ExitToApp /></ListItemIcon>
+                        <ListItemText primary={"Log out"} />
+                    </ListItem>
+                </List>
+            </Drawer>
+            <main className={classes.content}>
+                <div className={classes.toolbar} />
+                {children}
+            </main>
         </div>
     );
 }

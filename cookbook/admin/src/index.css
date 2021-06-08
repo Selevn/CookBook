@@ -4,3 +4,6 @@ body{
 .selected{
     color: var(--primary-color);
 }
+.selected svg{
+    color: var(--primary-color);
+}

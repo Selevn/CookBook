@@ -1,36 +1,75 @@
 import styled from "styled-components";
+import {Container} from "../common/StyledComponents";
 
 export const MenuStyled = styled.header<{drawerWidth:Number}>`
 
   ${p => `width: calc(100% - ${p.drawerWidth}px);`}
   ${p => `margin-left: ${p.drawerWidth}px;`}
-  background-color: red;
+  background-color: #F8F8F9;
   top: 0;
   left: auto;
   right: 0;
   position: fixed;
-  
-  display: flex;
-  z-index: 1100;
-  box-sizing: border-box;
-  flex-shrink: 0;
-  flex-direction: column;
-`
-export const SearchStyled = styled.input<{drawerWidth:Number}>`
 
-  ${p => `width: calc(100% - ${p.drawerWidth}px);`}
-  ${p => `margin-left: ${p.drawerWidth}px;`}
-  background-color: red;
-  top: 0;
-  left: auto;
-  right: 0;
-  position: fixed;
-  
   display: flex;
   z-index: 1100;
   box-sizing: border-box;
   flex-shrink: 0;
-  flex-direction: column;
+  flex-direction: row;
+
+  align-items: center;
+
+  min-height: 60px;
+
+  padding: 15px 15px 15px 15px;
+  justify-content: space-evenly;
 `
+export const SearchStyled = styled.input<{ placeholder:string }>`
+  min-height: 50px;
+  padding-left: 50px;
+  font-size: 24px;
+  background: #FFFFFF;
+  border:none;
+  outline: none;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.06);
+  border-radius: 50px;  
+  flex-basis: 70%;
+
+  max-width: 830px;
+`
+export const AdminCardStyled = styled.div`
+  display: flex;
+  width: 235px;
+  height: 56px;
+  background: #FFFFFF;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.06);
+  border-radius: 10px;
+  flex-direction: row;
+  overflow:hidden;
+`
+export const AdminImage = styled.div<{src:string}>`
+  width: 56px;
+  min-width: 56px;
+  height: 56px;
+  background: url("${p => p.src}") center;
+  background-size: cover;
+`
+export const AdminData = styled(Container)`
+  padding: 5px;
+  flex-direction: column;
+  width: 100%;
+`
+export const AdminName = styled.span`
+  font-size: 20px;
+  color:black;
+`
+export const AdminRole = styled.span`
+  font-size: 16px;
+  color:var(--styled-gray);
+`
+
+
+
+
 
 

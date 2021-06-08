@@ -15,7 +15,7 @@ import {NavLink} from "react-router-dom";
 import RouteConstants from "../../constants/RouteConstants";
 import {FaCog, FaEye} from "react-icons/all";
 import { useLocation } from "react-router-dom";
-import {MenuStyled} from "./Menu.styled";
+import {AdminCardStyled, AdminData, AdminImage, AdminName, AdminRole, MenuStyled, SearchStyled} from "./Menu.styled";
 
 const drawerWidth = 200;
 
@@ -52,9 +52,14 @@ export default function Menu({ children }: Props) {
     return (
         <div className={classes.root}>
             <MenuStyled drawerWidth={drawerWidth}>
-                <SearchStyled>
-
-                </SearchStyled>
+                <SearchStyled placeholder={"Search"} />
+                <AdminCardStyled>
+                    <AdminImage src={"https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"}/>
+                    <AdminData>
+                        <AdminName>Valar morghulius</AdminName>
+                        <AdminRole>SuperAdmin</AdminRole>
+                    </AdminData>
+                </AdminCardStyled>
             </MenuStyled>
             <Drawer
                 className={classes.drawer}

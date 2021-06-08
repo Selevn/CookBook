@@ -14,19 +14,19 @@ const MyRouter = () => {
             <Route exact path={RouteConstants.home}>
                 <Users/>
             </Route>
-            <Route exact path={RouteConstants.users}>
+            <Route path={RouteConstants.users}>
                 <Users/>
             </Route>
-            <Route exact path={RouteConstants.cookbooks}>
+            <Route path={RouteConstants.cookbooks}>
                 <CookBooks/>
             </Route>
-            <Route exact path={RouteConstants.recipes}>
+            <Route path={RouteConstants.recipes}>
                 <Recipes/>
             </Route>
-            <Route exact path={RouteConstants.settings}>
+            <Route path={RouteConstants.settings}>
                 <Settings/>
             </Route>
-            <Route exact path={RouteConstants.statistic}>
+            <Route path={RouteConstants.statistic}>
                 <Statistic/>
             </Route>
         </Switch>

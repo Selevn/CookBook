@@ -69,7 +69,7 @@ export const AdminRole = styled.span`
   color:var(--styled-gray);
 `
 
-export const Main = styled.div<{headerHeight:number}>`
+export const Main = styled(Container)<{headerHeight:number}>`
   height: 100%;
   min-height: calc(100vh - ${p=>p.headerHeight}px - 2*30px);
   margin-top: ${p=>p.headerHeight}px;

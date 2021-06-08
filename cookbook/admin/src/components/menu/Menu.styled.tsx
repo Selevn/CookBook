@@ -57,14 +57,15 @@ export const AdminImage = styled.div<{src:string}>`
 export const AdminData = styled(Container)`
   padding: 5px;
   flex-direction: column;
+  justify-content: space-around;
   width: 100%;
 `
 export const AdminName = styled.span`
-  font-size: 20px;
+  font-size: 18px;
   color:black;
 `
 export const AdminRole = styled.span`
-  font-size: 16px;
+  font-size: 14px;
   color:var(--styled-gray);
 `
 

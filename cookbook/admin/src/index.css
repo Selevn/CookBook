@@ -1,5 +1,12 @@
+@font-face {
+    font-family: "Roboto";
+    src: url("components/common/fonts/Roboto-Light.ttf") format("opentype");
+}
+
+
 body{
     margin: 0;
+    font-family: Roboto, sans-serif;
 }
 .selected{
     color: var(--primary-color);

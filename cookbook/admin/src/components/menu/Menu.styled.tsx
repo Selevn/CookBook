@@ -5,7 +5,7 @@ export const MenuStyled = styled.header<{drawerWidth:Number}>`
 
   ${p => `width: calc(100% - ${p.drawerWidth}px);`}
   ${p => `margin-left: ${p.drawerWidth}px;`}
-  background-color: #F8F8F9;
+  background-color: var(--admin-background);
   top: 0;
   left: auto;
   right: 0;
@@ -67,6 +67,15 @@ export const AdminName = styled.span`
 export const AdminRole = styled.span`
   font-size: 14px;
   color:var(--styled-gray);
+`
+
+export const Main = styled.div<{headerHeight:number}>`
+  height: 100%;
+  min-height: calc(100vh - ${p=>p.headerHeight}px - 2*30px);
+  margin-top: ${p=>p.headerHeight}px;
+  width:100%;
+  padding: 30px;
+  background-color: var(--admin-background);
 `
 
 

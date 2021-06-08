@@ -15,7 +15,16 @@ import {NavLink} from "react-router-dom";
 import RouteConstants from "../../constants/RouteConstants";
 import {FaCog, FaEye} from "react-icons/all";
 import { useLocation } from "react-router-dom";
-import {AdminCardStyled, AdminData, AdminImage, AdminName, AdminRole, MenuStyled, SearchStyled} from "./Menu.styled";
+import {
+    AdminCardStyled,
+    AdminData,
+    AdminImage,
+    AdminName,
+    AdminRole,
+    Main,
+    MenuStyled,
+    SearchStyled
+} from "./Menu.styled";
 
 const drawerWidth = 200;
 
@@ -101,10 +110,9 @@ export default function Menu({ children }: Props) {
                     </ListItem>
                 </List>
             </Drawer>
-            <main className={classes.content}>
-                <div className={classes.toolbar} />
+            <Main headerHeight={84}>
                 {children}
-            </main>
+            </Main>
         </div>
     );
 }

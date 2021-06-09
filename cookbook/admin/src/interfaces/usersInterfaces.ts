@@ -10,3 +10,5 @@ export type UserStatistic = {
     cookbooksCount:number,
     status:number,
 }
+
+export type TableStatistic = UserStatistic

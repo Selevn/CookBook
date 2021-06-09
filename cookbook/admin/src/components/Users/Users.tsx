@@ -7,6 +7,7 @@ import {get} from "../../connector/Proxy";
 import {FrontEndRoutes} from "../../constants/ServerRoutes";
 import {UserStatistic} from "../../interfaces/usersInterfaces";
 import SortProxy from "../../connector/SortProxy";
+import Table from "../common/Table";
 
 const columns = [
     {
@@ -25,48 +26,6 @@ const columns = [
 const Users = () => {
     const {url} = useRouteMatch()
 
-    const [data, setData] = useState([])
-    const [page, setPage] = useState(1)
-    const [loading, setLoading] = useState(false)
-    const [totalRows, setTotalRows] = useState(0)
-
-    const [sortModel, setSortModel] = useState([
-        { field: '_id', sort: 'asc' as GridSortDirection },
-    ]);
-
-    const handleSortModelChange = (params:any) => {
-        if (params.sortModel !== sortModel) {
-            setSortModel(params.sortModel);
-        }
-    };
-
-    useEffect(()=>{
-        (async()=>{
-            const sort = SortProxy(sortModel)
-            const result  = await get(FrontEndRoutes.USERS_STATISTICS_ALL, {page:page, sort:sort}, setLoading);
-            result.docs.forEach((item:UserStatistic) => item.id=item._id)
-            setData(result.docs)
-            if(totalRows === 0)
-                setTotalRows(result.total)
-        })()
-    },[page])
-
-
-    useEffect(() => {
-        let active = true;
-
-        (async () => {
-            const sort = SortProxy(sortModel)
-            const result  = await get(FrontEndRoutes.USERS_STATISTICS_ALL, {page:page, sort:sort}, setLoading);
-            result.docs.forEach((item:UserStatistic) => item.id=item._id)
-            setData(result.docs)
-        })();
-
-        return () => {
-            active = false;
-        };
-    }, [sortModel]);
-
 
     return (
         <UserContainer>
@@ -76,25 +35,7 @@ const Users = () => {
                 <LinkItem to={url + UsersRouteConstants.deleted} activeClassName={"active"}>Deleted</LinkItem>
             </UserLinks>
             <TableContainer>
-                <DataGrid
-                    paginationMode={'server'}
-                    rows={data}
-                    columns={columns}
-                    pageSize={15}
-                    rowCount = {totalRows}
-
-                    loading={loading}
-
-
-                    page={page-1}
-                    onPageChange={(params) => {
-                        setPage(params.page+1);
-                    }}
-
-                    sortingMode="server"
-                    sortModel={sortModel}
-                    onSortModelChange={handleSortModelChange}
-                />
+                <Table columns={columns} source={FrontEndRoutes.USERS_STATISTICS_ALL}/>
             </TableContainer>
         </UserContainer>)
 }

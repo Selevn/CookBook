@@ -2,6 +2,9 @@ import {LinkItem, UserContainer, UserLinks, TableContainer} from "./Users.styled
 import {useRouteMatch} from "react-router-dom"
 import {DataGrid} from '@material-ui/data-grid';
 import UsersRouteConstants from "../../constants/UsersRouteConstants";
+import {useEffect, useState} from "react";
+import {get} from "../../connector/Proxy";
+import {FrontEndRoutes} from "../../constants/ServerRoutes";
 
 const columns = [
     {
@@ -57,6 +60,15 @@ const rows = [
 
 const Users = () => {
     const {url} = useRouteMatch()
+
+    const [data, setData] = useState()
+
+    useEffect(()=>{
+        (async()=>{
+            const result = await get(FrontEndRoutes.USERS_STATISTICS_ALL);
+            console.log(result)
+        })()
+    },[])
 
     return (
         <UserContainer>

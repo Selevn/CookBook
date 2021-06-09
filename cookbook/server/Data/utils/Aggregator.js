@@ -17,11 +17,7 @@ const Aggregator = (COMMON) => {
             case COMMON.ID:
                 return "-_id";
             default:
-                return () => {
-                    throw new Error(
-                        `searchSorter function default condition. Check your input value. it was ${type}`,
-                    );
-                };
+                return String(type);
         }
     };
 

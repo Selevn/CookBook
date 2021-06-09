@@ -83,6 +83,8 @@ exports.userRecipesCount =
             as: "userCookBooks"
         }
     }
+    exports.userStatisticsFields = {$project: {"_id":1, "name":1, "email":1, "userCookBooks":1, "userRecipes":1, "status":1}}
+
 
 
 exports.likedRecipesLookUp =

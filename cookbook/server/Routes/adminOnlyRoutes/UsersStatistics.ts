@@ -6,10 +6,13 @@ const {getRecipesCount} = require("../../Data/dataProvider");
 const router = express.Router();
 
 router.get(APIUserStatisticsEndPoint.ALL, async (req, res) => {
-    const result = await getUsersStatistics();
+    const page = Number(req?.query?.page)
+    const sort = req?.query?.sort
+
+    const result = await getUsersStatistics(page, sort);
     result.docs.map(item => {
-        item.recipesCount = item.userRecipes?.count || 0
-        item.cookbooksCount = item.userCookBooks?.count || 0
+        item.recipesCount = item.userRecipes?.[0]?.count || 0
+        item.cookbooksCount = item.userCookBooks?.[0]?.count || 0
         delete  item.userCookBooks
         delete  item.userRecipes
     })

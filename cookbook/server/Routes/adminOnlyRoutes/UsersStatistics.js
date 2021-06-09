@@ -42,16 +42,20 @@ var express = require("express");
 var getRecipesCount = require("../../Data/dataProvider").getRecipesCount;
 var router = express.Router();
 router.get(ServerRoutes_1.APIUserStatisticsEndPoint.ALL, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var result;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, AdminStatistics_1.getUsersStatistics()];
+    var page, sort, result;
+    var _a, _b;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
+            case 0:
+                page = Number((_a = req === null || req === void 0 ? void 0 : req.query) === null || _a === void 0 ? void 0 : _a.page);
+                sort = (_b = req === null || req === void 0 ? void 0 : req.query) === null || _b === void 0 ? void 0 : _b.sort;
+                return [4 /*yield*/, AdminStatistics_1.getUsersStatistics(page, sort)];
             case 1:
-                result = _a.sent();
+                result = _c.sent();
                 result.docs.map(function (item) {
-                    var _a, _b;
-                    item.recipesCount = ((_a = item.userRecipes) === null || _a === void 0 ? void 0 : _a.count) || 0;
-                    item.cookbooksCount = ((_b = item.userCookBooks) === null || _b === void 0 ? void 0 : _b.count) || 0;
+                    var _a, _b, _c, _d;
+                    item.recipesCount = ((_b = (_a = item.userRecipes) === null || _a === void 0 ? void 0 : _a[0]) === null || _b === void 0 ? void 0 : _b.count) || 0;
+                    item.cookbooksCount = ((_d = (_c = item.userCookBooks) === null || _c === void 0 ? void 0 : _c[0]) === null || _d === void 0 ? void 0 : _d.count) || 0;
                     delete item.userCookBooks;
                     delete item.userRecipes;
                 });

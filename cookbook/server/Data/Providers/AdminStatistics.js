@@ -40,7 +40,7 @@ exports.getUsersStatistics = void 0;
 var Users = require("../../models/modelsExporter").Users;
 var Aggregator = require("../utils/Aggregator").Aggregator;
 var COMMON = require("../ConstantsProvider").COMMON;
-var _a = require("../../models/lookups"), userRecipesCount = _a.userRecipesCount, userCookBooksCount = _a.userCookBooksCount;
+var _a = require("../../models/lookups"), userRecipesCount = _a.userRecipesCount, userCookBooksCount = _a.userCookBooksCount, userStatisticsFields = _a.userStatisticsFields;
 var paginator = require("../utils/paginator").paginator;
 var aggregateOptions = Aggregator(COMMON);
 var getUsersStatistics = function (page, sortBy) { return __awaiter(void 0, void 0, void 0, function () {
@@ -50,7 +50,8 @@ var getUsersStatistics = function (page, sortBy) { return __awaiter(void 0, void
             case 0:
                 aggregate = Users.aggregate([
                     userRecipesCount,
-                    userCookBooksCount
+                    userCookBooksCount,
+                    userStatisticsFields
                 ]);
                 return [4 /*yield*/, paginator(aggregate, aggregateOptions(page, sortBy))];
             case 1: return [2 /*return*/, _a.sent()];

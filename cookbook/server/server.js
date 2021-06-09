@@ -5,6 +5,9 @@ const bodyParser = require("body-parser");
 const passport = require('passport')
 const dotenv = require('dotenv')
 const result = dotenv.config({ path: '../.env' })
+
+const {AdminAPI} = require("../admin/src/constants/ServerRoutes");
+
 if (result.error) {
     throw result.error
 }
@@ -39,5 +42,8 @@ app.use(HOME_ROUTES.USER_DATA, usersDataRouter)
 
 const itemRouter = require('./Routes/GetItem');
 app.use(HOME_ROUTES.GET, itemRouter)
+
+const adminRouter = require('./Routes/adminOnlyRoutes/AdminMainRoute');
+app.use(AdminAPI, adminRouter)
 
 app.listen(process.env.BACKEND_PORT, process.env.IP, () => console.log(`Listening on ${process.env.IP}:${process.env.BACKEND_PORT}`));

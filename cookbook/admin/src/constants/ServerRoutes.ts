@@ -1,5 +1,8 @@
-export const APIEntryPoint = {
-    USERS_STATISTICS: "/api/usersStatistics"
+export const AdminAPI:string = "/api/admin"
+
+
+export const EntryPoint = {
+    USERS_STATISTICS: "/usersStatistics"
 }
 
 export const APIUserStatisticsEndPoint = {
@@ -9,9 +12,9 @@ export const APIUserStatisticsEndPoint = {
 }
 
 export const FrontEndRoutes = {
-    USERS_STATISTICS_ALL: `${APIEntryPoint.USERS_STATISTICS}${APIUserStatisticsEndPoint.ALL}`,
-    USERS_STATISTICS_BLOCKED: `${APIEntryPoint.USERS_STATISTICS}${APIUserStatisticsEndPoint.BLOCKED}`,
-    USERS_STATISTICS_DELETED: `${APIEntryPoint.USERS_STATISTICS}${APIUserStatisticsEndPoint.DELETED}`,
+    USERS_STATISTICS_ALL: `${AdminAPI}${EntryPoint.USERS_STATISTICS}${APIUserStatisticsEndPoint.ALL}`,
+    USERS_STATISTICS_BLOCKED: `${AdminAPI}${EntryPoint.USERS_STATISTICS}${APIUserStatisticsEndPoint.BLOCKED}`,
+    USERS_STATISTICS_DELETED: `${AdminAPI}${EntryPoint.USERS_STATISTICS}${APIUserStatisticsEndPoint.DELETED}`,
 };
 
 

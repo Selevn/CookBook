@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -34,12 +35,47 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var _this = this;
+Object.defineProperty(exports, "__esModule", { value: true });
+var ServerRoutes_1 = require("../../../admin/src/constants/ServerRoutes");
+var AdminStatistics_1 = require("../../Data/Providers/AdminStatistics");
 var express = require("express");
 var getRecipesCount = require("../../Data/dataProvider").getRecipesCount;
-var RELATIVE_ROUTES = require("../../src/constants").RELATIVE_ROUTES;
 var router = express.Router();
-router.post(RELATIVE_ROUTES.RECIPE_CHECK, function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+router.get(ServerRoutes_1.APIUserStatisticsEndPoint.ALL, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var result;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, AdminStatistics_1.getUsersStatistics()];
+            case 1:
+                result = _a.sent();
+                result.docs.map(function (item) {
+                    var _a, _b;
+                    item.recipesCount = ((_a = item.userRecipes) === null || _a === void 0 ? void 0 : _a.count) || 0;
+                    item.cookbooksCount = ((_b = item.userCookBooks) === null || _b === void 0 ? void 0 : _b.count) || 0;
+                    delete item.userCookBooks;
+                    delete item.userRecipes;
+                });
+                res.status(200).json(result);
+                return [2 /*return*/];
+        }
+    });
+}); });
+router.get(ServerRoutes_1.APIUserStatisticsEndPoint.BLOCKED, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var count;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, getRecipesCount()];
+            case 1:
+                count = _a.sent();
+                if (count < Number(req.body.id))
+                    res.status(404).json("No item");
+                else
+                    res.status(200).json("Ok");
+                return [2 /*return*/];
+        }
+    });
+}); });
+router.get(ServerRoutes_1.APIUserStatisticsEndPoint.DELETED, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var count;
     return __generator(this, function (_a) {
         switch (_a.label) {

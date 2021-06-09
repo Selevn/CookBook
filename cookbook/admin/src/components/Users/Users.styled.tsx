@@ -3,14 +3,13 @@ import {Container} from "../common/StyledComponents";
 import {NavLink} from "react-router-dom";
 
 export const UserContainer = styled(Container)`
-  /*background-color: red;*/
   flex-direction: column;
   width: 100%;
 `
 export const UserLinks = styled(Container)`
   padding-left: 40px;
   justify-content: start;
-  width: 1400px;
+  
   gap: 50px;
   height: 40px;
   margin-bottom: 50px;
@@ -50,4 +49,7 @@ export const LinkItem = styled(NavLink)`
   :hover{
     cursor: pointer;
   }
+`
+export const TableContainer = styled.div`
+    height: 500px;
 `

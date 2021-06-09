@@ -1,6 +1,7 @@
-import {LinkItem, UserContainer, UserLinks} from "./Users.styled";
+import {LinkItem, UserContainer, UserLinks, TableContainer} from "./Users.styled";
 import {useRouteMatch} from "react-router-dom"
 import {DataGrid} from '@material-ui/data-grid';
+import UsersRouteConstants from "../../constants/UsersRouteConstants";
 
 const columns = [
     {
@@ -60,13 +61,13 @@ const Users = () => {
     return (
         <UserContainer>
             <UserLinks>
-                <LinkItem to={url + "/all"} activeClassName={"active"}>All users</LinkItem>
-                <LinkItem to={url + "/blocked"} activeClassName={"active"}>Blocked</LinkItem>
-                <LinkItem to={url + "/deleted"} activeClassName={"active"}>Deleted</LinkItem>
+                <LinkItem to={url + UsersRouteConstants.all} activeClassName={"active"}>All users</LinkItem>
+                <LinkItem to={url + UsersRouteConstants.blocked} activeClassName={"active"}>Blocked</LinkItem>
+                <LinkItem to={url + UsersRouteConstants.deleted} activeClassName={"active"}>Deleted</LinkItem>
             </UserLinks>
-            <div style={{height: 400, width: '100%'}}>
-                <DataGrid rows={rows} columns={columns} pageSize={5}/>
-            </div>
+            <TableContainer>
+                <DataGrid rows={rows} columns={columns} pageSize={4}/>
+            </TableContainer>
         </UserContainer>)
 }
 

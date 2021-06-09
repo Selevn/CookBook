@@ -1,20 +1,16 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import {Book, ExitToApp, ListAlt, Person} from "@material-ui/icons";
-import {NavLink} from "react-router-dom";
+import {NavLink, useLocation} from "react-router-dom";
 import RouteConstants from "../../constants/RouteConstants";
 import {FaCog, FaEye} from "react-icons/all";
-import { useLocation } from "react-router-dom";
+
 import {
     AdminCardStyled,
     AdminData,
@@ -25,6 +21,7 @@ import {
     MenuStyled,
     SearchStyled
 } from "./Menu.styled";
+import UsersRouteConstants from "../../constants/UsersRouteConstants";
 
 const drawerWidth = 200;
 
@@ -52,11 +49,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-
 type Props = {
     children: JSX.Element,
 };
+
 export default function Menu({ children }: Props) {
+    const location = useLocation()
+
     const classes = useStyles();
     return (
         <div className={classes.root}>
@@ -81,7 +80,9 @@ export default function Menu({ children }: Props) {
                 <div className={classes.toolbar} />
                 <Divider />
                 <List>
-                    <ListItem component={NavLink} to={RouteConstants.users} activeClassName="selected">
+                    <ListItem component={NavLink}
+                              isActive={() => location.pathname.startsWith(RouteConstants.users)}
+                              to={RouteConstants.users+UsersRouteConstants.all} activeClassName="selected">
                         <ListItemIcon><Person /></ListItemIcon>
                         <ListItemText primary={"Users"} />
                     </ListItem>

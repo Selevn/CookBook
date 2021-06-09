@@ -36,26 +36,57 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUsersStatistics = void 0;
+exports.getDeletedUsersStatistics = exports.getBlockedUsersStatistics = exports.getUsersStatistics = void 0;
 var Users = require("../../models/modelsExporter").Users;
 var Aggregator = require("../utils/Aggregator").Aggregator;
 var COMMON = require("../ConstantsProvider").COMMON;
-var _a = require("../../models/lookups"), userRecipesCount = _a.userRecipesCount, userCookBooksCount = _a.userCookBooksCount, userStatisticsFields = _a.userStatisticsFields;
+var _a = require("../../models/lookups"), userRecipesCount = _a.userRecipesCount, userCookBooksCount = _a.userCookBooksCount, userStatisticsFields = _a.userStatisticsFields, blockedUsers = _a.blockedUsers, deletedUsers = _a.deletedUsers;
 var paginator = require("../utils/paginator").paginator;
 var aggregateOptions = Aggregator(COMMON);
+var getUserAggregate = function (aggregator) {
+    if (aggregator === void 0) { aggregator = false; }
+    var resultAggregate = [
+        userRecipesCount,
+        userCookBooksCount,
+        userStatisticsFields
+    ];
+    if (aggregator)
+        resultAggregate.push(aggregator);
+    return Users.aggregate(resultAggregate);
+};
 var getUsersStatistics = function (page, sortBy) { return __awaiter(void 0, void 0, void 0, function () {
     var aggregate;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                aggregate = Users.aggregate([
-                    userRecipesCount,
-                    userCookBooksCount,
-                    userStatisticsFields
-                ]);
+                aggregate = getUserAggregate();
                 return [4 /*yield*/, paginator(aggregate, aggregateOptions(page, sortBy))];
             case 1: return [2 /*return*/, _a.sent()];
         }
     });
 }); };
 exports.getUsersStatistics = getUsersStatistics;
+var getBlockedUsersStatistics = function (page, sortBy) { return __awaiter(void 0, void 0, void 0, function () {
+    var aggregate;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                aggregate = getUserAggregate(blockedUsers);
+                return [4 /*yield*/, paginator(aggregate, aggregateOptions(page, sortBy))];
+            case 1: return [2 /*return*/, _a.sent()];
+        }
+    });
+}); };
+exports.getBlockedUsersStatistics = getBlockedUsersStatistics;
+var getDeletedUsersStatistics = function (page, sortBy) { return __awaiter(void 0, void 0, void 0, function () {
+    var aggregate;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                aggregate = getUserAggregate(deletedUsers);
+                return [4 /*yield*/, paginator(aggregate, aggregateOptions(page, sortBy))];
+            case 1: return [2 /*return*/, _a.sent()];
+        }
+    });
+}); };
+exports.getDeletedUsersStatistics = getDeletedUsersStatistics;

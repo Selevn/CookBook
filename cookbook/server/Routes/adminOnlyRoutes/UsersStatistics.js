@@ -39,7 +39,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var ServerRoutes_1 = require("../../../admin/src/constants/ServerRoutes");
 var AdminStatistics_1 = require("../../Data/Providers/AdminStatistics");
 var express = require("express");
-var getRecipesCount = require("../../Data/dataProvider").getRecipesCount;
 var router = express.Router();
 router.get(ServerRoutes_1.APIUserStatisticsEndPoint.ALL, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var page, sort, result;
@@ -65,31 +64,47 @@ router.get(ServerRoutes_1.APIUserStatisticsEndPoint.ALL, function (req, res) { r
     });
 }); });
 router.get(ServerRoutes_1.APIUserStatisticsEndPoint.BLOCKED, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var count;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, getRecipesCount()];
+    var page, sort, result;
+    var _a, _b;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
+            case 0:
+                page = Number((_a = req === null || req === void 0 ? void 0 : req.query) === null || _a === void 0 ? void 0 : _a.page);
+                sort = (_b = req === null || req === void 0 ? void 0 : req.query) === null || _b === void 0 ? void 0 : _b.sort;
+                return [4 /*yield*/, AdminStatistics_1.getBlockedUsersStatistics(page, sort)];
             case 1:
-                count = _a.sent();
-                if (count < Number(req.body.id))
-                    res.status(404).json("No item");
-                else
-                    res.status(200).json("Ok");
+                result = _c.sent();
+                result.docs.map(function (item) {
+                    var _a, _b, _c, _d;
+                    item.recipesCount = ((_b = (_a = item.userRecipes) === null || _a === void 0 ? void 0 : _a[0]) === null || _b === void 0 ? void 0 : _b.count) || 0;
+                    item.cookbooksCount = ((_d = (_c = item.userCookBooks) === null || _c === void 0 ? void 0 : _c[0]) === null || _d === void 0 ? void 0 : _d.count) || 0;
+                    delete item.userCookBooks;
+                    delete item.userRecipes;
+                });
+                res.status(200).json(result);
                 return [2 /*return*/];
         }
     });
 }); });
 router.get(ServerRoutes_1.APIUserStatisticsEndPoint.DELETED, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var count;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, getRecipesCount()];
+    var page, sort, result;
+    var _a, _b;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
+            case 0:
+                page = Number((_a = req === null || req === void 0 ? void 0 : req.query) === null || _a === void 0 ? void 0 : _a.page);
+                sort = (_b = req === null || req === void 0 ? void 0 : req.query) === null || _b === void 0 ? void 0 : _b.sort;
+                return [4 /*yield*/, AdminStatistics_1.getDeletedUsersStatistics(page, sort)];
             case 1:
-                count = _a.sent();
-                if (count < Number(req.body.id))
-                    res.status(404).json("No item");
-                else
-                    res.status(200).json("Ok");
+                result = _c.sent();
+                result.docs.map(function (item) {
+                    var _a, _b, _c, _d;
+                    item.recipesCount = ((_b = (_a = item.userRecipes) === null || _a === void 0 ? void 0 : _a[0]) === null || _b === void 0 ? void 0 : _b.count) || 0;
+                    item.cookbooksCount = ((_d = (_c = item.userCookBooks) === null || _c === void 0 ? void 0 : _c[0]) === null || _d === void 0 ? void 0 : _d.count) || 0;
+                    delete item.userCookBooks;
+                    delete item.userRecipes;
+                });
+                res.status(200).json(result);
                 return [2 /*return*/];
         }
     });

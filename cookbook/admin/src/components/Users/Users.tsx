@@ -1,13 +1,9 @@
 import {LinkItem, UserContainer, UserLinks, TableContainer} from "./Users.styled";
-import {useRouteMatch} from "react-router-dom"
-import {DataGrid, GridSortDirection} from '@material-ui/data-grid';
+import {useLocation, useRouteMatch} from "react-router-dom"
 import UsersRouteConstants from "../../constants/UsersRouteConstants";
-import {useEffect, useState} from "react";
-import {get} from "../../connector/Proxy";
 import {FrontEndRoutes} from "../../constants/ServerRoutes";
-import {UserStatistic} from "../../interfaces/usersInterfaces";
-import SortProxy from "../../connector/SortProxy";
 import Table from "../common/Table";
+import {useEffect, useState} from "react";
 
 const columns = [
     {
@@ -25,8 +21,28 @@ const columns = [
 
 const Users = () => {
     const {url} = useRouteMatch()
+    const location = useLocation()
+    const [source, setSource] = useState(FrontEndRoutes.USERS_STATISTICS_ALL)
 
-
+    useEffect(() => {
+        const finalLocation: string = '/'+location.pathname.split('/')[2]
+        switch (finalLocation) {
+            case UsersRouteConstants.all: {
+                setSource(FrontEndRoutes.USERS_STATISTICS_ALL);
+                break;
+            }
+            case UsersRouteConstants.blocked: {
+                setSource(FrontEndRoutes.USERS_STATISTICS_BLOCKED);
+                break;
+            }
+            case UsersRouteConstants.deleted: {
+                setSource(FrontEndRoutes.USERS_STATISTICS_DELETED);
+                break;
+            }
+            default:
+                break;
+        }
+    }, [location.pathname])
     return (
         <UserContainer>
             <UserLinks>
@@ -35,7 +51,7 @@ const Users = () => {
                 <LinkItem to={url + UsersRouteConstants.deleted} activeClassName={"active"}>Deleted</LinkItem>
             </UserLinks>
             <TableContainer>
-                <Table columns={columns} source={FrontEndRoutes.USERS_STATISTICS_ALL}/>
+                <Table columns={columns} source={source}/>
             </TableContainer>
         </UserContainer>)
 }

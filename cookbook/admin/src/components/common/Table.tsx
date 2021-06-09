@@ -30,7 +30,7 @@ const Table = ({columns, source}:{columns:GridColumns, source:string}) : React.R
             if(totalRows === 0)
                 setTotalRows(result.total)
         })()
-    },[page, sortModel])
+    },[page, sortModel, source])
 
     return (
         <DataGrid

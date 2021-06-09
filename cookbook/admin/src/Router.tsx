@@ -1,5 +1,5 @@
 import {Switch, Route} from "react-router-dom";
-import RouteConstants from "./constants/RouteConstants";
+import SPAClientRouteConstants from "./constants/SPAClientRouteConstants";
 
 import Users from "./components/Users";
 import Settings from "./components/Settings";
@@ -11,22 +11,22 @@ import Statistic from "./components/Statistics";
 const MyRouter = () => {
     return (
         <Switch>
-            <Route exact path={RouteConstants.home}>
+            <Route exact path={SPAClientRouteConstants.home}>
                 <Users/>
             </Route>
-            <Route path={RouteConstants.users}>
+            <Route path={SPAClientRouteConstants.users}>
                 <Users/>
             </Route>
-            <Route path={RouteConstants.cookbooks}>
+            <Route path={SPAClientRouteConstants.cookbooks}>
                 <CookBooks/>
             </Route>
-            <Route path={RouteConstants.recipes}>
+            <Route path={SPAClientRouteConstants.recipes}>
                 <Recipes/>
             </Route>
-            <Route path={RouteConstants.settings}>
+            <Route path={SPAClientRouteConstants.settings}>
                 <Settings/>
             </Route>
-            <Route path={RouteConstants.statistic}>
+            <Route path={SPAClientRouteConstants.statistic}>
                 <Statistic/>
             </Route>
         </Switch>

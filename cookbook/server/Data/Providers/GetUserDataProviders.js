@@ -1,3 +1,4 @@
+const {COMMON} = require("../ConstantsProvider");
 const {Recipes} = require("../../models/modelsExporter");
 const {idInRangeMatcher} = require("../../models/lookups");
 const {emailMatcher} = require("../../models/lookups");
@@ -11,19 +12,7 @@ const {publicUserData} = require("../../models/lookups");
 const {_idMatcher} = require("../../models/lookups");
 const {Users} = require("../../models/modelsExporter");
 
-const common = {
-    ALLCONSTANT: '1000',
-    POPULAR: 'mostPopular',
-    LIKED: 'mostLiked',
-    NEWEST: 'newest',
-    OURCHOISE: 'ourChoise',
-    ID: 'id',
-
-    COOKBOOK: 'COOKBOOK',
-    RECIPE: 'RECIPE',
-    PROFILE: 'PROFILE',
-};
-const aggregateOptions = Aggregator(common)
+const aggregateOptions = Aggregator(COMMON)
 
 const getUser = async (id) => {
     return Users.aggregate([_idMatcher(id), publicUserData]);

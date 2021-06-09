@@ -8,7 +8,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import {Book, ExitToApp, ListAlt, Person} from "@material-ui/icons";
 import {NavLink, useLocation} from "react-router-dom";
-import RouteConstants from "../../constants/RouteConstants";
+import SPAClientRouteConstants from "../../constants/SPAClientRouteConstants";
 import {FaCog, FaEye} from "react-icons/all";
 
 import {
@@ -81,31 +81,31 @@ export default function Menu({ children }: Props) {
                 <Divider />
                 <List>
                     <ListItem component={NavLink}
-                              isActive={() => location.pathname.startsWith(RouteConstants.users)}
-                              to={RouteConstants.users+UsersRouteConstants.all} activeClassName="selected">
+                              isActive={() => location.pathname.startsWith(SPAClientRouteConstants.users)}
+                              to={SPAClientRouteConstants.users+UsersRouteConstants.all} activeClassName="selected">
                         <ListItemIcon><Person /></ListItemIcon>
                         <ListItemText primary={"Users"} />
                     </ListItem>
-                    <ListItem component={NavLink} to={RouteConstants.cookbooks} activeClassName="selected">
+                    <ListItem component={NavLink} to={SPAClientRouteConstants.cookbooks} activeClassName="selected">
                         <ListItemIcon><Book /></ListItemIcon>
                         <ListItemText primary={"CookBooks"} />
                     </ListItem>
-                    <ListItem component={NavLink} to={RouteConstants.recipes} activeClassName="selected">
+                    <ListItem component={NavLink} to={SPAClientRouteConstants.recipes} activeClassName="selected">
                         <ListItemIcon><ListAlt /></ListItemIcon>
                         <ListItemText primary={"Recipes"} />
                     </ListItem>
-                    <ListItem component={NavLink} to={RouteConstants.statistic} activeClassName="selected">
+                    <ListItem component={NavLink} to={SPAClientRouteConstants.statistic} activeClassName="selected">
                         <ListItemIcon><FaEye /></ListItemIcon>
                         <ListItemText primary={"Statistic"} />
                     </ListItem>
                 </List>
                 <Divider />
                 <List>
-                    <ListItem component={NavLink} to={RouteConstants.settings} activeClassName="selected">
+                    <ListItem component={NavLink} to={SPAClientRouteConstants.settings} activeClassName="selected">
                         <ListItemIcon><FaCog /></ListItemIcon>
                         <ListItemText primary={"Settings"} />
                     </ListItem>
-                    <ListItem component={NavLink} to={RouteConstants.logout}>
+                    <ListItem component={NavLink} to={SPAClientRouteConstants.logout}>
                         <ListItemIcon><ExitToApp /></ListItemIcon>
                         <ListItemText primary={"Log out"} />
                     </ListItem>

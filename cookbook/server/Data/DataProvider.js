@@ -1,3 +1,4 @@
+const {getUsersStatistics} = require("./Providers/AdminStatistics");
 const {getCookBooks, getCookBook, getComments, getRecipes, getRecipe} = require("./Providers/GetProviders")
 const {getUserForLogin, getUser} = require("./Providers/GetUserDataProviders")
 const {likeCookBook, likeRecipe, visitItem} = require("./Providers/InteractionsProvider")
@@ -38,6 +39,8 @@ const {getUserCookBooks, getUserRecipes, getUserLikedCookBooks, getUserLikedReci
     exports.getUserRecipes = getUserRecipes
     exports.getUserLikedCookBooks = getUserLikedCookBooks
     exports.getUserLikedRecipes = getUserLikedRecipes
+
+    exports.getUsersStatistics = getUsersStatistics
 /*    return exports
 }
 

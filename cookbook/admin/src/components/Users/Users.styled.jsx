@@ -1,0 +1,15 @@
+"use strict";
+var __makeTemplateObject = (this && this.__makeTemplateObject) || function (cooked, raw) {
+    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
+    return cooked;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TableContainer = exports.LinkItem = exports.UserLinks = exports.UserContainer = void 0;
+var styled_components_1 = require("styled-components");
+var StyledComponents_1 = require("../common/StyledComponents");
+var react_router_dom_1 = require("react-router-dom");
+exports.UserContainer = styled_components_1.default(StyledComponents_1.Container)(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n  flex-direction: column;\n  width: 100%;\n"], ["\n  flex-direction: column;\n  width: 100%;\n"])));
+exports.UserLinks = styled_components_1.default(StyledComponents_1.Container)(templateObject_2 || (templateObject_2 = __makeTemplateObject(["\n  padding-left: 40px;\n  justify-content: start;\n  \n  gap: 50px;\n  height: 40px;\n  margin-bottom: 50px;\n  border-bottom: 3px solid #ffffff00;\n\n  /*background-color: green;*/\n  .active {\n    border-bottom: 3px solid var(--primary-color);\n    color: var(--pure-black);\n  }\n\n  @media (max-width: 1024px) {\n    width: auto;\n    margin-bottom: 25px;\n    padding-left: 20px;\n    margin-top: 30px;\n    justify-content: center;\n  }\n  @media (max-width: 768px) {\n    margin-bottom: 5px;\n    margin-left: auto;\n    margin-right: auto;\n    height: 160px;\n    padding-left: 0;\n    flex-direction: column;\n    text-align: center;\n    gap: 15px;\n    width: 300px;\n  }\n"], ["\n  padding-left: 40px;\n  justify-content: start;\n  \n  gap: 50px;\n  height: 40px;\n  margin-bottom: 50px;\n  border-bottom: 3px solid #ffffff00;\n\n  /*background-color: green;*/\n  .active {\n    border-bottom: 3px solid var(--primary-color);\n    color: var(--pure-black);\n  }\n\n  @media (max-width: 1024px) {\n    width: auto;\n    margin-bottom: 25px;\n    padding-left: 20px;\n    margin-top: 30px;\n    justify-content: center;\n  }\n  @media (max-width: 768px) {\n    margin-bottom: 5px;\n    margin-left: auto;\n    margin-right: auto;\n    height: 160px;\n    padding-left: 0;\n    flex-direction: column;\n    text-align: center;\n    gap: 15px;\n    width: 300px;\n  }\n"])));
+exports.LinkItem = styled_components_1.default(react_router_dom_1.NavLink)(templateObject_3 || (templateObject_3 = __makeTemplateObject(["\n  font-size: 26px;\n  font-weight: bold;\n  color: var(--light-black);\n  outline:none;\n  text-decoration:none;\n  :hover{\n    cursor: pointer;\n  }\n"], ["\n  font-size: 26px;\n  font-weight: bold;\n  color: var(--light-black);\n  outline:none;\n  text-decoration:none;\n  :hover{\n    cursor: pointer;\n  }\n"])));
+exports.TableContainer = styled_components_1.default.div(templateObject_4 || (templateObject_4 = __makeTemplateObject(["\n    height: 500px;\n"], ["\n    height: 500px;\n"])));
+var templateObject_1, templateObject_2, templateObject_3, templateObject_4;

@@ -15,6 +15,7 @@ const user1Private = {...user1, password: "1234", salt: "sail"}
 const user1Public = user1
 
 const user2 = {
+    _id:2,
     name: {first: "Uncle", last: "Bob"},
     desc: "Programmer",
     image: "smth2",
@@ -34,7 +35,7 @@ const recipe1 = {
     _id:1,
     views: 1000,
     likes: 5,
-    author: 2,
+    author: 1,
     image: "img",
     images: ["img", "img2", "img3"],
     cookTime: 40,
@@ -49,7 +50,7 @@ const recipe1 = {
 }
 const recipe2 = {
     views: 2000,
-    author: 1,
+    author: 2,
     likes: 50,
     image: "imgs",
     images: ["img", "img2", "img3"],

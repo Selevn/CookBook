@@ -1,4 +1,4 @@
-const RouteConstants = {
+const SPAClientRouteConstants = {
     home: '/',
     users: '/users',
     cookbooks: '/cookbooks',
@@ -9,4 +9,4 @@ const RouteConstants = {
     login: '/login',
 }
 
-export default RouteConstants
+export default SPAClientRouteConstants

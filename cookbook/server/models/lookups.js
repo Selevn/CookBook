@@ -55,6 +55,21 @@ exports.recipesLookUp =
             as: "recipes"
         }
     }
+exports.userRecipesCount =
+    {
+        $lookup: {
+            from: "recipes",
+            let: {"authorId":"$_id"},
+            pipeline:
+                [{$match: {$expr: {$eq: ["$author", "$$authorId"]}},},
+                {
+                    $count: "recipes_count"
+                }]
+            ,
+            as: "userRecipes"
+        }
+    }
+
 exports.likedRecipesLookUp =
     {
         $lookup: {

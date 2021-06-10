@@ -124,7 +124,8 @@ exports.USER_FIELDS = {
   likes: 'likes',
   comments: 'comments',
   cloudinary_id: 'cloudinary_id',
-  isBlocked: 'isBlocked'
+  isBlocked: 'isBlocked',
+  status:'status'
 };
 exports.RECIPE_FIELDS = {
   views: 'views',

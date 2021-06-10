@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {DataGrid, GridColumns, GridRowId, GridSortDirection} from "@material-ui/data-grid";
+import {DataGrid, GridColumns, GridSortDirection} from "@material-ui/data-grid";
 import SortProxy from "../../connector/SortProxy";
 import {get} from "../../connector/Proxy";
 import {TableStatistic} from "../../interfaces/usersInterfaces";
 
-const Table = ({columns, source}:{columns:GridColumns, source:string}) : React.ReactElement  => {
+const Table = ({columns, source, rerenderFlag}:{columns:GridColumns, source:string, rerenderFlag:any}) : React.ReactElement  => {
 
     const [data, setData] = useState([])
     const [page, setPage] = useState(1)
@@ -29,7 +29,7 @@ const Table = ({columns, source}:{columns:GridColumns, source:string}) : React.R
             if(totalRows === 0)
                 setTotalRows(result.total)
         })()
-    },[page, sortModel, source])
+    },[page, sortModel, source, rerenderFlag])
 
     return (
             <DataGrid

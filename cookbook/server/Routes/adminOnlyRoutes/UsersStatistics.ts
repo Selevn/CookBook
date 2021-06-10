@@ -5,6 +5,8 @@ import {
     getUsersStatistics
 } from "../../Data/Providers/AdminStatistics";
 
+import {updateUser} from "../../Data/Providers/UpdateProvider"
+
 const express = require("express");
 const router = express.Router();
 
@@ -48,6 +50,12 @@ router.get(APIUserStatisticsEndPoint.DELETED, async (req, res) => {
     })
     res.status(200).json(result)
 });
+
+router.patch(APIUserStatisticsEndPoint.CHANGE, async (req, res) => {
+    const result = await updateUser(req.body.params._id, "status", req.body.params.status);
+    res.status(200).json(result)
+});
+
 
 
 module.exports = router

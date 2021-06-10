@@ -47,7 +47,7 @@ const schema = new Schema({
             "Number"
         ]
     },
-    "state":{
+    "status":{
         "type":[
             "Number"
         ],

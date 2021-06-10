@@ -38,6 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var ServerRoutes_1 = require("../../../admin/src/constants/ServerRoutes");
 var AdminStatistics_1 = require("../../Data/Providers/AdminStatistics");
+var UpdateProvider_1 = require("../../Data/Providers/UpdateProvider");
 var express = require("express");
 var router = express.Router();
 router.get(ServerRoutes_1.APIUserStatisticsEndPoint.ALL, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
@@ -104,6 +105,18 @@ router.get(ServerRoutes_1.APIUserStatisticsEndPoint.DELETED, function (req, res)
                     delete item.userCookBooks;
                     delete item.userRecipes;
                 });
+                res.status(200).json(result);
+                return [2 /*return*/];
+        }
+    });
+}); });
+router.patch(ServerRoutes_1.APIUserStatisticsEndPoint.CHANGE, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var result;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, UpdateProvider_1.updateUser(req.body.params._id, "status", req.body.params.status)];
+            case 1:
+                result = _a.sent();
                 res.status(200).json(result);
                 return [2 /*return*/];
         }

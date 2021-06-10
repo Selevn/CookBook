@@ -14,7 +14,7 @@ import {StatusContainer} from "../common/StyledComponents";
 import {update} from "../../connector/Proxy";
 
 
-const MyMenu = ({status, id}:{status:number, id:number}) => {
+const MyMenu = ({status, id, rerenderIntiator}:{status:number, id:number, rerenderIntiator:any}) => {
 
     const ITEM_HEIGHT = 48;
     const [anchorEl, setAnchorEl] = useState<(EventTarget & HTMLAnchorElement) | (EventTarget & HTMLButtonElement) | null>(null);
@@ -32,27 +32,34 @@ const MyMenu = ({status, id}:{status:number, id:number}) => {
         Restore,
     }
     const logicHandler = async (action:Action) => {
+        let isOk;
         switch (action){
             case Action.View: {
                 break;
             }
             case Action.Block: {
-                const result = await update(FrontEndRoutes.USERS_CHANGE, {_id:id, status:1});
+                isOk = await update(FrontEndRoutes.USERS_CHANGE, {_id:id, status:1});
+                console.log(isOk)
                 break;
             }
             case Action.Delete: {
-                const result = await update(FrontEndRoutes.USERS_CHANGE, {_id:id, status:2});
+                isOk = await update(FrontEndRoutes.USERS_CHANGE, {_id:id, status:2});
+                console.log(isOk)
                 break;
             }
             case Action.Unblock: {
-                const result = await update(FrontEndRoutes.USERS_CHANGE, {_id:id, status:0});
+                isOk = await update(FrontEndRoutes.USERS_CHANGE, {_id:id, status:0});
+                console.log(isOk)
                 break;
             }
             case Action.Restore: {
-                const result = await update(FrontEndRoutes.USERS_CHANGE, {_id:id, status:0});
+                isOk = await update(FrontEndRoutes.USERS_CHANGE, {_id:id, status:0});
+                console.log(isOk)
                 break;
             }
         }
+        if(isOk)
+            rerenderIntiator((s:boolean)=>!s)
     }
 
     const handleClose = () => {
@@ -83,7 +90,8 @@ const MyMenu = ({status, id}:{status:number, id:number}) => {
             <MenuItem onClick={()=>{logicHandler(Action.View);handleClose()}}>
                 View
             </MenuItem>
-            {status === 0 || Number.isNaN(status) && <>
+            {(status === 0 || Number.isNaN(status)) &&
+            <>
                 <MenuItem onClick={()=>{logicHandler(Action.Block);handleClose()}}>
                     Block
                 </MenuItem>
@@ -108,35 +116,36 @@ const MyMenu = ({status, id}:{status:number, id:number}) => {
     </div>)
 }
 
-const columns = [
-    {
-        field: 'name', headerName: 'Name', width: 250, valueGetter: (params: any) => {
-            return `${params.value.first} ${params.value.last}`
-        }
-    },
 
-    {field: 'email', headerName: 'Email', width: 150},
-    {field: 'cookbooksCount', headerName: 'Cookbooks', width: 150},
-    {field: 'recipesCount', headerName: 'Recipes', width: 150},
-    {
-        field: 'status', headerName: 'Status', width: 150,
-        renderCell: (params: GridCellParams) => {
-            return (
-            <StatusContainer>
-
-                <UserStatus status={Number(params.value)}/>
-                <MyMenu status={Number(params.value)} id={Number(params.id)}/>
-            </StatusContainer>
-        )},
-    },
-
-
-];
 
 const Users = () => {
     const {url} = useRouteMatch()
     const location = useLocation()
     const [source, setSource] = useState(FrontEndRoutes.USERS_STATISTICS_ALL)
+
+    const [rerenderFlag, changeRerenderFlag] = useState(true)
+
+    const columns = [
+        {
+            field: 'name', headerName: 'Name', width: 250, valueGetter: (params: any) => {
+                return `${params.value.first} ${params.value.last}`
+            }
+        },
+
+        {field: 'email', headerName: 'Email', width: 150},
+        {field: 'cookbooksCount', headerName: 'Cookbooks', width: 150},
+        {field: 'recipesCount', headerName: 'Recipes', width: 150},
+        {
+            field: 'status', headerName: 'Status', width: 150,
+            renderCell: (params: GridCellParams) => {
+                return (
+                    <StatusContainer>
+                        <UserStatus status={Number(params.value)}/>
+                        <MyMenu status={Number(params.value)} id={Number(params.id)} rerenderIntiator = {changeRerenderFlag}/>
+                    </StatusContainer>
+                )},
+        },
+    ];
 
     useEffect(() => {
         const finalLocation: string = '/' + location.pathname.split('/')[2]
@@ -165,7 +174,7 @@ const Users = () => {
                 <LinkItem to={url + UsersRouteConstants.deleted} activeClassName={"active"}>Deleted</LinkItem>
             </UserLinks>
             <TableContainer>
-                <Table columns={columns} source={source}/>
+                <Table columns={columns} source={source} rerenderFlag={rerenderFlag} />
             </TableContainer>
         </UserContainer>)
 }

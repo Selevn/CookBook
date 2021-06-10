@@ -25,7 +25,7 @@ const updateCookBook = async (inputCookBook) => {
 
 
 const updateUser = async (id, field, value) => {
-    if(!id || !field || !value)
+    if(!id || !field)
         return false
     if (field === USER_FIELDS.password) {
         const {hash, salt} = getPassword(value)

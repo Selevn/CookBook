@@ -3,7 +3,7 @@ import {useLocation, useRouteMatch} from "react-router-dom"
 import UsersRouteConstants from "../../constants/UsersRouteConstants";
 import {FrontEndRoutes} from "../../constants/ServerRoutes";
 import Table from "../common/Table";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {GridCellParams} from "@material-ui/data-grid";
 import {IconButton} from "@material-ui/core";
 import UserStatus from "./UserStatus";
@@ -11,18 +11,49 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import {StatusContainer} from "../common/StyledComponents";
+import {update} from "../../connector/Proxy";
 
 
 const MyMenu = ({status, id}:{status:number, id:number}) => {
 
     const ITEM_HEIGHT = 48;
-    const [anchorEl, setAnchorEl] = useState(null);
+    const [anchorEl, setAnchorEl] = useState<(EventTarget & HTMLAnchorElement) | (EventTarget & HTMLButtonElement) | null>(null);
     const open = Boolean(anchorEl);
-    // @ts-ignore
-    const handleClick = (event) => {
-        console.log(id)
+
+    const handleClick = (event: React.MouseEvent<HTMLAnchorElement> | React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
+
+    enum Action {
+        View,
+        Delete,
+        Block,
+        Unblock,
+        Restore,
+    }
+    const logicHandler = async (action:Action) => {
+        switch (action){
+            case Action.View: {
+                break;
+            }
+            case Action.Block: {
+                const result = await update(FrontEndRoutes.USERS_CHANGE, {_id:id, status:1});
+                break;
+            }
+            case Action.Delete: {
+                const result = await update(FrontEndRoutes.USERS_CHANGE, {_id:id, status:2});
+                break;
+            }
+            case Action.Unblock: {
+                const result = await update(FrontEndRoutes.USERS_CHANGE, {_id:id, status:0});
+                break;
+            }
+            case Action.Restore: {
+                const result = await update(FrontEndRoutes.USERS_CHANGE, {_id:id, status:0});
+                break;
+            }
+        }
+    }
 
     const handleClose = () => {
         setAnchorEl(null);
@@ -49,27 +80,27 @@ const MyMenu = ({status, id}:{status:number, id:number}) => {
                 },
             }}
         >
-            <MenuItem onClick={handleClose}>
+            <MenuItem onClick={()=>{logicHandler(Action.View);handleClose()}}>
                 View
             </MenuItem>
             {status === 0 || Number.isNaN(status) && <>
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={()=>{logicHandler(Action.Block);handleClose()}}>
                     Block
                 </MenuItem>
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={()=>{logicHandler(Action.Delete);handleClose()}}>
                     Delete
                 </MenuItem>
             </>}
             {status === 1 && <>
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={()=>{logicHandler(Action.Unblock);handleClose()}}>
                     Unblock
                 </MenuItem>
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={()=>{logicHandler(Action.Delete);handleClose()}}>
                     Delete
                 </MenuItem>
             </>}
             {status === 2 && <>
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={()=>{logicHandler(Action.Restore);handleClose()}}>
                     Restore
                 </MenuItem>
             </>}

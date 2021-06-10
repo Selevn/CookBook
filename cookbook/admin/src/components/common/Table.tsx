@@ -42,6 +42,8 @@ const Table = ({columns, source}:{columns:GridColumns, source:string}) : React.R
 
             loading={loading}
 
+            disableColumnFilter
+            disableColumnMenu
 
             page={page-1}
             onPageChange={(params) => {

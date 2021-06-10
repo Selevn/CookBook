@@ -4,6 +4,9 @@ import UsersRouteConstants from "../../constants/UsersRouteConstants";
 import {FrontEndRoutes} from "../../constants/ServerRoutes";
 import Table from "../common/Table";
 import {useEffect, useState} from "react";
+import { GridCellParams } from "@material-ui/data-grid";
+import {Button} from "@material-ui/core";
+import UserStatus from "./UserStatus";
 
 const columns = [
     {
@@ -15,7 +18,12 @@ const columns = [
     {field: 'email', headerName: 'Email', width: 150},
     {field: 'cookbooksCount', headerName: 'Cookbooks', width: 150},
     {field: 'recipesCount', headerName: 'Recipes', width: 150},
-    {field: 'status', headerName: 'Status', width: 150},
+    {field: 'status', headerName: 'Status', width: 150,
+        renderCell: (params: GridCellParams) => (
+            <UserStatus status={Number(params.value)}/>
+        ),
+    },
+
 
 ];
 

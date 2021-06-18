@@ -59,34 +59,43 @@ exports.userRecipesCount =
     {
         $lookup: {
             from: "recipes",
-            let: {"authorId":"$_id"},
+            let: {"authorId": "$_id"},
             pipeline:
                 [{$match: {$expr: {$eq: ["$author", "$$authorId"]}},},
-                {
-                    $count: "count"
-                }]
+                    {
+                        $count: "count"
+                    }]
             ,
             as: "userRecipes"
         }
     }
-    exports.userCookBooksCount =
+exports.userCookBooksCount =
     {
         $lookup: {
             from: "cookbooks",
-            let: {"authorId":"$_id"},
+            let: {"authorId": "$_id"},
             pipeline:
                 [{$match: {$expr: {$eq: ["$author", "$$authorId"]}},},
-                {
-                    $count: "count"
-                }]
+                    {
+                        $count: "count"
+                    }]
             ,
             as: "userCookBooks"
         }
     }
-    exports.userStatisticsFields = {$project: {"_id":1, "name":1, "email":1, "userCookBooks":1, "userRecipes":1, "status":1}}
-    exports.blockedUsers = {$match: {status: 1}}
-    exports.deletedUsers = {$match: {status: 2}}
-
+exports.userStatisticsFields = {
+    $project: {
+        "_id": 1,
+        "image": 1,
+        "name": 1,
+        "email": 1,
+        "userCookBooks": 1,
+        "userRecipes": 1,
+        "status": 1
+    }
+}
+exports.blockedUsers = {$match: {status: 1}}
+exports.deletedUsers = {$match: {status: 2}}
 
 
 exports.likedRecipesLookUp =
@@ -112,8 +121,8 @@ exports.likedRecipesLookUp =
         }
     }
 
-exports.publicUserData = ({$project: {"password": 0, "email": 0, "salt":0}})
-exports.privateUserData = ({$project: {"password": 0, "salt":0}})
+exports.publicUserData = ({$project: {"password": 0, "email": 0, "salt": 0}})
+exports.privateUserData = ({$project: {"password": 0, "salt": 0}})
 
 exports._idMatcher = (id) =>
     ({
@@ -135,11 +144,11 @@ exports.authorIdMatcher = (id) =>
     })
 exports.idInRangeMatcher = (ids) =>
     ({
-        $match: {_id: {$in : ids}}
+        $match: {_id: {$in: ids}}
     })
 exports.nameLkeMatcher = (like) =>
     ({
-        $match: {name: { $regex: like, $options: 'ig'}}
+        $match: {name: {$regex: like, $options: 'ig'}}
     })
 
 exports.filtersMatcher = (filters) =>

@@ -26,8 +26,11 @@ const Table = ({columns, source, rerenderFlag}:{columns:GridColumns, source:stri
             const result  = await get(source, {page:page, sort:sort}, setLoading);
             result.docs.forEach((item:TableStatistic) => item.id=item._id)
             setData(result.docs)
-            if(totalRows === 0)
+            if(totalRows !== result.total)
+            {
+                setPage(1)
                 setTotalRows(result.total)
+            }
         })()
     },[page, sortModel, source, rerenderFlag])
 

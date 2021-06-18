@@ -82,7 +82,7 @@ const MyMenu = ({status, id, rerenderIntiator}: { status: number, id: number, re
         </div>)
 }
 
-export const cookbooksColumnsCreator = (changeRerenderFlag: React.Dispatch<React.SetStateAction<boolean>>) => {
+export const recipesColumnsCreator = (changeRerenderFlag: React.Dispatch<React.SetStateAction<boolean>>) => {
     return [
         {
             field: 'name', headerName: 'Title', width: 300,

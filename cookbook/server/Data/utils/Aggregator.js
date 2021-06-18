@@ -16,6 +16,12 @@ const Aggregator = (COMMON) => {
                 return "-_id";
             case COMMON.ID:
                 return "-_id";
+            case "author":
+                return "author.0.name.first";
+            case "-author":
+                return "-author.0.name.first";
+
+
             default:
                 return String(type);
         }

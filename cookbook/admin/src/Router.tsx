@@ -3,8 +3,7 @@ import SPAClientRouteConstants from "./constants/SPAClientRouteConstants";
 
 import Users from "./components/Users";
 import Settings from "./components/Settings";
-import CookBooks from "./components/CookBooks";
-import Recipes from "./components/Recipes";
+import {CookBooks, Recipes} from "./components/Items";
 import Statistic from "./components/Statistics";
 
 

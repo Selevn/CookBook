@@ -102,6 +102,7 @@ exports.deletedUsers = {$match: {status: 2}}
 exports.cookBooksStatisticFields = {
     $project: {
         "_id": 1,
+        "name":1,
         "author": 1,
         "image": 1,
         "comments": { $size: "$commentsIds" },

@@ -36,8 +36,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCookBooksStatistics = exports.getDeletedUsersStatistics = exports.getBlockedUsersStatistics = exports.getUsersStatistics = void 0;
-var _a = require("../../models/modelsExporter"), Users = _a.Users, CookBooks = _a.CookBooks;
+exports.getRecipesStatistic = exports.getCookBooksStatistics = exports.getDeletedUsersStatistics = exports.getBlockedUsersStatistics = exports.getUsersStatistics = void 0;
+var _a = require("../../models/modelsExporter"), Users = _a.Users, CookBooks = _a.CookBooks, Recipes = _a.Recipes;
 var Aggregator = require("../utils/Aggregator").Aggregator;
 var COMMON = require("../ConstantsProvider").COMMON;
 var _b = require("../../models/lookups"), userRecipesCount = _b.userRecipesCount, userCookBooksCount = _b.userCookBooksCount, userStatisticsFields = _b.userStatisticsFields, blockedUsers = _b.blockedUsers, deletedUsers = _b.deletedUsers, cookBooksStatisticFields = _b.cookBooksStatisticFields, authorLookup = _b.authorLookup;
@@ -63,6 +63,16 @@ var getCookbooksAggregate = function (aggregator) {
     if (aggregator)
         resultAggregate.push(aggregator);
     return CookBooks.aggregate(resultAggregate);
+};
+var getRecipesAggregate = function (aggregator) {
+    if (aggregator === void 0) { aggregator = false; }
+    var resultAggregate = [
+        authorLookup,
+        cookBooksStatisticFields
+    ];
+    if (aggregator)
+        resultAggregate.push(aggregator);
+    return Recipes.aggregate(resultAggregate);
 };
 var getUsersStatistics = function (page, sortBy) { return __awaiter(void 0, void 0, void 0, function () {
     var aggregate;
@@ -112,3 +122,15 @@ var getCookBooksStatistics = function (page, sortBy) { return __awaiter(void 0, 
     });
 }); };
 exports.getCookBooksStatistics = getCookBooksStatistics;
+var getRecipesStatistic = function (page, sortBy) { return __awaiter(void 0, void 0, void 0, function () {
+    var aggregate;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                aggregate = getRecipesAggregate();
+                return [4 /*yield*/, paginator(aggregate, aggregateOptions(page, sortBy))];
+            case 1: return [2 /*return*/, _a.sent()];
+        }
+    });
+}); };
+exports.getRecipesStatistic = getRecipesStatistic;

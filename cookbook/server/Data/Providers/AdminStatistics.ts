@@ -1,4 +1,4 @@
-const {Users, CookBooks} = require("../../models/modelsExporter");
+const {Users, CookBooks, Recipes} = require("../../models/modelsExporter");
 
 const {Aggregator} = require("../utils/Aggregator");
 const {COMMON} = require("../ConstantsProvider");
@@ -38,6 +38,17 @@ const getCookbooksAggregate = (aggregator = false) => {
 }
 
 
+const getRecipesAggregate = (aggregator = false) => {
+    const resultAggregate = [
+        authorLookup,
+        cookBooksStatisticFields
+    ]
+    if (aggregator)
+        resultAggregate.push(aggregator)
+    return Recipes.aggregate(resultAggregate)
+}
+
+
 export const getUsersStatistics = async (page?: Number, sortBy?: string) => {
     const aggregate = getUserAggregate()
     return await paginator(aggregate, aggregateOptions(page, sortBy))
@@ -55,3 +66,8 @@ export const getCookBooksStatistics = async (page?: Number, sortBy?: string) => 
     const aggregate = getCookbooksAggregate()
     return await paginator(aggregate, aggregateOptions(page, sortBy))
 }
+export const getRecipesStatistic = async (page?: Number, sortBy?: string) => {
+    const aggregate = getRecipesAggregate()
+    return await paginator(aggregate, aggregateOptions(page, sortBy))
+}
+

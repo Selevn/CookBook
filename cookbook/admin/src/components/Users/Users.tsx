@@ -4,20 +4,7 @@ import UsersRouteConstants from "../../constants/UsersRouteConstants";
 import {FrontEndRoutes} from "../../constants/ServerRoutes";
 import Table from "../common/Table";
 import React, {useEffect, useState} from "react";
-import {GridCellParams} from "@material-ui/data-grid";
-import {IconButton} from "@material-ui/core";
-import UserStatus from "./UserStatus";
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import {StatusContainer, TableImage} from "../common/StyledComponents";
-import {update} from "../../connector/Proxy";
-import {columnsCreator, userColumnsCreator} from "../common/columns presets/userColumns";
-
-
-
-
-
+import { userColumnsCreator} from "../common/columns presets/userColumns";
 
 const Users = () => {
     const {url} = useRouteMatch()
@@ -25,7 +12,6 @@ const Users = () => {
     const [source, setSource] = useState(FrontEndRoutes.USERS_STATISTICS_ALL)
 
     const [rerenderFlag, changeRerenderFlag] = useState(true)
-
 
     const columns = userColumnsCreator(changeRerenderFlag);
 

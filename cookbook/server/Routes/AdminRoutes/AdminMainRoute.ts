@@ -6,4 +6,7 @@ const router = express.Router();
 const userStatisticsRouter = require('./UsersStatistics');
 router.use(EntryPoint.USERS_STATISTICS, userStatisticsRouter);
 
+const cookbooksStatisticsRouter = require('./CookBooksStatistics');
+router.use(EntryPoint.COOKBOOKS_STATISTICS, cookbooksStatisticsRouter);
+
 module.exports = router

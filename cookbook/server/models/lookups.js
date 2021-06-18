@@ -55,6 +55,7 @@ exports.recipesLookUp =
             as: "recipes"
         }
     }
+
 exports.userRecipesCount =
     {
         $lookup: {
@@ -69,6 +70,7 @@ exports.userRecipesCount =
             as: "userRecipes"
         }
     }
+
 exports.userCookBooksCount =
     {
         $lookup: {
@@ -96,6 +98,19 @@ exports.userStatisticsFields = {
 }
 exports.blockedUsers = {$match: {status: 1}}
 exports.deletedUsers = {$match: {status: 2}}
+
+exports.cookBooksStatisticFields = {
+    $project: {
+        "_id": 1,
+        "author": 1,
+        "image": 1,
+        "comments": { $size: "$commentsIds" },
+        "views": 1,
+        "likes": 1,
+    }
+}
+
+
 
 
 exports.likedRecipesLookUp =

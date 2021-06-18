@@ -43,7 +43,7 @@ app.use(HOME_ROUTES.USER_DATA, usersDataRouter)
 const itemRouter = require('./Routes/GetItem');
 app.use(HOME_ROUTES.GET, itemRouter)
 
-const adminRouter = require('./Routes/adminOnlyRoutes/AdminMainRoute');
+const adminRouter = require('./Routes/AdminRoutes/AdminMainRoute');
 app.use(AdminAPI, adminRouter)
 
 app.listen(process.env.BACKEND_PORT, process.env.IP, () => console.log(`Listening on ${process.env.IP}:${process.env.BACKEND_PORT}`));

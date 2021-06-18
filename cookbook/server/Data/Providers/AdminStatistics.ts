@@ -1,8 +1,17 @@
-const {Users} = require("../../models/modelsExporter");
+const {Users, CookBooks} = require("../../models/modelsExporter");
 
 const {Aggregator} = require("../utils/Aggregator");
 const {COMMON} = require("../ConstantsProvider");
-const {userRecipesCount, userCookBooksCount, userStatisticsFields, blockedUsers, deletedUsers} = require("../../models/lookups");
+const {
+    userRecipesCount,
+    userCookBooksCount,
+    userStatisticsFields,
+    blockedUsers,
+    deletedUsers,
+    cookBooksStatisticFields,
+
+    authorLookup
+} = require("../../models/lookups");
 const {paginator} = require("../utils/paginator");
 
 const aggregateOptions = Aggregator(COMMON);
@@ -13,20 +22,36 @@ const getUserAggregate = (aggregator = false) => {
         userCookBooksCount,
         userStatisticsFields
     ]
-    if(aggregator)
+    if (aggregator)
         resultAggregate.push(aggregator)
     return Users.aggregate(resultAggregate)
 }
 
-export const getUsersStatistics = async (page?:Number, sortBy?:string) => {
+const getCookbooksAggregate = (aggregator = false) => {
+    const resultAggregate = [
+        authorLookup,
+        cookBooksStatisticFields
+    ]
+    if (aggregator)
+        resultAggregate.push(aggregator)
+    return CookBooks.aggregate(resultAggregate)
+}
+
+
+export const getUsersStatistics = async (page?: Number, sortBy?: string) => {
     const aggregate = getUserAggregate()
     return await paginator(aggregate, aggregateOptions(page, sortBy))
 }
-export const getBlockedUsersStatistics = async (page?:Number, sortBy?:string) => {
+export const getBlockedUsersStatistics = async (page?: Number, sortBy?: string) => {
     const aggregate = getUserAggregate(blockedUsers)
     return await paginator(aggregate, aggregateOptions(page, sortBy))
 }
-export const getDeletedUsersStatistics = async (page?:Number, sortBy?:string) => {
+export const getDeletedUsersStatistics = async (page?: Number, sortBy?: string) => {
     const aggregate = getUserAggregate(deletedUsers)
+    return await paginator(aggregate, aggregateOptions(page, sortBy))
+}
+
+export const getCookBooksStatistics = async (page?: Number, sortBy?: string) => {
+    const aggregate = getCookbooksAggregate()
     return await paginator(aggregate, aggregateOptions(page, sortBy))
 }

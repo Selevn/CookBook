@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 
 export const Container = styled.div<{ vertical?: boolean }>`
   display: flex;
@@ -11,8 +11,17 @@ export const StatusContainer = styled(Container)`
 `
 export const TableImage = styled.img<{type:"user"|"cookbook"}>`
   height: 35px;
-  width: 35px;
-  border-radius: 100%;
+  ${
+    p=>p.type === "user" && css`
+      width: 35px;
+      border-radius: 100%;
+  `}
+  ${
+    p=>p.type === "cookbook" && css`
+      width: 70px;
+      border-radius: 10%;
+  `}
+  
   object-fit:cover;
   margin-right: ${p=>p.type==="user" ? "25px":"50px" };
 `

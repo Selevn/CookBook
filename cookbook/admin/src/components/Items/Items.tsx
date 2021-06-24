@@ -3,20 +3,31 @@ import {TableContainer, UserContainer} from "../Users/Users.styled";
 import Table from "../common/Table";
 import {cookbooksColumnsCreator} from "../common/columns presets/cookBooksColumns";
 import {FrontEndRoutes} from "../../constants/ServerRoutes";
+import {recipesColumnsCreator} from "../common/columns presets/recipesColumns";
 
 const Items = (type:"cookbook"|"recipe") => {
     let filler = {heading:"", src:""};
+    let columns;
+
+
+    const [rerenderFlag, changeRerenderFlag] = useState(true)
+
+
     if(type === "cookbook")
     {
+        columns = cookbooksColumnsCreator(changeRerenderFlag);
         filler.heading = "CookBooks"
         filler.src = FrontEndRoutes.COOKBOOKS_STATISTICS_ALL
     }
-    if(type === "recipe"){
+    else if(type === "recipe"){
         filler.heading = "Recipes"
         filler.src = FrontEndRoutes.RECIPES_STATISTICS_ALL
+        columns = recipesColumnsCreator(changeRerenderFlag);
     }
-    const [rerenderFlag, changeRerenderFlag] = useState(true)
-    const columns = cookbooksColumnsCreator(changeRerenderFlag);
+    else
+        return <>
+            Type error. Got type - ${type} instead of cookbook|recipe
+        </>
 
     return (
         <UserContainer>

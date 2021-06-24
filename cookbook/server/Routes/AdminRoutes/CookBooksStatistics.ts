@@ -3,7 +3,7 @@ import {
     getCookBooksStatistics,
 } from "../../Data/Providers/AdminStatistics";
 
-import {updateUser} from "../../Data/Providers/UpdateProvider"
+import {deleteCookBook} from "../../Data/Providers/DeleteProvider"
 
 const express = require("express");
 const router = express.Router();
@@ -21,9 +21,8 @@ router.get(APICookBookStatisticsEndPoint.ALL, async (req, res) => {
 });
 
 router.patch(APICookBookStatisticsEndPoint.CHANGE, async (req, res) => {
-    const result = await updateUser(req.body.params._id, "status", req.body.params.status);
+    const result = await deleteCookBook(req.body.params._id);
     res.status(200).json(result)
 });
-
 
 module.exports = router

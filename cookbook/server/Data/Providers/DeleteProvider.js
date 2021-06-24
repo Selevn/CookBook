@@ -35,7 +35,7 @@ const deleteCookBook = async (id) => {
 }
 const deleteRecipe = async (id) => {
     return id && !!(await Recipes.deleteOne(
-        {[COOKBOOK_FIELDS.ID]: id}
+        {[RECIPE_FIELDS.ID]: id}
     )).n
 }
 

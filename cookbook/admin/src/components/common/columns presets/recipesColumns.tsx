@@ -31,7 +31,9 @@ const MyMenu = ({status, id, rerenderIntiator}: { status: number, id: number, re
                 break;
             }
             case Action.Delete: {
-                isOk = await update(FrontEndRoutes.USERS_CHANGE, {_id: id, status: 2});
+                if(!window.confirm("Are you sure want to delete this item? This action cannot be undone"))
+                    break;
+                isOk = await update(FrontEndRoutes.RECIPES_CHANGE, {_id: id});
                 console.log(isOk)
                 break;
             }

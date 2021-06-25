@@ -51,11 +51,44 @@ const getRecipesAggregate = (aggregator = false) => {
 const getUsersGlobalStatistic = async () => {
     return {
         allUsersCount: (await Users.find({})).length,
-        blockedUsersCount: (await Users.find({status:1})).length,
-        deletedUsersCount: (await Users.find({status:2})).length,
+        blockedUsersCount: (await Users.find({status: 1})).length,
+        deletedUsersCount: (await Users.find({status: 2})).length,
     }
 }
+const getBooksCount = async () => {
+    return {
+        booksCount: (await CookBooks.find({})).length,
+    }
+}
+const getRecipesCount = async () => {
+    return {
+        booksCount: (await Recipes.find({})).length,
+    }
+}
+const getBooksViews = async () => {
+    return (await CookBooks.aggregate([{$group: {_id: null, amount: {$sum: "$views"}}}]))[0].amount
+}
+const getRecipesViews = async () => {
+    return (await Recipes.aggregate([{$group: {_id: null, amount: {$sum: "$views"}}}]))[0].amount
+}
+const getMostActive = async () => {
+    const cookBooksMaxUser = (await getUsersStatistics(1, "-userCookBooks.count")).docs[0];
+    const cookBooksMax = {
+        name: `${cookBooksMaxUser.name.first} ${cookBooksMaxUser.name.last}`,
+        cookBooksCount: cookBooksMaxUser.userCookBooks[0].count
+    }
 
+    const recipesMaxUser = (await getUsersStatistics(1, "-userRecipes.count")).docs[0];
+    const recipesMax = {
+        name: `${recipesMaxUser.name.first} ${recipesMaxUser.name.last}`,
+        recipesCount: recipesMaxUser.userRecipes[0].count
+    }
+
+    return {
+        cookBooksMax,
+        recipesMax
+    }
+}
 
 
 export const getUsersStatistics = async (page?: Number, sortBy?: string) => {
@@ -82,9 +115,14 @@ export const getRecipesStatistic = async (page?: Number, sortBy?: string) => {
 
 export const getAllStatistics = async () => {
     let users, mostActive, booksCount, recipesCount, booksViews, recipesViews;
-
     users = await getUsersGlobalStatistic();
-console.log(users)
+    booksCount = await getBooksCount();
+    recipesCount = await getRecipesCount();
+
+    booksViews = await getBooksViews();
+    recipesViews = await getRecipesViews();
+
+    mostActive = await getMostActive()
     return {
         users, mostActive, booksCount, recipesCount, booksViews, recipesViews
     }

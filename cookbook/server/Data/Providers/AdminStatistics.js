@@ -92,6 +92,71 @@ var getUsersGlobalStatistic = function () { return __awaiter(void 0, void 0, voi
         }
     });
 }); };
+var getBooksCount = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var _a;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _a = {};
+                return [4 /*yield*/, CookBooks.find({})];
+            case 1: return [2 /*return*/, (_a.booksCount = (_b.sent()).length,
+                    _a)];
+        }
+    });
+}); };
+var getRecipesCount = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var _a;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _a = {};
+                return [4 /*yield*/, Recipes.find({})];
+            case 1: return [2 /*return*/, (_a.booksCount = (_b.sent()).length,
+                    _a)];
+        }
+    });
+}); };
+var getBooksViews = function () { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, CookBooks.aggregate([{ $group: { _id: null, amount: { $sum: "$views" } } }])];
+            case 1: return [2 /*return*/, (_a.sent())[0].amount];
+        }
+    });
+}); };
+var getRecipesViews = function () { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, Recipes.aggregate([{ $group: { _id: null, amount: { $sum: "$views" } } }])];
+            case 1: return [2 /*return*/, (_a.sent())[0].amount];
+        }
+    });
+}); };
+var getMostActive = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var cookBooksMaxUser, cookBooksMax, recipesMaxUser, recipesMax;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, exports.getUsersStatistics(1, "-userCookBooks.count")];
+            case 1:
+                cookBooksMaxUser = (_a.sent()).docs[0];
+                cookBooksMax = {
+                    name: cookBooksMaxUser.name.first + " " + cookBooksMaxUser.name.last,
+                    cookBooksCount: cookBooksMaxUser.userCookBooks[0].count
+                };
+                return [4 /*yield*/, exports.getUsersStatistics(1, "-userRecipes.count")];
+            case 2:
+                recipesMaxUser = (_a.sent()).docs[0];
+                recipesMax = {
+                    name: recipesMaxUser.name.first + " " + recipesMaxUser.name.last,
+                    recipesCount: recipesMaxUser.userRecipes[0].count
+                };
+                return [2 /*return*/, {
+                        cookBooksMax: cookBooksMax,
+                        recipesMax: recipesMax
+                    }];
+        }
+    });
+}); };
 var getUsersStatistics = function (page, sortBy) { return __awaiter(void 0, void 0, void 0, function () {
     var aggregate;
     return __generator(this, function (_a) {
@@ -159,7 +224,21 @@ var getAllStatistics = function () { return __awaiter(void 0, void 0, void 0, fu
             case 0: return [4 /*yield*/, getUsersGlobalStatistic()];
             case 1:
                 users = _a.sent();
-                console.log(users);
+                return [4 /*yield*/, getBooksCount()];
+            case 2:
+                booksCount = _a.sent();
+                return [4 /*yield*/, getRecipesCount()];
+            case 3:
+                recipesCount = _a.sent();
+                return [4 /*yield*/, getBooksViews()];
+            case 4:
+                booksViews = _a.sent();
+                return [4 /*yield*/, getRecipesViews()];
+            case 5:
+                recipesViews = _a.sent();
+                return [4 /*yield*/, getMostActive()];
+            case 6:
+                mostActive = _a.sent();
                 return [2 /*return*/, {
                         users: users, mostActive: mostActive, booksCount: booksCount, recipesCount: recipesCount, booksViews: booksViews, recipesViews: recipesViews
                     }];

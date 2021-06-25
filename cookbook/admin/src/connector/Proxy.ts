@@ -13,3 +13,9 @@ export const update = async (url:string, data?: { [key: string]: any }, loaderSe
     loaderSetter && loaderSetter(false)
     return response.data;
 }
+export const remove = async (url:string, _data?: { [key: string]: any }, loaderSetter?:  React.Dispatch<React.SetStateAction<boolean>>) => {
+    loaderSetter && loaderSetter(true)
+    const response = await axios.delete(url, { data: {params: _data} });
+    loaderSetter && loaderSetter(false)
+    return response.data;
+}

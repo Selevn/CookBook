@@ -60,7 +60,7 @@ router.get(ServerRoutes_1.APICookBookStatisticsEndPoint.ALL, function (req, res)
         }
     });
 }); });
-router.patch(ServerRoutes_1.APICookBookStatisticsEndPoint.CHANGE, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+router.delete(ServerRoutes_1.APICookBookStatisticsEndPoint.CHANGE, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var result;
     return __generator(this, function (_a) {
         switch (_a.label) {

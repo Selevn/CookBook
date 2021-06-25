@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getRecipesStatistic = exports.getCookBooksStatistics = exports.getDeletedUsersStatistics = exports.getBlockedUsersStatistics = exports.getUsersStatistics = void 0;
+exports.getAllStatistics = exports.getRecipesStatistic = exports.getCookBooksStatistics = exports.getDeletedUsersStatistics = exports.getBlockedUsersStatistics = exports.getUsersStatistics = void 0;
 var _a = require("../../models/modelsExporter"), Users = _a.Users, CookBooks = _a.CookBooks, Recipes = _a.Recipes;
 var Aggregator = require("../utils/Aggregator").Aggregator;
 var COMMON = require("../ConstantsProvider").COMMON;
@@ -74,6 +74,24 @@ var getRecipesAggregate = function (aggregator) {
         resultAggregate.push(aggregator);
     return Recipes.aggregate(resultAggregate);
 };
+var getUsersGlobalStatistic = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var _a;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _a = {};
+                return [4 /*yield*/, Users.find({})];
+            case 1:
+                _a.allUsersCount = (_b.sent()).length;
+                return [4 /*yield*/, Users.find({ status: 1 })];
+            case 2:
+                _a.blockedUsersCount = (_b.sent()).length;
+                return [4 /*yield*/, Users.find({ status: 2 })];
+            case 3: return [2 /*return*/, (_a.deletedUsersCount = (_b.sent()).length,
+                    _a)];
+        }
+    });
+}); };
 var getUsersStatistics = function (page, sortBy) { return __awaiter(void 0, void 0, void 0, function () {
     var aggregate;
     return __generator(this, function (_a) {
@@ -134,3 +152,18 @@ var getRecipesStatistic = function (page, sortBy) { return __awaiter(void 0, voi
     });
 }); };
 exports.getRecipesStatistic = getRecipesStatistic;
+var getAllStatistics = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var users, mostActive, booksCount, recipesCount, booksViews, recipesViews;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, getUsersGlobalStatistic()];
+            case 1:
+                users = _a.sent();
+                console.log(users);
+                return [2 /*return*/, {
+                        users: users, mostActive: mostActive, booksCount: booksCount, recipesCount: recipesCount, booksViews: booksViews, recipesViews: recipesViews
+                    }];
+        }
+    });
+}); };
+exports.getAllStatistics = getAllStatistics;

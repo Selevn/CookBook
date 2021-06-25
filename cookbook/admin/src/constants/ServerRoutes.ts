@@ -5,6 +5,7 @@ export const EntryPoint = {
     USERS_STATISTICS: "/usersStatistics",
     COOKBOOKS_STATISTICS: "/cookbooksStatistics",
     RECIPES_STATISTICS: "/recipesStatistics",
+    GLOBAL_STATISTICS: "/globalStatistics",
 }
 
 export const APIUserStatisticsEndPoint = {
@@ -25,6 +26,12 @@ export const APIRecipesStatisticsEndPoint = {
     CHANGE: "/change",
 }
 
+export const APIGlobalStatisticsEndPoint = {
+    ALL: "/"
+}
+
+
+
 
 
 export const FrontEndRoutes = {
@@ -40,6 +47,8 @@ export const FrontEndRoutes = {
 
     RECIPES_STATISTICS_ALL: `${AdminAPI}${EntryPoint.RECIPES_STATISTICS}${APIRecipesStatisticsEndPoint.ALL}`,
     RECIPES_CHANGE: `${AdminAPI}${EntryPoint.RECIPES_STATISTICS}${APIRecipesStatisticsEndPoint.CHANGE}`,
+
+    GLOBAL_STATISTICS: `${AdminAPI}${EntryPoint.GLOBAL_STATISTICS}${APIGlobalStatisticsEndPoint.ALL}`,
 
 
 };

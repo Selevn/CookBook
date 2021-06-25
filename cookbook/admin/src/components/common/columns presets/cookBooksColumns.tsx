@@ -1,14 +1,14 @@
 import {GridCellParams} from "@material-ui/data-grid";
 import {TableImage} from "../StyledComponents";
 import React, {useState} from "react";
-import {update} from "../../../connector/Proxy";
+import {remove} from "../../../connector/Proxy";
 import {FrontEndRoutes} from "../../../constants/ServerRoutes";
 import {IconButton} from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 
-const MyMenu = ({status, id, rerenderIntiator}: { status: number, id: number, rerenderIntiator: any }) => {
+const MyMenu = ({id, rerenderIntiator}: { id: number, rerenderIntiator: any }) => {
 
     const ITEM_HEIGHT = 48;
     const [anchorEl, setAnchorEl] = useState<(EventTarget & HTMLAnchorElement) | (EventTarget & HTMLButtonElement) | null>(null);
@@ -20,8 +20,7 @@ const MyMenu = ({status, id, rerenderIntiator}: { status: number, id: number, re
 
     enum Action {
         View,
-        Delete,
-        Restore
+        Delete
     }
 
     const logicHandler = async (action: Action) => {
@@ -33,7 +32,7 @@ const MyMenu = ({status, id, rerenderIntiator}: { status: number, id: number, re
             case Action.Delete: {
                 if(!window.confirm("Are you sure want to delete this item? This action cannot be undone"))
                     break;
-                isOk = await update(FrontEndRoutes.COOKBOOKS_CHANGE, {_id: id});
+                isOk = await remove(FrontEndRoutes.COOKBOOKS_CHANGE, {_id: id});
                 console.log(isOk)
                 break;
             }
@@ -119,7 +118,7 @@ export const cookbooksColumnsCreator = (changeRerenderFlag: React.Dispatch<React
             field: 'status', headerName: ' ', width: 150,
             renderCell: (params: GridCellParams) => {
                 return (
-                    <MyMenu status={Number(params.value)} id={Number(params.id)}
+                    <MyMenu id={Number(params.id)}
                             rerenderIntiator={changeRerenderFlag}/>
                 )
             },

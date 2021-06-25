@@ -48,6 +48,15 @@ const getRecipesAggregate = (aggregator = false) => {
     return Recipes.aggregate(resultAggregate)
 }
 
+const getUsersGlobalStatistic = async () => {
+    return {
+        allUsersCount: (await Users.find({})).length,
+        blockedUsersCount: (await Users.find({status:1})).length,
+        deletedUsersCount: (await Users.find({status:2})).length,
+    }
+}
+
+
 
 export const getUsersStatistics = async (page?: Number, sortBy?: string) => {
     const aggregate = getUserAggregate()
@@ -70,4 +79,15 @@ export const getRecipesStatistic = async (page?: Number, sortBy?: string) => {
     const aggregate = getRecipesAggregate()
     return await paginator(aggregate, aggregateOptions(page, sortBy))
 }
+
+export const getAllStatistics = async () => {
+    let users, mostActive, booksCount, recipesCount, booksViews, recipesViews;
+
+    users = await getUsersGlobalStatistic();
+console.log(users)
+    return {
+        users, mostActive, booksCount, recipesCount, booksViews, recipesViews
+    }
+}
+
 

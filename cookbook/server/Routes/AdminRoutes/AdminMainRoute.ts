@@ -12,4 +12,9 @@ router.use(EntryPoint.COOKBOOKS_STATISTICS, cookbooksStatisticsRouter);
 const recipesStatisticsRouter = require('./RecipesStatistics');
 router.use(EntryPoint.RECIPES_STATISTICS, recipesStatisticsRouter);
 
+const globalStatisticRouter = require('./GlobalStatistics');
+router.use(EntryPoint.GLOBAL_STATISTICS, globalStatisticRouter);
+
+
+
 module.exports = router

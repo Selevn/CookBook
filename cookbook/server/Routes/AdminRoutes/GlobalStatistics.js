@@ -35,51 +35,21 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-exports.__esModule = true;
-exports.remove = exports.update = exports.get = void 0;
-var axios_1 = require("axios");
-var get = function (url, data, loaderSetter) { return __awaiter(void 0, void 0, void 0, function () {
-    var response;
+Object.defineProperty(exports, "__esModule", { value: true });
+var ServerRoutes_1 = require("../../../admin/src/constants/ServerRoutes");
+var AdminStatistics_1 = require("../../Data/Providers/AdminStatistics");
+var express = require("express");
+var router = express.Router();
+router.get(ServerRoutes_1.APIGlobalStatisticsEndPoint.ALL, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var result;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0:
-                loaderSetter && loaderSetter(true);
-                return [4 /*yield*/, axios_1["default"].get(url, { params: data })];
+            case 0: return [4 /*yield*/, AdminStatistics_1.getAllStatistics()];
             case 1:
-                response = _a.sent();
-                loaderSetter && loaderSetter(false);
-                return [2 /*return*/, response.data];
+                result = _a.sent();
+                res.status(200).json(result);
+                return [2 /*return*/];
         }
     });
-}); };
-exports.get = get;
-var update = function (url, data, loaderSetter) { return __awaiter(void 0, void 0, void 0, function () {
-    var response;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                loaderSetter && loaderSetter(true);
-                return [4 /*yield*/, axios_1["default"].patch(url, { params: data })];
-            case 1:
-                response = _a.sent();
-                loaderSetter && loaderSetter(false);
-                return [2 /*return*/, response.data];
-        }
-    });
-}); };
-exports.update = update;
-var remove = function (url, _data, loaderSetter) { return __awaiter(void 0, void 0, void 0, function () {
-    var response;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                loaderSetter && loaderSetter(true);
-                return [4 /*yield*/, axios_1["default"]["delete"](url, { data: { params: _data } })];
-            case 1:
-                response = _a.sent();
-                loaderSetter && loaderSetter(false);
-                return [2 /*return*/, response.data];
-        }
-    });
-}); };
-exports.remove = remove;
+}); });
+module.exports = router;

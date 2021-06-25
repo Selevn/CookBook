@@ -19,7 +19,8 @@ router.get(APICookBookStatisticsEndPoint.ALL, async (req, res) => {
     res.status(200).json(result)
 });
 
-router.patch(APIRecipesStatisticsEndPoint.CHANGE, async (req, res) => {
+router.delete(APIRecipesStatisticsEndPoint.CHANGE, async (req, res) => {
+    console.log(req.body.params)
     const result = await deleteRecipe(req.body.params._id);
     res.status(200).json(result)
 });

@@ -20,7 +20,7 @@ router.get(APICookBookStatisticsEndPoint.ALL, async (req, res) => {
     res.status(200).json(result)
 });
 
-router.patch(APICookBookStatisticsEndPoint.CHANGE, async (req, res) => {
+router.delete(APICookBookStatisticsEndPoint.CHANGE, async (req, res) => {
     const result = await deleteCookBook(req.body.params._id);
     res.status(200).json(result)
 });

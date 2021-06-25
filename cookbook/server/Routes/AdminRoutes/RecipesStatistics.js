@@ -60,11 +60,13 @@ router.get(ServerRoutes_1.APICookBookStatisticsEndPoint.ALL, function (req, res)
         }
     });
 }); });
-router.patch(ServerRoutes_1.APIRecipesStatisticsEndPoint.CHANGE, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+router.delete(ServerRoutes_1.APIRecipesStatisticsEndPoint.CHANGE, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var result;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, DeleteProvider_1.deleteRecipe(req.body.params._id)];
+            case 0:
+                console.log(req.body.params);
+                return [4 /*yield*/, DeleteProvider_1.deleteRecipe(req.body.params._id)];
             case 1:
                 result = _a.sent();
                 res.status(200).json(result);

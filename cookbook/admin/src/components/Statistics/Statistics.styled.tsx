@@ -36,7 +36,7 @@ export const NormalStatistic = styled(StatisticContainer)`
 export const WideStatistic = styled(StatisticContainer)`
   max-height: calc(181px - 26px - 26px);
   max-width: calc(416px - 26px - 26px);
-  text-align: center;
+  text-align: left;
 `
 export const ItemStatistic = styled(StatisticContainer)`
     gap:5px;

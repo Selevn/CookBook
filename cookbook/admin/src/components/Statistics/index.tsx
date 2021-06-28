@@ -1,8 +1,3 @@
-const Statistics = () => {
-    return (
-        <div>
-            Statistics
-        </div>)
-}
+import Statistic from "./Statistics";
 
-export default Statistics
+export default Statistic

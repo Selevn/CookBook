@@ -2,6 +2,7 @@ import styled, {css} from 'styled-components';
 
 export const Container = styled.div<{ vertical?: boolean }>`
   display: flex;
+  gap:15px;
   flex-direction: ${(props) => (props.vertical ? 'column' : 'row')};
 `;
 

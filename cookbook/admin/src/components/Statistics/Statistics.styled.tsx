@@ -31,13 +31,25 @@ export const SmallStatistic = styled(StatisticContainer)`
 `
 export const NormalStatistic = styled(StatisticContainer)`
   max-height: calc(181px - 26px - 26px);
-  
+  span:last-of-type{
+    margin-left: auto;
+  }
 `
 export const WideStatistic = styled(StatisticContainer)`
   max-height: calc(181px - 26px - 26px);
   max-width: calc(416px - 26px - 26px);
   text-align: left;
+  h3{
+    margin-bottom: 5px;
+  }
+  span:last-of-type{
+    margin-left: auto;
+  }
 `
+export const StatisticValue = styled.span`
+  font-weight: bolder;
+`
+
 export const ItemStatistic = styled(StatisticContainer)`
     gap:5px;
   img{
@@ -47,5 +59,12 @@ export const ItemStatistic = styled(StatisticContainer)`
 
 export const StatisticRow = styled(Container)`
   gap:24px;
+`
+export const UserImage = styled.img`
+  border-radius: 50%;
+  position: relative;
+  top: -25%;
+  width: 32px;
+  height: 32px;
 `
 

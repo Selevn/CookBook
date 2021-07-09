@@ -75,12 +75,14 @@ const getMostActive = async () => {
     const cookBooksMaxUser = (await getUsersStatistics(1, "-userCookBooks.count")).docs[0];
     const cookBooksMax = {
         name: `${cookBooksMaxUser.name.first} ${cookBooksMaxUser.name.last}`,
+        image: `${cookBooksMaxUser.image}`,
         cookBooksCount: cookBooksMaxUser.userCookBooks[0].count
     }
 
     const recipesMaxUser = (await getUsersStatistics(1, "-userRecipes.count")).docs[0];
     const recipesMax = {
         name: `${recipesMaxUser.name.first} ${recipesMaxUser.name.last}`,
+        image: `${cookBooksMaxUser.image}`,
         recipesCount: recipesMaxUser.userRecipes[0].count
     }
 
@@ -89,7 +91,9 @@ const getMostActive = async () => {
         recipesMax
     }
 }
+const getMostPopularBook = async () => (await CookBooks.aggregate([authorLookup, { $sort: { 'views': -1 } }]))[0]
 
+const getMostPopularRecipe = async () => (await Recipes.aggregate([authorLookup, { $sort: { 'views': -1 } }]))[0]
 
 export const getUsersStatistics = async (page?: Number, sortBy?: string) => {
     const aggregate = getUserAggregate()
@@ -114,7 +118,7 @@ export const getRecipesStatistic = async (page?: Number, sortBy?: string) => {
 }
 
 export const getAllStatistics = async () => {
-    let users, mostActive, booksCount, recipesCount, booksViews, recipesViews;
+    let users, mostActive, booksCount, recipesCount, booksViews, recipesViews, mostPopularBook, mostPopularRecipe;
     users = await getUsersGlobalStatistic();
     booksCount = await getBooksCount();
     recipesCount = await getRecipesCount();
@@ -123,8 +127,11 @@ export const getAllStatistics = async () => {
     recipesViews = await getRecipesViews();
 
     mostActive = await getMostActive()
+
+    mostPopularBook = await getMostPopularBook();
+    mostPopularRecipe = await getMostPopularRecipe();
     return {
-        users, mostActive, booksCount, recipesCount, booksViews, recipesViews
+        users, mostActive, booksCount, recipesCount, booksViews, recipesViews, mostPopularBook, mostPopularRecipe
     }
 }
 

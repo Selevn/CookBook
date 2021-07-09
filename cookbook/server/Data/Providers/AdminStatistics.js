@@ -141,6 +141,7 @@ var getMostActive = function () { return __awaiter(void 0, void 0, void 0, funct
                 cookBooksMaxUser = (_a.sent()).docs[0];
                 cookBooksMax = {
                     name: cookBooksMaxUser.name.first + " " + cookBooksMaxUser.name.last,
+                    image: "" + cookBooksMaxUser.image,
                     cookBooksCount: cookBooksMaxUser.userCookBooks[0].count
                 };
                 return [4 /*yield*/, exports.getUsersStatistics(1, "-userRecipes.count")];
@@ -148,6 +149,7 @@ var getMostActive = function () { return __awaiter(void 0, void 0, void 0, funct
                 recipesMaxUser = (_a.sent()).docs[0];
                 recipesMax = {
                     name: recipesMaxUser.name.first + " " + recipesMaxUser.name.last,
+                    image: "" + cookBooksMaxUser.image,
                     recipesCount: recipesMaxUser.userRecipes[0].count
                 };
                 return [2 /*return*/, {
@@ -157,6 +159,18 @@ var getMostActive = function () { return __awaiter(void 0, void 0, void 0, funct
         }
     });
 }); };
+var getMostPopularBook = function () { return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_a) {
+    switch (_a.label) {
+        case 0: return [4 /*yield*/, CookBooks.aggregate([authorLookup, { $sort: { 'views': -1 } }])];
+        case 1: return [2 /*return*/, (_a.sent())[0]];
+    }
+}); }); };
+var getMostPopularRecipe = function () { return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_a) {
+    switch (_a.label) {
+        case 0: return [4 /*yield*/, Recipes.aggregate([authorLookup, { $sort: { 'views': -1 } }])];
+        case 1: return [2 /*return*/, (_a.sent())[0]];
+    }
+}); }); };
 var getUsersStatistics = function (page, sortBy) { return __awaiter(void 0, void 0, void 0, function () {
     var aggregate;
     return __generator(this, function (_a) {
@@ -218,7 +232,7 @@ var getRecipesStatistic = function (page, sortBy) { return __awaiter(void 0, voi
 }); };
 exports.getRecipesStatistic = getRecipesStatistic;
 var getAllStatistics = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var users, mostActive, booksCount, recipesCount, booksViews, recipesViews;
+    var users, mostActive, booksCount, recipesCount, booksViews, recipesViews, mostPopularBook, mostPopularRecipe;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, getUsersGlobalStatistic()];
@@ -239,8 +253,14 @@ var getAllStatistics = function () { return __awaiter(void 0, void 0, void 0, fu
                 return [4 /*yield*/, getMostActive()];
             case 6:
                 mostActive = _a.sent();
+                return [4 /*yield*/, getMostPopularBook()];
+            case 7:
+                mostPopularBook = _a.sent();
+                return [4 /*yield*/, getMostPopularRecipe()];
+            case 8:
+                mostPopularRecipe = _a.sent();
                 return [2 /*return*/, {
-                        users: users, mostActive: mostActive, booksCount: booksCount, recipesCount: recipesCount, booksViews: booksViews, recipesViews: recipesViews
+                        users: users, mostActive: mostActive, booksCount: booksCount, recipesCount: recipesCount, booksViews: booksViews, recipesViews: recipesViews, mostPopularBook: mostPopularBook, mostPopularRecipe: mostPopularRecipe
                     }];
         }
     });

@@ -55,7 +55,8 @@ export const AdminImage = styled.div<{src:string}>`
   background-size: cover;
 `
 export const AdminData = styled(Container)`
-  padding: 5px;
+  gap:3px;
+  padding-left: 5px;
   flex-direction: column;
   justify-content: space-around;
   width: 100%;

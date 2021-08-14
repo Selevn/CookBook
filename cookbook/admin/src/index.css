@@ -14,3 +14,12 @@ body{
 .selected svg{
     color: var(--primary-color);
 }
+@media (max-width: 500px) {
+    .leftMenuContainer{
+        width:50px !important;
+    }
+    .leftBarMenuText{
+        display: none;
+    }
+}
+

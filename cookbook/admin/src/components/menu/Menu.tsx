@@ -7,7 +7,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import {Book, ExitToApp, ListAlt, Person} from "@material-ui/icons";
-import {NavLink, useLocation} from "react-router-dom";
+import {NavLink, useLocation, Link} from "react-router-dom";
 import SPAClientRouteConstants from "../../constants/SPAClientRouteConstants";
 import {FaCog, FaEye} from "react-icons/all";
 
@@ -22,8 +22,9 @@ import {
     SearchStyled
 } from "./Menu.styled";
 import UsersRouteConstants from "../../constants/UsersRouteConstants";
+const { innerWidth: width } = window;
 
-const drawerWidth = 200;
+const drawerWidth = width>500?200:50;
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -61,13 +62,15 @@ export default function Menu({ children }: Props) {
         <div className={classes.root}>
             <MenuStyled drawerWidth={drawerWidth}>
                 <SearchStyled placeholder={"Search"} />
+                <Link to={"/settings"} style={{textDecoration:"none"}}>
                 <AdminCardStyled>
                     <AdminImage src={"https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"}/>
-                    <AdminData>
-                        <AdminName>Valar morghulius</AdminName>
-                        <AdminRole>SuperAdmin</AdminRole>
-                    </AdminData>
+                        <AdminData>
+                            <AdminName>Valar morghulius</AdminName>
+                            <AdminRole>SuperAdmin</AdminRole>
+                        </AdminData>
                 </AdminCardStyled>
+                </Link>
             </MenuStyled>
             <Drawer
                 className={classes.drawer}

@@ -5,6 +5,9 @@ import React from 'react';
 
 import { Link, useHistory } from 'react-router-dom';
 
+import logo from './Feedme.svg';
+import lightlogo from './FeedmeLight.svg';
+
 export const Container = styled.div`
   display: flex;
   flex-direction: ${(p) => (p.vertical ? 'column' : 'row')};
@@ -27,6 +30,56 @@ export const Container = styled.div`
   ${(p) => (p.display ? `display: ${p.display}` : '')};
 `;
 
+const LogoImage = ({ width }) => <img src={logo} width={width} alt="Logo" />;
+const LogoImageLight = () => <img src={lightlogo} alt="Logo" />;
+
+const LogoWrapper = styled(Container)`
+  align-self: ${(p) => (p.alignSelf ? p.alignSelf : 'start')};
+  justify-content: center;
+  width: 175px;
+  height: ${(p) => (p.logoHeight ? p.logoHeight : '37px')};
+`;
+
+export const Logo = ({ alignSelf, className, logoHeight, wide }) => {
+  const href = '/';
+  const history = useHistory();
+  let redirector = () => {
+  };
+  if (href) {
+    redirector = () => {
+      history.push(href);
+    };
+  }
+  return (
+      <LogoWrapper
+          className={`${className} clickable`}
+          alignSelf={alignSelf}
+          logoHeight={logoHeight}
+          onClick={redirector}
+      >
+        <LogoImage width={wide && '100%'} />
+      </LogoWrapper>
+  );
+};
+
+export const LogoLight = ({ alignSelf, className, logoHeight, LogoWidth }) => (
+    <LogoWrapper
+        className={className}
+        alignSelf={alignSelf}
+        logoHeight={logoHeight}
+        LogoWidth={LogoWidth}
+    >
+      <LogoImageLight />
+    </LogoWrapper>
+);
+LogoLight.propTypes = Logo.propTypes;
+
+Logo.propTypes = {
+  alignSelf: PropTypes.string,
+  className: PropTypes.string,
+  logoHeight: PropTypes.string,
+  width: PropTypes.string,
+};
 
 const LinkWrapper = ({ className, children, id, onClick, to }) => {
   if (to === '') {

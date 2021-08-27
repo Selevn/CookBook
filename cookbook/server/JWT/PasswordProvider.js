@@ -5,12 +5,11 @@ const {MESSAGES} = require("../../src/constants");
 const pathToKey = path.join(__dirname, '..', 'Keys', 'id_rsa_priv.pem');
 exports.PRIV_KEY = fs.readFileSync(pathToKey, 'utf8');
 
-
 exports.passportMiddlewareProvider = (passportInstance) => {
     const passport = passportInstance
     return (req, res, next)=>{
-        passport.authenticate('jwt', {session: false},(err)=>{
-            if(err){
+        passport.authenticate('jwt', {session: false},(err, user, info)=>{
+            if(err || !user){
                 return res.json({
                     success: false,
                     error: MESSAGES.ERROR.AUTH,

@@ -13,7 +13,7 @@ const options = {
         maxAge: JWT.maxAge
     }
 }
-const strategy = new JwtStrategy(options, (payload, done) => {
+const strategy = new JwtStrategy(options, async (payload, done) => {
     if (new Date() > payload.exp)
         return done(true, null)
     getUser(payload.sub)
@@ -29,5 +29,6 @@ const strategy = new JwtStrategy(options, (payload, done) => {
 })
 
 module.exports = (passport) => {
+    console.log("Strategy added")
     passport.use(strategy);
 }

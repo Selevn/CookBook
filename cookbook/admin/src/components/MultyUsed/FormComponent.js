@@ -5,12 +5,13 @@ import { useHistory } from 'react-router-dom';
 import { Formik } from 'formik';
 import { FormDiv } from '../Login/style/LoginComponentStyle';
 import {
+  Logo,
   ButtonStyled,
   Container,
   InputStyled,
   LabelStyled,
   LinkStyled,
-  InputFeedback, Logo
+  InputFeedback,
 } from '../common/StylesComponent';
 import { Login, Register } from '../../Connectors/dataProvider';
 import { profileActions } from '../../Redux/Profile';

@@ -24,7 +24,7 @@ const Table = ({columns, source, rerenderFlag}:{columns:GridColumns, source:stri
         (async()=>{
             const sort = SortProxy(sortModel)
             const result  = await get(source, {page:page, sort:sort}, setLoading);
-            result.docs.forEach((item:TableStatistic) => item.id=item._id)
+            result?.docs?.forEach((item:TableStatistic) => item.id=item._id)
             setData(result.docs)
             if(totalRows !== result.total)
             {

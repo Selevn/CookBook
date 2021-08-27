@@ -1,20 +1,24 @@
-import {EntryPoint} from "../../../admin/src/constants/ServerRoutes";
+import { EntryPoint } from '../../../admin/src/constants/ServerRoutes';
+const { passportMiddlewareProvider } = require('../../JWT/PasswordProvider');
 
-const express = require("express");
-const router = express.Router();
+function Routing(passport) {
+  const passwordMiddleware = passportMiddlewareProvider(passport);
 
-const userStatisticsRouter = require('./UsersStatistics');
-router.use(EntryPoint.USERS_STATISTICS, userStatisticsRouter);
+  const express = require('express');
+  const router = express.Router();
 
-const cookbooksStatisticsRouter = require('./CookBooksStatistics');
-router.use(EntryPoint.COOKBOOKS_STATISTICS, cookbooksStatisticsRouter);
+  const userStatisticsRouter = require('./UsersStatistics');
+  router.use(EntryPoint.USERS_STATISTICS, passwordMiddleware, userStatisticsRouter);
 
-const recipesStatisticsRouter = require('./RecipesStatistics');
-router.use(EntryPoint.RECIPES_STATISTICS, recipesStatisticsRouter);
+  const cookbooksStatisticsRouter = require('./CookBooksStatistics');
+  router.use(EntryPoint.COOKBOOKS_STATISTICS, passwordMiddleware, cookbooksStatisticsRouter);
 
-const globalStatisticRouter = require('./GlobalStatistics');
-router.use(EntryPoint.GLOBAL_STATISTICS, globalStatisticRouter);
+  const recipesStatisticsRouter = require('./RecipesStatistics');
+  router.use(EntryPoint.RECIPES_STATISTICS, passwordMiddleware, recipesStatisticsRouter);
 
+  const globalStatisticRouter = require('./GlobalStatistics');
+  router.use(EntryPoint.GLOBAL_STATISTICS, passwordMiddleware, globalStatisticRouter);
+  return router;
+}
 
-
-module.exports = router
+module.exports = Routing

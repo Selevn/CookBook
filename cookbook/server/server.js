@@ -18,7 +18,7 @@ app.use(express.static('public'));
 
 
 const connection = Connector(process.env.DB_CONNECTION_STRING)
-
+global.pool = connection.pool
 app.use(passport.initialize());
 require('./JWT/PassportConfig.js')(passport)
 

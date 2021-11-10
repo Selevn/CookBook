@@ -28,6 +28,7 @@
     "styled-components": "^5.2.3",
     "web-vitals": "^1.1.1"
   },
+
   "scripts": {
     "start": "react-scripts start",
     "dev": "concurrently \"npm run start\" \"cd server && npm run server\" \"cd admin && npm run start\" ",

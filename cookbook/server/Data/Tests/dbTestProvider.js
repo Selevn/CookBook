@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const {MongoMemoryServer} = require('mongodb-memory-server')
 
-const mongod = new MongoMemoryServer();
+const mongod = new MongoMemoryServer({ binary: { version: '4.0.14' } });
 
 module.exports.connect = async () => {
     const uri = await mongod.getUri()

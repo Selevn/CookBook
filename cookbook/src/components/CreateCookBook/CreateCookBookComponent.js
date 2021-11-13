@@ -75,9 +75,10 @@ const CreateCookBookComponent = ({ isEdit, item }) => {
 
   useEffect(() => {
     (async () => {
-      if (isEdit && item.recipesIds) {
+      if (isEdit && item._id) {
         const recipesData = await fetchData(ROUTES.RECIPES, null, {
-          ids: JSON.stringify(item.recipesIds),
+          //ids: JSON.stringify(item.recipesIds),
+          cookbookId: 367,//JSON.stringify(item.recipesIds),
         });
         recipesData.docs.forEach((recipeItem) => {
           const savedRecipe = (
@@ -94,10 +95,15 @@ const CreateCookBookComponent = ({ isEdit, item }) => {
         });
         setTitle(item.name);
         setDesc(item.desc);
-        const filters = {};
-        item.filters.forEach((filterItem) => {
-          filters[filterItem] = true;
-        });
+        let filters = {};
+        try{
+          item.filters.forEach((filterItem) => {
+            filters[filterItem] = true;
+          });
+        }
+        catch(e){
+          filters = item.filters;
+        }
         setFoodPref(filters);
       }
     })();

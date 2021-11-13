@@ -47,7 +47,8 @@ const ProfileComponent = ({ match }) => {
       if (Number(id) === profile?._id) setUser(profile);
       else {
         const data = await fetchData(ROUTES.USER_CLIENT(id), setLoading);
-        setUser(data[0]);
+
+        setUser(data[0] || data);
       }
     })();
   }, [id]);

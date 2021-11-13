@@ -26,7 +26,7 @@ function Routing(passport) {
                 const forRemove = [];
                 const recipe = {...req.body}
 
-                newId = (await createRecipe({}));
+                //newId = (await createRecipe({}));
 
                 const uploadedFile = await cloudinary.uploader.upload(req.files['image'][0].path)
                 forRemove.push(req.files['image'][0].path)
@@ -48,17 +48,17 @@ function Routing(passport) {
                     })
                 }
                 removeFiles(forRemove)
-                recipe[RECIPE_FIELDS.ID] = newId;
+                //recipe[RECIPE_FIELDS.ID] = newId;
                 recipe[RECIPE_FIELDS.directions] = JSON.parse(recipe[RECIPE_FIELDS.directions])
                 recipe[RECIPE_FIELDS.ingredients] = JSON.parse(recipe[RECIPE_FIELDS.ingredients])
-                createRecipeFlag = await updateRecipe(recipe);
+                createRecipeFlag = await createRecipe(recipe);
             } catch (e) {
                 console.log(e)
                 createRecipeFlag = false;
             }
             res.json({
                 success: !!createRecipeFlag,
-                id: newId
+                id: createRecipeFlag
             })
         })
 

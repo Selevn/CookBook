@@ -4,10 +4,12 @@ const removeFiles = (files) => {
     try {
         if (Array.isArray(files))
             files.forEach(file =>
-                fs.unlink(file)
+                fs.unlink(file,(err,data)=>{
+                })
             )
         else
-            fs.unlink(files)
+            fs.unlink(files, (err,data)=>{
+            })
 
     } catch (e) {
         console.log(e)

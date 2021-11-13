@@ -13,6 +13,7 @@ const {COOKBOOK_FIELDS} = require("../../src/constants");
 const {updateUser} = require("../Data/dataProvider");
 const {RELATIVE_ROUTES} = require("../../src/constants");
 const {passportMiddlewareProvider} = require("../JWT/PasswordProvider");
+const { getPassword } = require('../JWT/PasswordHasher');
 
 function Routing(passport) {
     const passwordMiddleware = passportMiddlewareProvider(passport);
@@ -25,7 +26,9 @@ function Routing(passport) {
         userUpload.single('avatar'),
         async function (req, res, next) {
             let result = true;
-            const userKey = (await getUser(req.body.id))[0].cloudinary_id;
+            const data = await getUser(req.body.id)
+            const user = data[0] || data
+            const userKey = user.cloudinary_id;
             if(userKey)
                 cloudinary.uploader.destroy(userKey)
             const uploadedFile = await cloudinary.uploader.upload(req.file.path)
@@ -41,12 +44,25 @@ function Routing(passport) {
     router.post(RELATIVE_ROUTES.CHANGE_ACC,
         passwordMiddleware,
         async function (req, res, next) {
-            await updateUser(req.body.id, req.body.field,req.body.value)
+          if (req.body.field === 'password') {
+            const { hash, salt } = getPassword(req.body.value)
+            await updateUser(req.body.id, "password", hash)
+            await updateUser(req.body.id, "salt", salt)
             res.json({
-                success: true,
-                value: req.body.value,
+              success: true,
+              value: req.body.value,
             })
-        })
+          } else {
+            await updateUser(req.body.id, req.body.field, req.body.value)
+            res.json({
+              success: true,
+              value: req.body.value,
+            })
+          }
+        }
+        )
+
+
 
     router.post(RELATIVE_ROUTES.EDIT_RECIPE,
         passwordMiddleware,
@@ -99,6 +115,7 @@ function Routing(passport) {
                 }
                 if(!req.files['gallery'])
                 {
+                  if(req.body.images != "undefined")
                     recipe[RECIPE_FIELDS.images] = JSON.parse(req.body.images)
                 }
                 removeFiles(toRemove)

@@ -14,7 +14,6 @@ const Recipes = ({ id }) => {
   useEffect(() => {
     fetchBooks();
   }, [id]);
-
   return (
     <RecepiesContainer>
       <H1Styled>Recepies</H1Styled>

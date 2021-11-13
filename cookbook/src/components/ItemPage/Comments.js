@@ -27,7 +27,7 @@ const ItemCommentsContainer = ({ id, type, profile, auth }) => {
   }, [id, type]);
 
   useEffect(() => {
-    setTotal(count);
+    setTotal(Number(count));
   }, [count]);
 
   const [post, setPost] = useState('');

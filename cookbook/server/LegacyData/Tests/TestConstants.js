@@ -39,14 +39,14 @@ const recipe1 = {
     image: "img",
     images: ["img", "img2", "img3"],
     cookTime: 40,
-    creationDate: new Date(),
+    creationDate: 0,
     desc: "12",
     name: "name",
     cloudinary_id: "d8xzn1mo92zory4j3ws7",
     secondary_cloudinary_ids: [["d8xzn1mo92zory4j3ws6"], ["d8xzn1mo92zory4j3ws8"]],
     commentsIds: [1],
-    ingredients: JSON.stringify(["a", "b"]),
-    directions:JSON.stringify( ["c", "d"]),
+    ingredients: ["a", "b"],
+    directions: ["c", "d"],
 }
 const recipe2 = {
     views: 2000,
@@ -55,7 +55,7 @@ const recipe2 = {
     image: "imgs",
     images: ["img", "img2", "img3"],
     cookTime: 1000,
-    creationDate: new Date(),
+    creationDate: 0,
     desc: "21",
     name: "same",
     cloudinary_id: "s8xzn1mo92zory4j3ws7",
@@ -71,7 +71,7 @@ const recipe3 = {
     image: "imgs",
     images: ["img", "img2", "img3"],
     cookTime: 1000,
-    creationDate: new Date(),
+    creationDate: 0,
     desc: "21",
     name: "same",
     cloudinary_id: "s8xzn1mo92zory4j3ws7",
@@ -87,7 +87,7 @@ const recipe4 = {
     image: "im22gs",
     images: ["im2g", "img22", "img23"],
     cookTime: 1000,
-    creationDate: new Date(),
+    creationDate: 0,
     desc: "2221",
     name: "same",
     cloudinary_id: "s8xzn1mo92zory4j3ws7",
@@ -106,7 +106,7 @@ const cookbook1 = {
     recipesIds: [],
     image: "imgs",
     filters: ["vegeterian"],
-    creationDate: new Date(),
+    creationDate: 0,
     desc: "21",
     name: "same",
     commentsIds: [2],
@@ -118,23 +118,19 @@ const cookbook2 = {
     recipesIds: [2],
     image: "imgsss",
     filters: [],
-    creationDate: new Date(),
+    creationDate: 0,
     desc: "21",
     name: "same",
     commentsIds: [],
 }
 const comment1 = {
     author: 1,
-    itemId: 1,
-    itemType: "COOKBOOK",
     text: "comment1",
     date: 2
 }
 const comment2 = {
     author: 2,
     text: "comment2",
-    itemType: "RECIPE",
-    itemId: 1,
     date: 3
 }
 const comment3 = {

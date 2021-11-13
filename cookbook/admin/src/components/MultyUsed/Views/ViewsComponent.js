@@ -12,7 +12,7 @@ const ViewsComponent = ({ count }) => {
   );
 };
 ViewsComponent.propTypes = {
-  count: PropTypes.number,
+  count: PropTypes.number || PropTypes.string,
 };
 ViewsComponent.defaultProps = {
   count: 0,

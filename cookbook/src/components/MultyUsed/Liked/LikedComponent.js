@@ -12,7 +12,7 @@ const LikedComponent = ({ count, isLiked, doLike }) => {
   );
 };
 LikedComponent.propTypes = {
-  count: PropTypes.number,
+  count: PropTypes.number || PropTypes.string,
   isLiked: PropTypes.bool,
   doLike: PropTypes.func,
 };

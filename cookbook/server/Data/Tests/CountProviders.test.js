@@ -1,7 +1,9 @@
-const countProvider = require('../Providers/CountProviders');
 const {createUser} = require("../Providers/CreateProvider")
 const db = require('./dbTestProvider')
-beforeAll(async () => await db.connect())
+let countProvider
+beforeAll(async () =>{
+    countProvider = await db.connect()
+})
 afterEach(async () => await db.clearDatabase())
 afterAll(async () => await db.closeDatabase())
 
@@ -27,7 +29,4 @@ describe('Count tests', () => {
         const result = await countProvider.getRecipesCount()
         expect(result).toBe(0)
     })
-
-
-
 })

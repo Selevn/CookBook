@@ -1,27 +1,23 @@
-const mongoose = require('mongoose')
-const {providerWrapper} = require("./DataProvider");
+const { Pool } = require('pg');
+
 const {Aggregator} = require("./utils/Aggregator");
 const {COMMON} = require("./ConstantsProvider")
 
-const Connector = (connectionString) => {
-    async function start() {
-        try {
-            await mongoose.connect(connectionString,
-                {
-                    useNewUrlParser: true,
-                    useFindAndModify: false,
-                    useUnifiedTopology: true,
-                })
 
-        } catch (e) {
-            console.log(e)
-        }
+
+const PLConnector = (connectionObject) => {
+  const pool = new Pool(connectionObject || {
+    user: 'postgres',
+    host: '10.211.55.8',
+    database: 'cookbook',
+    password: 'Aa1234',
+    port: 5432,
+  })
+  const {providerWrapper} = require("./DataProvider");
+    return {
+      pool:pool,
+      functions: providerWrapper(pool)
     }
-    start()
-        .then(r => console.log('Connected to bd'))
-    //const aggregateOptions = Aggregator(COMMON)
-
-    return providerWrapper
 }
 
-exports.Connector = Connector
+exports.PLConnector = PLConnector

@@ -18,7 +18,7 @@ const EditRecipe = () => {
   useEffect(() => {
     (async () => {
       const localRecipe = (await fetchData(ROUTES.RECIPE_CLIENT(values.id)))[0];
-      if (localRecipe.author[0]._id !== profile._id) setRecipe(STATE.FAIL);
+      if (localRecipe.author[0]._id != profile._id) setRecipe(STATE.FAIL);
       else setRecipe(localRecipe);
     })();
   }, []);

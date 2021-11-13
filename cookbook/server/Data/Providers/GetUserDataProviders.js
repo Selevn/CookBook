@@ -11,80 +11,206 @@ const {CookBooks} = require("../../models/modelsExporter");
 const {publicUserData} = require("../../models/lookups");
 const {_idMatcher} = require("../../models/lookups");
 const {Users} = require("../../models/modelsExporter");
+const { sorter } = require('./utils/sorter');
+const { userMapper, cookBookMapper, recipeMapper } = require('./mappers');
+let pool = null;
 
-const aggregateOptions = Aggregator(COMMON)
 
 const getUser = async (id) => {
-    return Users.aggregate([_idMatcher(id), publicUserData]);
+    const query = `
+        select * from get_user_all_data(
+                    ${id}
+                    );`
+     
+    const result = await pool.query(query)
+    result.rows = result.rows.map(item => userMapper(item))
+    return result.rows[0]
 }
 
 const getUserForLogin = async (email) => {
-    return Users.aggregate([
-        emailMatcher(email),
-    ]);
+    const query = `
+        select * from get_user_for_login(
+                    '${email}'
+                    );`
+     
+    const result = await pool.query(query)
+    result.rows = result.rows.map(item => userMapper(item))
+    const user = result.rows[0]
+    if(!user)
+        return result.rows;
+    const likedRecipesQuery = `
+        select * from get_all_user_liked_recipes(
+                    '${user._id}'
+                    );`
+    const likedRecipesQueryResult = await pool.query(likedRecipesQuery)
+
+    const likedCookBooksQuery = `
+        select * from get_all_user_liked_cookbooks(
+                    '${user._id}'
+                    );`
+    const likedCookBooksQueryResult = await pool.query(likedCookBooksQuery)
+
+
+    result.rows[0].likes = {
+        recipes: likedRecipesQueryResult.rows.map(item => item._id),
+        cookBooks: likedCookBooksQueryResult.rows.map(item=>item._id)
+    }
+
+    return result.rows
 }
 
 const getUserCookBooks = async (id, filters) => {
-    if (!id)
-        return false
+    let page = filters.page
+    let limit = 15;
     if (!filters)
         filters = {page: 1}
-    const aggregate = CookBooks.aggregate([
-        authorIdMatcher(id),
-        authorLookup,
-        commentsLookup,
-    ])
-    return await paginator(aggregate, aggregateOptions(filters.page, filters.sortBy))
+    const query = `
+        select * from get_user_cookbooks(
+                    '${id}',
+                    '${limit}',
+                    '${filters.page-1}'
+                    );`
+     
+    const result = await pool.query(query)
+    result.rows = result.rows.map(item => cookBookMapper(item))
+
+    const getUserCookBooks = `
+        select * from get_user_cookbooks_count(
+                    '${id}',
+                    '${limit}',
+                    '${filters.page-1}'
+                    );`
+     
+    const getUserCookbooksCount = await pool.query(getUserCookBooks)
+    const count = getUserCookbooksCount.rows[0].get_user_cookbooks_count
+
+
+    const out = {
+        docs:result.rows,
+        total:count,
+        nextPage: count-((page-1) * limit) > 0?page+1:page,
+        hasNextPage: count-(page * limit) > 0,
+    }
+
+    return out
 }
 
 const getUserLikedCookBooks = async (id, filters) => {
-    if (!id)
-        return false
+    let limit = 15;
+    let page = filters.page
     if (!filters)
         filters = {page: 1}
-    const user = (await getUser(id))[0]
-    const likes = user?.likes?.cookBooks || []
+    const query = `
+        select * from get_user_liked_cookbooks(
+                    '${id}',
+                    '${limit}',
+                    '${filters.page-1}'
+                    );`
+     
+    const result = await pool.query(query)
+    result.rows = result.rows.map(item => cookBookMapper(item))
 
-    const aggregate = CookBooks.aggregate([
-        idInRangeMatcher(likes),
-        authorLookup,
-        commentsLookup,
-    ])
-    return await paginator(aggregate, aggregateOptions(filters.page, filters.sortBy))
+    const getUserCookBooks = `
+        select * from get_user_liked_cookbooks_count(
+                    '${id}',
+                    '${limit}',
+                    '${filters.page-1}'
+                    );`
+     
+    const getUserCookbooksCount = await pool.query(getUserCookBooks)
+    const count = getUserCookbooksCount.rows[0].get_user_liked_cookbooks_count
+
+    const out = {
+        docs:result.rows,
+        total:count,
+        nextPage: count-((page-1) * limit) > 0?page+1:page,
+        hasNextPage: count-(page * limit) > 0,
+    }
+
+    return out
 }
 
 const getUserRecipes = async (id, filters) => {
-    if(!id)
-        return false
-    if(!filters?.page)
-        filters = {...filters, page:1}
-    const aggregate = Recipes.aggregate([
-        authorIdMatcher(id),
-        authorLookup,
-        commentsLookup
-    ])
-    return await paginator(aggregate, aggregateOptions(filters.page, filters.sortBy))
+    let page = filters.page
+
+    let limit = 15;
+    if (!filters)
+        filters = {page: 1}
+    const query = `
+        select * from get_user_recipes(
+                    '${id}',
+                    '${limit}',
+                    '${filters.page-1}'
+                    );`
+    const result = await pool.query(query)
+    result.rows = result.rows.map(item => recipeMapper(item))
+
+    const getUserCookBooks = `
+        select * from get_user_recipes_count(
+                    '${id}',
+                    '${limit}',
+                    '${filters.page-1}'
+                    );`
+     
+    const getUserCookbooksCount = await pool.query(getUserCookBooks)
+    const count = getUserCookbooksCount.rows[0].get_user_recipes_count
+
+
+    const out = {
+        docs:result.rows,
+        total:count,
+        nextPage: count-((page-1) * limit) > 0?page+1:page,
+        hasNextPage: count-(page * limit) > 0,
+    }
+
+    return out
 }
 const getUserLikedRecipes = async (id, filters) => {
-    if(!id)
-        return false
-    if(!filters?.page)
-        filters = {...filters, page:1}
-    const user = (await getUser(id))[0]
-    const likes = user?.likes?.recipes || []
-    const aggregate = Recipes.aggregate([
-        idInRangeMatcher(likes),
-        authorLookup,
-        commentsLookup
-    ])
-    return await paginator(aggregate, aggregateOptions(filters.page, filters.sortBy))
+    let page = filters.page
+
+    let limit = 15;
+    if (!filters)
+        filters = {page: 1}
+    const query = `
+        select * from get_user_liked_recipes(
+                    '${id}',
+                    '${limit}',
+                    '${filters.page-1}'
+                    );`
+     
+    const result = await pool.query(query)
+    result.rows = result.rows.map(item => recipeMapper(item))
+
+    const getUserCookBooks = `
+        select * from get_user_liked_recipes_count(
+                    '${id}',
+                    '${limit}',
+                    '${filters.page-1}'
+                    );`
+     
+    const getUserCookbooksCount = await pool.query(getUserCookBooks)
+    const count = getUserCookbooksCount.rows[0].get_user_liked_recipes_count
+
+
+    const out = {
+        docs:result.rows,
+        total:count,
+        nextPage: count-((page-1) * limit) > 0?page+1:page,
+        hasNextPage: count-(page * limit) > 0,
+    }
+
+    return out
 }
 
-module.exports = {
-    getUserForLogin,
-    getUserLikedRecipes,
-    getUserRecipes,
-    getUserLikedCookBooks,
-    getUserCookBooks,
-    getUser
+
+module.exports = (_pool)=>{
+    if(!_pool)
+        throw new Error("Get provider error: no pool injected")
+    pool = _pool;
+    return {getUserForLogin,
+        getUserLikedRecipes,
+        getUserRecipes,
+        getUserLikedCookBooks,
+        getUserCookBooks,
+        getUser}
 }

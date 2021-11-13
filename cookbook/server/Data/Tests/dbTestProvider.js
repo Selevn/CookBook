@@ -1,28 +1,36 @@
-const mongoose = require('mongoose')
-const {MongoMemoryServer} = require('mongodb-memory-server')
+const { PLConnector } = require('../index.js')
 
-const mongod = new MongoMemoryServer({ binary: { version: '4.0.14' } });
+let pool, functions;
 
 module.exports.connect = async () => {
-    const uri = await mongod.getUri()
-    const options = {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        poolSize: 10
-    }
-    await mongoose.connect(uri,options)
+    let obj = PLConnector({
+        user: 'postgres',
+        host: 'localhost',
+        database: 'cookbook',
+        password: 'password',
+        port: 5432,
+    });
+    pool = obj.pool
+    functions = obj.functions
+    return functions;
 }
 
 module.exports.closeDatabase = async () => {
-    await mongoose.connection.dropDatabase()
-    await mongoose.connection.close()
-    await mongod.stop()
+    await pool.close()
 }
 
 module.exports.clearDatabase = async () => {
-    const collections = mongoose.connection.collections
-    for(const key in collections){
-        const collection = collections[key]
-        await collection.deleteMany()
-    }
+    await pool.query(`
+        truncate table comments cascade;
+truncate table cookbooks cascade;
+truncate table users cascade;
+truncate table liked cascade;
+truncate table recipes cascade;
+truncate table recipes_in_cookbooks cascade;
+ALTER SEQUENCE "Users__id_seq" RESTART WITH 1;
+ALTER SEQUENCE "Liked_likeId_seq" RESTART WITH 1;
+ALTER SEQUENCE "comments__id_seq" RESTART WITH 1;
+ALTER SEQUENCE "cookbooks__id_seq" RESTART WITH 1;
+ALTER SEQUENCE "recipes__id_seq" RESTART WITH 1;
+    `)
 }

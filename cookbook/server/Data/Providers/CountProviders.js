@@ -1,13 +1,25 @@
 const {Users, CookBooks, Recipes} = require("../../models/modelsExporter")
 
+let pool = null;
 const getUsersCount = async () => {
-    return Users.countDocuments({});
+    const response = await pool.query('select * from get_users_count()')
+    const result = response.rows[0].get_users_count;
+    return Number(result);
 }
 const getCookbooksCount = async () => {
-    return CookBooks.countDocuments({});
+    const response = await pool.query('select * from get_total_cookbooks_count()')
+    const result = response.rows[0].get_total_cookbooks_count;
+    return Number(result);
 }
 const getRecipesCount = async () => {
-    return Recipes.countDocuments({});
+    const response = await pool.query('select * from get_total_recipes_count()')
+    const result = response.rows[0].get_total_recipes_count;
+    return Number(result);
 }
 
-module.exports = {getUsersCount, getCookbooksCount, getRecipesCount}
+module.exports = (_pool)=>{
+    if(!_pool)
+        throw new Error("Count provider error: no pool injected")
+    pool = _pool;
+    return {getUsersCount, getCookbooksCount, getRecipesCount}
+}

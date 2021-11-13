@@ -1,5 +1,5 @@
 const {HOME_ROUTES} = require("../src/constants");
-const {Connector} = require("./Data/index")
+const {PLConnector} = require("./Data/index")
 const express = require("express");
 const bodyParser = require("body-parser");
 const passport = require('passport')
@@ -17,7 +17,13 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('public'));
 
 
-const connection = Connector(process.env.DB_CONNECTION_STRING)
+const connection = PLConnector({
+    user: 'postgres',
+    host: 'localhost',
+    database: 'cookbook',
+    password: 'password',
+    port: 5432,
+})
 global.pool = connection.pool
 app.use(passport.initialize());
 require('./JWT/PassportConfig.js')(passport)

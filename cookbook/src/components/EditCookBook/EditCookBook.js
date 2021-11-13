@@ -17,7 +17,7 @@ const EditCookBook = () => {
   useEffect(() => {
     (async () => {
       const cookbook = (await fetchData(ROUTES.COOKBOOK_CLIENT(values.id)))[0];
-      if (cookbook.author[0]._id !== profile._id) setCookBook(STATE.FAIL);
+      if (cookbook.author[0]._id != profile._id) setCookBook(STATE.FAIL);
       else setCookBook(cookbook);
     })();
   }, []);

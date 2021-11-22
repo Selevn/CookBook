@@ -99,12 +99,12 @@ export const CookCardComponent = ({
       {type !== 'tiny' && (
         <Container justifyContent="space-between">
           <Views count={views} />
-          {isEditable && <LinkStyled to={`/editCookBook?id=${id}`}>Edit</LinkStyled>}
+          {isEditable && <LinkStyled to={`/editCookBook?id=${id}`}>Edit </LinkStyled>}
         </Container>
       )}
       <CookCardImage src={image} width={imgWidth} height={imgHeight} alt="CookBook front image" />
       <Container vertical>
-        <Name>{name}</Name>
+        <Name>{name} </Name>
         <Author>{`${author[0].name.first} ${author[0].name.last}`}</Author>
         {type === 'tiny' && <Liked count={likes || 0} isLiked={isLiked} />}
       </Container>

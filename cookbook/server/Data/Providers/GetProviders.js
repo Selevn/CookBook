@@ -155,12 +155,20 @@ getRecipes = async (filter) => {
                     ${filter.cookbookId}
                     );`
         const result = await pool.query(query)
+        const queryCount = `
+        select * from get_recipes_by_cookbook_count(
+                    ${limit},
+                    ${page-1},
+                    ${filter.cookbookId}
+                    );`
+        const resultCount = await pool.query(queryCount)
+        const count = Number(resultCount.rows[0].get_recipes_by_cookbook_count)
         result.rows = result.rows.map((item)=>recipeMapper(item))
         const out = {
-            docs: result.rows.slice((page-1)*limit, limit),
-            total: result.rows.length,
-            nextPage: result.rows.length-((page-1) * limit) > 0?page+1:page,
-            hasNextPage: result.rows.length-(page * limit) > 0,
+            docs:result.rows,
+            total:count,
+            nextPage: count-((page-1) * limit) > 0?Number(page)+1:Number(page),
+            hasNextPage: count-(page * limit) > 0,
         }
         return out;
     }

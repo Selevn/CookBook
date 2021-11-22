@@ -8,10 +8,10 @@ const {COMMON} = require("./ConstantsProvider")
 const PLConnector = (connectionObject) => {
   const pool = new Pool(connectionObject || {
     user: 'postgres',
-    host: '10.211.55.8',
+    host: 'localhost',
     database: 'cookbook',
-    password: 'Aa1234',
-    port: 5432,
+    password: 'password',
+    port: 5433,
   })
   const {providerWrapper} = require("./DataProvider");
     return {

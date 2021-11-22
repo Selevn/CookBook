@@ -15,6 +15,7 @@ exports.getPassword = (password) => {
     }
 }
 exports.checkPassword = (password, hash, salt) => {
+    console.log(hash);
     return hash === genHash(password, salt)
 }
 exports.issueJWT = (user) => {

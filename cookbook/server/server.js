@@ -17,13 +17,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('public'));
 
 
-const connection = PLConnector({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'cookbook',
-    password: 'password',
-    port: 5432,
-})
+const connection = PLConnector()
 global.pool = connection.pool
 app.use(passport.initialize());
 require('./JWT/PassportConfig.js')(passport)
@@ -35,7 +29,7 @@ const editRouter = require('./Routes/Edit')(passport);
 app.use(HOME_ROUTES.EDIT,editRouter)
 
 const crateRouter = require('./Routes/Create')(passport);
-app.use(HOME_ROUTES.EDIT,crateRouter)
+app.use(HOME_ROUTES.CREATE,crateRouter)
 
 const checkRouter = require('./Routes/Check');
 app.use(HOME_ROUTES.CHECK,checkRouter)

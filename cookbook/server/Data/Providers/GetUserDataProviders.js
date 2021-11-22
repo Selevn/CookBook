@@ -88,7 +88,7 @@ const getUserCookBooks = async (id, filters) => {
     const out = {
         docs:result.rows,
         total:count,
-        nextPage: count-((page-1) * limit) > 0?page+1:page,
+        nextPage: count-((page-1) * limit) > 0?Number(page)+1:Number(page),
         hasNextPage: count-(page * limit) > 0,
     }
 
@@ -123,7 +123,7 @@ const getUserLikedCookBooks = async (id, filters) => {
     const out = {
         docs:result.rows,
         total:count,
-        nextPage: count-((page-1) * limit) > 0?page+1:page,
+        nextPage: count-((page-1) * limit) > 0?Number(page)+1:Number(page),
         hasNextPage: count-(page * limit) > 0,
     }
 
@@ -159,7 +159,7 @@ const getUserRecipes = async (id, filters) => {
     const out = {
         docs:result.rows,
         total:count,
-        nextPage: count-((page-1) * limit) > 0?page+1:page,
+        nextPage: count-((page-1) * limit) > 0?Number(page)+1:Number(page),
         hasNextPage: count-(page * limit) > 0,
     }
 
@@ -195,7 +195,7 @@ const getUserLikedRecipes = async (id, filters) => {
     const out = {
         docs:result.rows,
         total:count,
-        nextPage: count-((page-1) * limit) > 0?page+1:page,
+        nextPage: count-((page-1) * limit) > 0?Number(page)+1:Number(page),
         hasNextPage: count-(page * limit) > 0,
     }
 

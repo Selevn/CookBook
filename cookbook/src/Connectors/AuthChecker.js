@@ -8,6 +8,13 @@ export const AuthCheckerWrapper = () => {
       if (token) tmpStamp = jwtDecode(token).exp;
       tokenCached = token;
     }
+    if(tmpStamp.toString().length === 10)
+      tmpStamp*=1000;
+    console.log("token",token);
+    console.log("tmpStamp",tmpStamp);
+    console.log("new Date()",new Date());
+    console.log(">",tmpStamp > new Date());
+    console.log("tokenCached",tokenCached);
     return tmpStamp > new Date();
   };
 };

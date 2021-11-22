@@ -76,7 +76,7 @@ getCookBooks = async (filters) => {
     const out = {
         docs:result.rows,
         total:count,
-        nextPage: count-((page-1) * limit) > 0?page+1:page,
+        nextPage: count-((page-1) * limit) > 0?Number(page)+1:Number(page),
         hasNextPage: count-(page * limit) > 0,
     }
     return out;
@@ -199,7 +199,7 @@ getRecipes = async (filter) => {
     const out = {
         docs:result.rows,
         total:count,
-        nextPage: count-((page-1) * limit) > 0?page+1:page,
+        nextPage: count-((page-1) * limit) > 0?Number(page)+1:Number(page),
         hasNextPage: count-(page * limit) > 0,
     }
     return out;
@@ -238,7 +238,7 @@ getComments = async (filter) => {
     const out = {
         docs:result.rows,
         total:count,
-        nextPage: count-((page-1) * limit) > 0?page+1:page,
+        nextPage: count-((page-1) * limit) > 0?Number(page)+1:Number(page),
         hasNextPage: count-(page * limit) > 0,
     }
     return out;

@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 import { fetchData } from '../../../Connectors/dataProvider';
+import {toast} from "react-toastify";
 
 const paginatorInitState = { nextPage: 1, hasNextPage: true };
 
@@ -14,6 +15,10 @@ export function useFetch(url, setItems, settings, paginatorDefault = paginatorIn
           setItems([]);
           setLoader(true);
           const data = await fetchData(url, () => {}, { ...settings, page: 1 });
+          if(data === null){
+            toast.error("Server is in troubles. Try in seconds")
+            return;
+          }
           setLoader(false);
           setTotal(data?.total);
           setPaginator({ nextPage: data.nextPage, hasNextPage: data.hasNextPage });
@@ -21,6 +26,10 @@ export function useFetch(url, setItems, settings, paginatorDefault = paginatorIn
         } else if (paginator.hasNextPage || paginator.nextPage === 1) {
           setLoader(true);
           const data = await fetchData(url, () => {}, { ...settings, page: paginator.nextPage });
+          if(data === null){
+            toast.error("Server is in troubles. Try in seconds")
+            return;
+          }
           setTotal(data?.total);
           setLoader(false);
           setPaginator({ nextPage: data.nextPage, hasNextPage: data.hasNextPage });

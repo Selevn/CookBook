@@ -26,6 +26,7 @@ import Slider from './Slider';
 import { ServerMessageHandler } from '../MultyUsed/ResponseSuccesHandler';
 import { useLogout } from '../MultyUsed/CustomHooks/useLogout';
 import noImage from '../common/images/noImage.jpg';
+import {toast} from "react-toastify";
 
 const ItemPageComponent = ({ match }) => {
   const { profile, auth } = useReduxState();
@@ -66,9 +67,17 @@ const ItemPageComponent = ({ match }) => {
     (async () => {
       if (type === COMMON.COOKBOOK) {
         const data = await fetchData(ROUTES.COOKBOOK_CLIENT(id), setLoading);
+        if(data === null){
+          toast.error("Server is in troubles. Try in seconds")
+          return;
+        }
         setItem(data[0]);
       } else {
         const data = await fetchData(ROUTES.RECIPE_CLIENT(id), setLoading);
+        if(data === null){
+          toast.error("Server is in troubles. Try in seconds")
+          return;
+        }
         setItem(data[0]);
       }
     })();

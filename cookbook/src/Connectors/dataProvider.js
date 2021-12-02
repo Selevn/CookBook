@@ -20,6 +20,8 @@ export const fetchData = async (url, setLoader, settings) => {
   if (response.status === 404) {
     return { redirect: '/404' };
   }
+  if(!response.ok)
+    return null;
   const data = await response.json();
   return data;
 };
@@ -90,7 +92,8 @@ export const SendVisited = async (data) => {
       'Content-Type': 'application/json',
     },
   });
-  if (response.status !== 200 && response.status !== 401) throw Error(response);
+
+  if (response.status !== 200 && response.status !== 401) return { success: false };
   if (response.status === 401) return { success: false };
   return response.json();
 };

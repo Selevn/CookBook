@@ -19,6 +19,7 @@ import { fetchData } from '../../Connectors/dataProvider';
 import { COMMON, ROUTES } from '../../constants';
 import { searchSorter } from '../CookBookSearch/sortFunction';
 import { Loading } from '../MultyUsed/Loading/Loading';
+import {toast} from "react-toastify";
 
 const MainComponent = () => {
   const sliderRef = useRef();
@@ -52,6 +53,10 @@ const MainComponent = () => {
   useEffect(() => {
     (async () => {
       const data = await fetchData(ROUTES.COOKBOOKS, setLoading);
+      if(data === null){
+        toast.error("Server is in troubles. Try in seconds")
+        return;
+      }
       setCookbooks(data.docs);
     })();
   }, []);

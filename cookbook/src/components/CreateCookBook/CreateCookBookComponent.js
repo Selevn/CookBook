@@ -82,6 +82,10 @@ const CreateCookBookComponent = ({ isEdit, item }) => {
           cookbookId: item._id,
           page: page,
         });
+          if(recipesData === null){
+            toast.error("Server is in troubles. Try in seconds")
+            return;
+          }
         recipesData.docs.forEach((recipeItem) => {
           const savedRecipe = (
             <Recipe

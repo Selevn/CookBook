@@ -7,6 +7,7 @@ import { H1Styled, LinkStyled, ParagraphStyled } from '../common/StylesComponent
 import { Recipe } from '../MultyUsed/Recipe';
 import { CookCard } from '../MultyUsed/CookCard';
 import { Loading } from '../MultyUsed/Loading/Loading';
+import {toast} from "react-toastify";
 
 const SearchBlock = () => {
   let timeOutRef = useRef();
@@ -26,6 +27,10 @@ const SearchBlock = () => {
       Promise.all(arr).then((values) => {
         const fetchedRecipes = values[0];
         const fetchedBooks = values[1];
+        if(fetchedRecipes === null || fetchedBooks === null){
+          toast.error("Server is in troubles. Try in seconds")
+          return;
+        }
         setRecipes(fetchedRecipes.docs.slice(0, 3));
         setCookBooks(fetchedBooks.docs.slice(0, 3));
       });

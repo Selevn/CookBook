@@ -6,6 +6,8 @@ const {COMMON} = require("./ConstantsProvider")
 
 
 const PLConnector = (connectionObject) => {
+  if(!connectionObject)
+    console.log("No connection specified, use default.");
   const pool = new Pool(connectionObject || {
     user: 'postgres',
     host: 'localhost',
@@ -13,6 +15,9 @@ const PLConnector = (connectionObject) => {
     password: 'password',
     port: 5433,
   })
+  setInterval(()=>{
+    let a = pool;
+  }, 5000)
   const {providerWrapper} = require("./DataProvider");
     return {
       pool:pool,

@@ -25,6 +25,7 @@ import { ProfileRecipes } from './Recipes';
 import { Loading } from '../MultyUsed/Loading/Loading';
 import { useReduxState } from '../MultyUsed/CustomHooks/useReduxState';
 import { profileActions } from '../../Redux/Profile';
+import {toast} from "react-toastify";
 
 const ProfileComponent = ({ match }) => {
   const myBooks = 'myBooks';
@@ -47,7 +48,10 @@ const ProfileComponent = ({ match }) => {
       if (Number(id) === profile?._id) setUser(profile);
       else {
         const data = await fetchData(ROUTES.USER_CLIENT(id), setLoading);
-
+        if(data === null){
+          toast.error("Server is in troubles. Try in seconds")
+          return;
+        }
         setUser(data[0] || data);
       }
     })();

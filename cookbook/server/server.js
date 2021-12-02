@@ -1,49 +1,68 @@
-const {HOME_ROUTES} = require("../src/constants");
-const {PLConnector} = require("./Data/index")
-const express = require("express");
-const bodyParser = require("body-parser");
-const passport = require('passport')
-const dotenv = require('dotenv')
-const result = dotenv.config({ path: '../.env' })
+var cluster = require('cluster');
+if (cluster.isMaster) {
+    cluster.fork();
 
-const {AdminAPI} = require("../admin/src/constants/ServerRoutes");
-
-if (result.error) {
-    throw result.error
+    cluster.on('exit', function(worker, code, signal) {
+        cluster.fork();
+    });
 }
-const app = express();
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(express.static('public'));
+
+if (cluster.isWorker) {
 
 
-const connection = PLConnector()
-global.pool = connection.pool
-app.use(passport.initialize());
-require('./JWT/PassportConfig.js')(passport)
+    const {HOME_ROUTES} = require("../src/constants");
+    const {PLConnector} = require("./Data/index")
+    const express = require("express");
+    const bodyParser = require("body-parser");
+    const passport = require('passport')
+    const dotenv = require('dotenv')
+    const result = dotenv.config({path: '../.env'})
 
-const loginRouter = require('./Routes/Login');
-app.use(HOME_ROUTES.LOGIN,loginRouter)
+    const {AdminAPI} = require("../admin/src/constants/ServerRoutes");
 
-const editRouter = require('./Routes/Edit')(passport);
-app.use(HOME_ROUTES.EDIT,editRouter)
+    if (result.error) {
+        throw result.error
+    }
+    const app = express();
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({extended: true}));
+    app.use(express.static('public'));
 
-const crateRouter = require('./Routes/Create')(passport);
-app.use(HOME_ROUTES.CREATE,crateRouter)
 
-const checkRouter = require('./Routes/Check');
-app.use(HOME_ROUTES.CHECK,checkRouter)
+    const connection = PLConnector({
+        user: 'postgres',
+        host: process.env.DATABASE_SERVER_IP,
+        database: 'cookbook',
+        password: 'password',
+        port: 8800,
+    })
+    global.pool = connection.pool
+    app.use(passport.initialize());
+    require('./JWT/PassportConfig.js')(passport)
 
-const userInteractionsRouter = require('./Routes/UserInteractions')(passport);
-app.use(HOME_ROUTES.USER_INTERACTIONS,userInteractionsRouter)
+    const loginRouter = require('./Routes/Login');
+    app.use(HOME_ROUTES.LOGIN, loginRouter)
 
-const usersDataRouter = require('./Routes/UserThings');
-app.use(HOME_ROUTES.USER_DATA, usersDataRouter)
+    const editRouter = require('./Routes/Edit')(passport);
+    app.use(HOME_ROUTES.EDIT, editRouter)
 
-const itemRouter = require('./Routes/GetItem');
-app.use(HOME_ROUTES.GET, itemRouter)
+    const crateRouter = require('./Routes/Create')(passport);
+    app.use(HOME_ROUTES.CREATE, crateRouter)
 
-const adminRouter = require('./Routes/AdminRoutes/AdminMainRoute.js')(passport);
-app.use(AdminAPI, adminRouter)
+    const checkRouter = require('./Routes/Check');
+    app.use(HOME_ROUTES.CHECK, checkRouter)
 
-app.listen(process.env.BACKEND_PORT, process.env.IP, () => console.log(`Listening on ${process.env.IP}:${process.env.BACKEND_PORT}`));
+    const userInteractionsRouter = require('./Routes/UserInteractions')(passport);
+    app.use(HOME_ROUTES.USER_INTERACTIONS, userInteractionsRouter)
+
+    const usersDataRouter = require('./Routes/UserThings');
+    app.use(HOME_ROUTES.USER_DATA, usersDataRouter)
+
+    const itemRouter = require('./Routes/GetItem');
+    app.use(HOME_ROUTES.GET, itemRouter)
+
+    const adminRouter = require('./Routes/AdminRoutes/AdminMainRoute.js')(passport);
+    app.use(AdminAPI, adminRouter)
+
+    app.listen(process.env.BACKEND_PORT, process.env.IP, () => console.log(`Listening on ${process.env.IP}:${process.env.BACKEND_PORT}`));
+}

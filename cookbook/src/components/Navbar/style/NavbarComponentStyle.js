@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { FaBars } from 'react-icons/all';
-import { Container, InputStyled, LinkStyled, Logo } from '../../common/StylesComponent';
+import { Container, LinkStyled, Logo } from '../../common/StylesComponent';
 
 export const NavbarLogo = styled(Logo)`
   @media (max-width: 1024px) {
@@ -17,6 +17,7 @@ export const NavbarStyle = styled(Container)`
 
   flex-wrap: wrap;
 
+  align-content: center;
   @media (max-width: 1024px) {
     flex-direction: column;
     padding: 10px;
@@ -35,18 +36,6 @@ export const NavbarStyle = styled(Container)`
       display: flex;
     }
   }
-`;
-export const SearchStyled = styled(InputStyled)`
-  height: 35px;
-  max-width: 481px;
-  min-width: 284px;
-  background: var(--search-gray);
-  border-radius: 37px;
-  border: none;
-  outline: none;
-  font-size: 20px;
-  padding: 3px 8px;
-  color: var(--light-black);
 `;
 
 export const NavbarLink = styled(LinkStyled)`

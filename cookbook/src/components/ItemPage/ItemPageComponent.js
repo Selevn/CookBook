@@ -1,172 +1,210 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { Recipe } from '../MultyUsed/Recipe';
+import { useDispatch } from 'react-redux';
 import {
-  Comments,
-  CommentsContainer,
   CookBookContainer,
-  CreateComment,
   Description,
   InfoContainer,
   ItemContainer,
-  ItemPageImageBook,
-  RecepiesContainer,
   RecipeStats,
   RecipeStatsContainer,
 } from './style/ItemPageComponentStyle';
-import {
-  ButtonStyled,
-  Container,
-  H1Styled,
-  InputStyled,
-  LinkStyled,
-  ParagraphStyled,
-} from '../common/StylesComponent';
-import foodImg from '../common/images/cookbook1.jpg';
+import { H1Styled, LinkStyled, ParagraphStyled } from '../common/StylesComponent';
 import { Statistics, StatisticsContainer } from '../MultyUsed/Recipe/style/RecipeContainerStyle';
-import { Comment } from '../MultyUsed/Comment';
 import { Liked } from '../MultyUsed/Liked';
 import { Commented } from '../MultyUsed/Commented';
 import { Views } from '../MultyUsed/Views';
+import { fetchData, SendData, SendVisited } from '../../Connectors/dataProvider';
+import { COMMON, ROUTES } from '../../constants';
+import { Loading } from '../MultyUsed/Loading/Loading';
+import { useReduxState } from '../MultyUsed/CustomHooks/useReduxState';
+import { profileActions } from '../../Redux/Profile';
+import Recipes from './RecipeContainer';
+import ItemCommentsContainer from './Comments';
+import Slider from './Slider';
+import { ServerMessageHandler } from '../MultyUsed/ResponseSuccesHandler';
+import { useLogout } from '../MultyUsed/CustomHooks/useLogout';
+import noImage from '../common/images/noImage.jpg';
 
-const ItemPageComponent = ({
-  views,
-  likes,
-  comments,
-  isLiked,
-  isCommented,
-  author,
-  name,
-  desc,
-  match,
-}) => {
-  // eslint-disable-next-line
-  const { id, type } = match.params;
+const ItemPageComponent = ({ match }) => {
+  const { profile, auth } = useReduxState();
+  const dispatcher = useDispatch();
+
+  const { id } = match.params;
+  let { type } = match.params;
+  if (type === 'cookbook') type = COMMON.COOKBOOK;
+  else type = COMMON.RECIPE;
+
+  useEffect(() => {
+    const timerId = setTimeout(async () => {
+      await SendVisited({
+        to: id,
+        type,
+      });
+    }, 2000);
+    return () => {
+      clearInterval(timerId);
+    };
+  }, []);
+
+  const LogOut = useLogout();
+
+  const [loading, setLoading] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+  const isCommented = false;
+  const [item, setItem] = useState(false);
+
+  useEffect(() => {
+    if (profile) {
+      if (type === COMMON.COOKBOOK) setIsLiked(profile?.likes?.cookBooks?.includes(Number(id)));
+      else setIsLiked(profile?.likes?.recipes?.includes(Number(id)));
+    }
+  }, [profile, id]);
+
+  useEffect(() => {
+    (async () => {
+      if (type === COMMON.COOKBOOK) {
+        const data = await fetchData(ROUTES.COOKBOOK_CLIENT(id), setLoading);
+        setItem(data[0]);
+      } else {
+        const data = await fetchData(ROUTES.RECIPE_CLIENT(id), setLoading);
+        setItem(data[0]);
+      }
+    })();
+  }, [id, type]);
+
+  const doLocalLike = useCallback(
+    (changeBy) => {
+      if (changeBy === -1) {
+        setIsLiked(false);
+        setItem((s) => ({ ...s, likes: s.likes - 1 }));
+      } else {
+        setIsLiked(true);
+        setItem((s) => ({ ...s, likes: s.likes + 1 }));
+      }
+      if (type === COMMON.COOKBOOK) dispatcher(profileActions.likeCookbook(Number(id)));
+      else dispatcher(profileActions.likeRecipe(Number(id)));
+    },
+    [id, profile],
+  );
+
+  const doLike = useCallback(() => {
+    (async () => {
+      let url;
+      if (type === COMMON.COOKBOOK) url = ROUTES.USER_LIKE_COOKBOOK;
+      else url = ROUTES.USER_LIKE_RECIPE;
+      if (profile && auth) {
+        if (isLiked) {
+          doLocalLike(-1);
+          SendData(url, { from: profile._id, to: Number(id) }, auth, LogOut).then((result) => {
+            ServerMessageHandler(
+              result,
+              null,
+              () => {
+                doLocalLike(1);
+              },
+              true,
+            );
+          });
+        } else {
+          doLocalLike(1);
+          SendData(url, { from: profile._id, to: Number(id) }, auth, LogOut).then((result) => {
+            ServerMessageHandler(
+              result,
+              null,
+              () => {
+                doLocalLike(-1);
+              },
+              true,
+            );
+          });
+        }
+      }
+    })();
+  }, [id, type, isLiked, profile, auth]);
 
   return (
     <ItemContainer>
-      <CookBookContainer>
-        <H1Styled size="56px">{name}</H1Styled>
-        <LinkStyled>{author}</LinkStyled>
-        <InfoContainer>
-          <ItemPageImageBook src={foodImg} />
-          <Description>
-            <H1Styled>Description</H1Styled>
-            <ParagraphStyled>{desc}</ParagraphStyled>
-          </Description>
-        </InfoContainer>
-        {type === 'recipe' && (
-          <>
-            <RecipeStatsContainer>
-              <RecipeStats>
-                <H1Styled>Directions</H1Styled>
-                <ol>
-                  <li>
-                    <span>e1243 12341234 12341qw</span>
-                  </li>
-                  <li>
-                    <span>eqw</span>
-                  </li>
-                  <li>
-                    <span>e124312 3412341 2341qw</span>
-                  </li>
-                  <li>
-                    <span>eqw</span>
-                  </li>
-                  <li>
-                    <span>eqw</span>
-                  </li>
-                </ol>
-              </RecipeStats>
-              <RecipeStats>
-                <H1Styled>Ingredients</H1Styled>
-                <ul>
-                  <li>
-                    <span>e12431234123412341qw</span>
-                  </li>
-                  <li>
-                    <span>eqw</span>
-                  </li>
-                  <li>
-                    <span>e1243123412 3412341qwe12431234 123412341qw</span>
-                  </li>
-                  <li>
-                    <span>eqw</span>
-                  </li>
-                  <li>
-                    <span>eqw</span>
-                  </li>
-                </ul>
-              </RecipeStats>
-            </RecipeStatsContainer>
-          </>
-        )}
-        <StatisticsContainer>
-          <Statistics>
-            <Liked count={likes} isLiked={isLiked} />
-            <Commented count={comments} isCommented={isCommented} />
-            <Views count={views} />
-          </Statistics>
-          <ButtonStyled medium light>
-            Clone to my {type === 'recipe' ? 'Recipes' : 'Cookbooks'}
-          </ButtonStyled>
-        </StatisticsContainer>
-      </CookBookContainer>
-      {type === 'cookbook' && (
+      {loading && <Loading />}
+      {!loading && (
+        <CookBookContainer>
+          <H1Styled size="56px">{item?.name}</H1Styled>
+          <LinkStyled to={`/profile/${item?.author?.[0]._id}`}>
+            {`${item?.author?.[0].name.first} ${item?.author?.[0].name.last}`}
+          </LinkStyled>
+          <InfoContainer>
+            {item && (
+              <Slider
+                mainImage={item.image || noImage}
+                inputImagesArray={type === COMMON.COOKBOOK ? [] : item.images}
+              />
+            )}
+            <Description>
+              <H1Styled>Description</H1Styled>
+              <ParagraphStyled>{item?.desc}</ParagraphStyled>
+            </Description>
+          </InfoContainer>
+          {type === COMMON.RECIPE && (
+            <>
+              <RecipeStatsContainer>
+                <RecipeStats>
+                  <H1Styled>Directions</H1Styled>
+                  <ol>
+                    {item?.directions &&
+                      item.directions.map((i, index) => (
+                        // eslint-disable-next-line
+                        <li key={`${index}directions`}>
+                          <span>{i}</span>
+                        </li>
+                      ))}
+                  </ol>
+                </RecipeStats>
+                <RecipeStats>
+                  <H1Styled>Ingredients</H1Styled>
+                  <ul>
+                    {item?.ingredients &&
+                      item.ingredients.map((i, index) => (
+                        // eslint-disable-next-line
+                        <li key={`${index}ingredients`}>
+                          <span>{i}</span>
+                        </li>
+                      ))}
+                  </ul>
+                </RecipeStats>
+              </RecipeStatsContainer>
+            </>
+          )}
+          <StatisticsContainer>
+            <Statistics>
+              <Liked count={item?.likes || 0} isLiked={isLiked} doLike={doLike} />
+              <Commented count={item?.commentsIds?.length || 0} isCommented={isCommented} />
+              <Views count={item?.views || 0} />
+            </Statistics>
+          </StatisticsContainer>
+        </CookBookContainer>
+      )}
+      {type === COMMON.COOKBOOK && (
         <>
-          <RecepiesContainer>
-            <H1Styled>Recepies</H1Styled>
-            <Container className="recipesContainer">
-              <Recipe />
-              <Recipe />
-              <Recipe />
-            </Container>
-          </RecepiesContainer>
+          <Recipes id={Number(id)} />
         </>
       )}
-
-      <CommentsContainer>
-        <H1Styled>Comments ({comments})</H1Styled>
-        <CreateComment>
-          <InputStyled placeholder="Express yourself..." />
-          <ButtonStyled small>Post</ButtonStyled>
-        </CreateComment>
-        <Comments>
-          <Comment />
-          <Comment />
-          <Comment />
-        </Comments>
-      </CommentsContainer>
+      <ItemCommentsContainer id={Number(id)} type={type} profile={profile} auth={auth} />
     </ItemContainer>
   );
 };
 
 ItemPageComponent.propTypes = {
   views: PropTypes.number,
-  likes: PropTypes.number,
-  comments: PropTypes.number,
+  likes: PropTypes.array,
+  comments: PropTypes.array,
   isLiked: PropTypes.bool,
   isCommented: PropTypes.bool,
-  author: PropTypes.string,
+  author: PropTypes.array,
   name: PropTypes.string,
   desc: PropTypes.string,
-
   match: PropTypes.object,
 };
-ItemPageComponent.defaultProps = {
-  views: 999,
-  likes: 400,
-  comments: 7,
-  isLiked: false,
-  isCommented: false,
-  author: 'John Doe',
-  name: 'Fresh meat',
-  desc:
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Bibendum tempus vi nibh dignissim' +
-    'non tempus pellentesque. Erat platea augue sed amet,tempor, sed sollicitudin. Viverra tin' +
-    'eu nulla pulvinar eget dolor. Dui, lacus sed ut id egestas elit, mi. Pretium elementum co' +
-    'amet cursus massa dictum. Ac, pharetra nisi, morbi maecenas facilisi.\n',
-};
+ItemPageComponent.defaultProps = {};
 
 export default withRouter(ItemPageComponent);

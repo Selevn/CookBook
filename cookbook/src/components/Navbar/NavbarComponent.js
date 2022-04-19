@@ -5,13 +5,18 @@ import {
   NavbarLogo,
   NavbarMain,
   NavbarStyle,
-  SearchStyled,
 } from './style/NavbarComponentStyle';
-import { Container } from '../common/StylesComponent';
+import { ButtonStyled, Container } from '../common/StylesComponent';
+import { useReduxState } from '../MultyUsed/CustomHooks/useReduxState';
+import SearchBlock from './NavbarSearch';
+import { useLogout } from '../MultyUsed/CustomHooks/useLogout';
 
 const NavbarComponent = () => {
   const [menuOpen, setMenuOpen] = useState(true);
   const menuClick = () => setMenuOpen((s) => !s);
+
+  const { profile } = useReduxState();
+  const Logout = useLogout();
 
   return (
     <>
@@ -28,16 +33,39 @@ const NavbarComponent = () => {
             </Container>
           </Container>
           <Container flex={5} justifyContent="center" alignItems="center" className="mustBeHidden">
-            <SearchStyled />
+            <SearchBlock />
           </Container>
-          <Container flex={4} className="mustBeHidden">
-            <Container padding="15px" justifyContent="flex-end" alignItems="center" flex={1}>
-              <NavbarLink to="/register">Sign Up</NavbarLink>
+          {!profile && (
+            <Container flex={4} className="mustBeHidden">
+              <Container padding="15px" justifyContent="flex-end" alignItems="center" flex={1}>
+                <NavbarLink to="/register">Sign Up</NavbarLink>
+              </Container>
+              <Container padding="15px" justifyContent="flex-start" alignItems="center" flex={1}>
+                <NavbarLink to="/login">Sign In</NavbarLink>
+              </Container>
             </Container>
-            <Container padding="15px" justifyContent="flex-start" alignItems="center" flex={1}>
-              <NavbarLink to="/login">Sign In</NavbarLink>
+          )}
+          {profile && (
+            <Container flex={4} className="mustBeHidden">
+              <Container padding="15px" justifyContent="flex-end" alignItems="center" flex={1}>
+                <NavbarLink to={`/profile/${profile?._id}`}>
+                  {`${profile?.name?.first} ${profile?.name?.last}`}
+                </NavbarLink>
+              </Container>
+              <Container padding="15px" justifyContent="flex-end" alignItems="center" flex={1}>
+                <ButtonStyled
+                  tiny
+                  light
+                  secondary
+                  onClick={() => {
+                    Logout();
+                  }}
+                >
+                  Logout
+                </ButtonStyled>
+              </Container>
             </Container>
-          </Container>
+          )}
         </NavbarStyle>
       </NavbarMain>
       <Container height="65px" />

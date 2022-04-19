@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Container, H1Styled, LabelStyled, LinkStyled } from '../../common/StylesComponent';
+import { ButtonStyled, Container, H1Styled, LabelStyled } from '../../common/StylesComponent';
 import { LinksContainer } from '../../Profile/style/ProfileComponentStyle';
 
 export const FilterContainer = styled(Container)`
@@ -28,7 +28,7 @@ export const ResultsContainer = styled(Container)`
   flex-direction: column;
   ${LinksContainer} {
     width: inherit;
-    margin: 0;
+    margin: 0 0 20px 0;
   }
 `;
 export const SearchMainComponent = styled(Container)`
@@ -56,9 +56,11 @@ export const HeaderContainer = styled(Container)`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  ${LinkStyled} {
-    color: var(--text-gray);
-    font-weight: normal;
+  ${ButtonStyled} {
+    align-self: center;
+    line-height: 6px;
+    font-size: 16px;
+    height: 36px;
   }
 `;
 export const SortContainer = styled(Container)`

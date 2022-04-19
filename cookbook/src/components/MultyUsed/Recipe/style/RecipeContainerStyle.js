@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { ButtonStyled, Container, LinkStyled } from '../../../common/StylesComponent';
 import { Description } from '../../CookCard/style/CookCardComponentStyle';
 
@@ -30,6 +30,7 @@ export const SaveContainer = styled(ToolsContainer)`
 
 export const Statistics = styled(Container)`
   gap: 50px;
+  padding-top: 10px;
   @media (max-width: 768px) {
     flex-direction: column;
     gap: 10px;
@@ -79,7 +80,7 @@ export const RecipeContainer = styled(Container)`
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: center;
-    width: auto;
+    //width: auto;
     ${ImageContainer} {
       margin-bottom: 15px;
     }
@@ -105,6 +106,38 @@ export const RecipeContainer = styled(Container)`
 `;
 
 export const RecipeContainerWrapper = styled(Container)`
+  ${(p) =>
+    p.small &&
+    css`
+      ${Container} {
+        padding: 4px;
+        width: 95%;
+      }
+      img {
+        height: 80px;
+      }
+      @media (max-width: 425px) {
+        flex-direction: row !important;
+        align-items: normal !important;
+
+        ${RemoveContainer} {
+          ${LinkStyled} {
+            font-size: 17px;
+          }
+          height: 10px;
+          margin: 0 auto;
+        }
+      }
+      @media (min-width: 425px) {
+        flex-direction: row !important;
+      }
+    `}
+
+  width:100%;
+  @media (min-width: 768px) {
+    max-height: 318px;
+  }
+
   @media (max-width: 768px) {
     ${RemoveContainer} {
       padding: 0 10px;

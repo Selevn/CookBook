@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
-import CookBook from '../../common/images/cookbook1.jpg';
 import {
   Author,
   CookCardContainer,
@@ -12,21 +11,24 @@ import {
   MinimizedCardText,
   Name,
 } from './style/CookCardComponentStyle';
-import { Container } from '../../common/StylesComponent';
+import { Container, LinkStyled } from '../../common/StylesComponent';
 import { Views } from '../Views';
 import { Commented } from '../Commented';
 import { Liked } from '../Liked';
+import { useReduxState } from '../CustomHooks/useReduxState';
 
 export const CookCardComponent = ({
   views,
   likes,
   comments,
-  isLiked,
   isCommented,
   author,
   name,
   desc,
   type,
+  image,
+  isEditable,
+  _id: id,
 }) => {
   let width;
   let height;
@@ -42,12 +44,21 @@ export const CookCardComponent = ({
       imgWidth = '215px';
       break;
     }
+    case 'tiny': {
+      width = '225px-(var(--padding-card)*2)';
+      height = '360px-(var(--padding-card)*2)';
+      imgHeight = '215px';
+      imgWidth = '215px';
+      break;
+    }
+
     case 'normal': {
       width = 'calc(350px - (var(--padding-card)*2))';
       height = 'calc(455px - (var(--padding-card)*2))';
       imgHeight = '215px';
       imgWidth = '310px';
       showDesc = true;
+      desc = desc && `${desc.slice(0, desc.indexOf(' ', 150))}...`;
       break;
     }
     case 'bigImage': {
@@ -61,34 +72,41 @@ export const CookCardComponent = ({
     case 'long': {
       width = '215px';
       height = '215px';
+      imgHeight = '236px';
+      imgWidth = '310px';
       break;
     }
     default: {
+      imgHeight = '236px';
+      imgWidth = '310px';
       break;
     }
   }
-
+  const { profile } = useReduxState();
+  const isLiked = profile?.likes?.cookBooks?.includes(id);
   const history = useHistory();
   return (
     <CookCardContainer
       onClick={() => {
-        history.push('/info/cookbook/1');
+        history.push(`/info/cookbook/${id}`);
       }}
       className="hoverer"
       vertical
       containerWidth={width}
       containerHeight={height}
+      type={type}
     >
-      <Views count={views} />
-      <CookCardImage
-        src={CookBook}
-        width={imgWidth}
-        height={imgHeight}
-        alt="CookBook front image"
-      />
+      {type !== 'tiny' && (
+        <Container justifyContent="space-between">
+          <Views count={views} />
+          {isEditable && <LinkStyled to={`/editCookBook?id=${id}`}>Edit</LinkStyled>}
+        </Container>
+      )}
+      <CookCardImage src={image} width={imgWidth} height={imgHeight} alt="CookBook front image" />
       <Container vertical>
         <Name>{name}</Name>
-        <Author>{author}</Author>
+        <Author>{`${author[0].name.first} ${author[0].name.last}`}</Author>
+        {type === 'tiny' && <Liked count={likes || 0} isLiked={isLiked} />}
       </Container>
       {showDesc && (
         <>
@@ -97,10 +115,10 @@ export const CookCardComponent = ({
           </Description>
         </>
       )}
-      {showFooter && (
-        <Container margin="8px 0 0 0" justifyContent="space-between">
-          <Liked count={likes} liked={isLiked} />
-          <Commented count={comments} commented={isCommented} />
+      {showFooter && type !== 'tiny' && (
+        <Container margin="auto 0 0 0" justifyContent="space-between">
+          <Liked count={likes || 0} isLiked={isLiked} />
+          <Commented count={comments.length || 0} commented={isCommented} />
         </Container>
       )}
     </CookCardContainer>
@@ -108,32 +126,21 @@ export const CookCardComponent = ({
 };
 
 CookCardComponent.propTypes = {
-  views: PropTypes.number,
-  likes: PropTypes.number,
-  comments: PropTypes.number,
-  isLiked: PropTypes.bool,
-  isCommented: PropTypes.bool,
-  author: PropTypes.string,
-  name: PropTypes.string,
+  _id: PropTypes.number,
+  author: PropTypes.array,
+  comments: PropTypes.array,
   desc: PropTypes.string,
+  image: PropTypes.string,
+  isCommented: PropTypes.bool,
+  isEditable: PropTypes.bool,
+  isLiked: PropTypes.bool,
+  likes: PropTypes.number,
+  name: PropTypes.string,
   type: PropTypes.string,
-};
-CookCardComponent.defaultProps = {
-  views: 999,
-  likes: 400,
-  comments: 7,
-  isLiked: false,
-  isCommented: false,
-  author: 'John Doe',
-  name: 'Fresh meat',
-  desc:
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit.' +
-    'Magna amet etiam risus aliquet sit vel venenatis. Dolor,' +
-    'risus sit aliquam pharetra. ',
-  type: 'small',
+  views: PropTypes.number,
 };
 
-export const CookCardMenuComponent = ({ name, type }) => {
+export const CookCardMenuComponent = ({ name, type, image, _id: id }) => {
   let width;
   let height;
   switch (type) {
@@ -158,13 +165,19 @@ export const CookCardMenuComponent = ({ name, type }) => {
       break;
     }
   }
+
+  const history = useHistory();
   return (
     <MinimizedCard
       className="hoverer"
-      image={CookBook}
+      image={image}
       containerHeight={height}
       containerWidth={width}
       type={type}
+      onClick={(e) => {
+        e.preventDefault();
+        history.push(`info/cookbook/${id}`);
+      }}
     >
       <MinimizedCardText type={type}>{name}</MinimizedCardText>
     </MinimizedCard>
@@ -174,8 +187,6 @@ export const CookCardMenuComponent = ({ name, type }) => {
 CookCardMenuComponent.propTypes = {
   type: PropTypes.string,
   name: PropTypes.string,
-};
-CookCardMenuComponent.defaultProps = {
-  type: 'large',
-  name: 'Lorem Ipsum',
+  image: PropTypes.string,
+  _id: PropTypes.number,
 };

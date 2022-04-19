@@ -1,12 +1,12 @@
 import styled, { css } from 'styled-components';
-import { ButtonStyled, Container, H1Styled, ParagraphStyled } from '../../common/StylesComponent';
+import { Container, H1Styled, LinkAsButton, ParagraphStyled } from '../../common/StylesComponent';
 
 export const WelcomeDiv = styled(Container)`
   flex-direction: column;
   max-width: 800px;
   padding: 0 15px 0 15px;
 
-  ${ButtonStyled} {
+  ${LinkAsButton} {
     margin: 25px auto auto 0;
     border-radius: 38px;
     font-size: 20px;
@@ -45,7 +45,6 @@ export const PopularBooksContainer = styled(Container)`
   padding-top: 45px;
   max-width: 1400px;
   margin: auto;
-
   justify-content: center;
 
   ${H1Styled} {
@@ -64,6 +63,7 @@ export const CookBooksList = styled(Container)`
   gap: 30px;
   padding: 0 10px;
   justify-content: center;
+
   @media (max-width: 1023px) {
     justify-content: center;
   }

@@ -1,11 +1,12 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
+  ButtonAsLinkStyled,
   ButtonStyled,
   Container,
   Image,
-  LinkStyled,
+  LinkAsButton,
   ParagraphStyled,
 } from '../../common/StylesComponent';
 
@@ -39,6 +40,7 @@ export const UserDescription = styled(ParagraphStyled)`
   font-size: 20px;
   color: var(--text-gray);
   text-align: justify;
+  align-self: start;
 `;
 export const UserTextContainer = styled(Container)`
   justify-content: start;
@@ -77,7 +79,7 @@ export const LinksContainer = styled(Container)`
     width: 300px;
   }
 `;
-export const UserLinks = styled(LinkStyled)`
+export const UserLinks = styled(ButtonAsLinkStyled)`
   font-size: 26px;
   font-weight: normal;
   color: var(--text-gray);
@@ -111,14 +113,26 @@ export const DataContainer = styled(Container)`
   justify-content: center;
   gap: 40px;
   min-height: 410px;
+
+  h1 {
+    margin: auto;
+  }
 `;
-export const AddButton = styled(ButtonStyled)`
+
+const addCss = css`
   width: 212px;
   font-family: 'Roboto Light', sans-serif;
   font-size: 18px;
   text-align: center;
   font-weight: normal;
 `;
+export const AddLink = styled(LinkAsButton)`
+  ${addCss}
+`;
+export const AddButton = styled(ButtonStyled)`
+  ${addCss}
+`;
+
 export const ProfileImageWrapper = styled(Container)`
   width: 300px;
 `;

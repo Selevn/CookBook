@@ -8,6 +8,28 @@ export const CookCardContainer = styled(Container)`
       height: ${p.containerHeight};
     `;
   }}
+  ${(p) =>
+    p.type === 'tiny' &&
+    css`
+      width: 95%;
+      padding: 5px !important;
+      ${Container} {
+        padding: 5px;
+      }
+      ${Container}:last-child {
+        margin: 0;
+      }
+
+      flex-direction: row;
+      justify-content: start;
+      align-items: start;
+      img {
+        height: 80px !important;
+        width: 235px;
+        border-radius: 10px;
+        margin: 0 25px 0 0;
+      }
+    `}
 
   border-radius: 10px;
   padding: var(--padding-card);
@@ -38,6 +60,7 @@ export const DescriptionText = styled(ParagraphStyled)`
 
 export const MinimizedCard = styled(Container)`
   transition: all 0.2s ease-in-out;
+
   :hover {
     transform: scale(1.04);
     cursor: pointer;
@@ -78,5 +101,7 @@ export const MinimizedCardText = styled(Container)`
 `;
 
 export const CookCardImage = styled.img`
-  margin: auto;
+  margin: 0 auto;
+  object-fit: cover;
+  object-position: center center;
 `;

@@ -4,6 +4,11 @@ module.exports = {
         browser: true,
         node: true,
     },
+    parser: 'babel-eslint',
+    parserOptions: {
+        sourceType: 'module',
+        allowImportExportEverywhere: true
+    },
     extends: ['airbnb', 'plugin:jest/recommended', 'jest-enzyme'],
     plugins: [
         'import',
@@ -16,15 +21,20 @@ module.exports = {
     rules: {
         "import/prefer-default-export": "off",
         "import/no-extraneous-dependencies": "off",
-        "react/prop-types":"warn",
+        //"react/prop-types":"warn",
         "react/button-has-type":"off",
         "jsx-a11y/label-has-associated-control":"off",
+        "import/no-named-as-default":"off",
+        "no-unused-expressions":"off",
+
 
         'linebreak-style': 'off',
         'react/jsx-props-no-spreading': 'off',
         'implicit-arrow-linebreak': 'off',
         'operator-linebreak': 'off',
         'no-confusing-arrow': 'off',
+        'no-underscore-dangle': 'off',
+        //'react/prop-types': 'off',
 
         'arrow-parens': 'off',
         'object-curly-newline': 'off',
@@ -34,7 +44,8 @@ module.exports = {
         'no-plusplus': 'off',
         'space-before-function-paren': 0,
 
-        'max-len': ['error', 100, 2, { ignoreUrls: true, }],
+        //'max-len': ['error', 100, 2, { ignoreUrls: true, }],
+        "max-len":"off",
         'no-console': 'error',
         'no-alert': 'error',
 
